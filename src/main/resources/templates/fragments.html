@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Default Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        body {
+            background-color: DarkSeaGreen;
+        }
+        th, td {
+            padding: 5px;
+        }
+        a:link {
+            color: DarkBlue;
+        }
+        a:hover {
+            color: DimGray;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+        #map_container {
+            width: 100%;
+            height: 65%;
+            position: relative;
+        }
+        #floating-panel {
+            position: absolute;
+            top: 80px;
+            left: 35%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #999;
+            text-align: center;
+            line-height: normal;
+            padding-left: 15px;
+        }
+        .error {
+            color: red;
+        }
+        .logo {
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+        }
+    </style>
+    <link id="favicon" rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+</head>
+<body>
+
+    <nav th:fragment="navigation" class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="navbar-brand" href="#"><img src="favicon.png" alt="Logo" class="logo"></img></a>
+            </li>
+            <li class="nav-item">
+                <a class="navbar-brand" href="#">RadCheck</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">New search</a>
+            </li>
+        </ul>
+    </nav>
+
+</body>
+</html>

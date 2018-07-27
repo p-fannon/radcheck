@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container">
+    <h3>Found the following measurements:</h3>
+    <p th:unless="${return} and ${return.size()}">No results 🤔</p>
+</div>
+
+<div class="container-fluid" th:if="${return} and ${return.size()}">
+    <div class="row">
+        <div class="col">
+            <table class="table-striped" style="padding:8px">
+                <thead>
+                    <tr>
+                        <th>Unit</th>
+                        <th>Value</th>
+                        <th>Time Captured</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="entry : ${return}">
+                        <td th:text="${entry.radUnit}"></td>
+                        <td th:text="${entry.radValue}"></td>
+                        <td th:text="${entry.radTimestamp}"></td>
+                        <td th:text="${entry.radLat} + '°'"></td>
+                        <td th:text="${entry.radLng} + '°'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <iframe width="475" height="350" frameborder="0" style="border: 2px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=15&amp;center=' + ${latitude} + '%2C' + ${longitude} + '&amp;key=' + ${key}"></iframe>
+            <p><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank">View this measurement result on Safecast.</a></p>
+        </div>
+        <div class="col">
+            <table class="table-striped" style="padding:8px">
+                <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th>AQI</th>
+                        <th>Wind Direction</th>
+                        <th>Wind Speed</th>
+                        <th>Time Captured</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${aqi.aqiData.aqiCity} + ', ' + ${aqi.aqiData.aqiCountry}"></td>
+                        <td th:text="${aqi.aqiData.aqiCurrent.aqiPollution.aqiUsStd}"></td>
+                        <td th:text="${aqi.aqiData.aqiCurrent.aqiWeather.windDirection}"></td>
+                        <td th:text="${aqi.aqiData.aqiCurrent.aqiWeather.windSpeed}"></td>
+                        <td th:text="${aqi.aqiData.aqiCurrent.aqiPollution.pollutionTimestamp}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

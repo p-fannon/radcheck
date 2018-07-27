@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+
+<div class="container"><form method="POST" action="/manual" style="max-width:600px" th:object="${measurements}">
+
+    <div class="form-group">
+        <label th:for="radLat">Enter latitude of measurement</label>
+        <input class="form-control" th:field="*{radLat}" />
+        <span th:errors="*{radLat}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="radLng">Enter longitude of measurement</label>
+        <input class="form-control" th:field="*{radLng}" />
+        <span th:errors="*{radLng}" class="error"></span>
+    </div>
+
+    <input type="submit" value="Find measurement" />
+</form></div>
+
+</body>
+</html>
