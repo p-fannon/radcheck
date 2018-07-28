@@ -22,6 +22,9 @@ public class Query {
     private int windDirection;
     private int temp;
     private String weatherIcon;
+    private String city;
+    private int viewCount;
+    private boolean isCurrent;
     @OneToOne(mappedBy = "query")
     private LatLon location;
     @CreationTimestamp
@@ -32,18 +35,21 @@ public class Query {
     public Query() {
     }
 
-    public int getId() {
-        return id;
+    public Query(double rating, double radValue, int aqiValue, double windSpeed, int windDirection, int temp, String weatherIcon, String city, int viewCount, boolean isCurrent) {
+        this.rating=rating;
+        this.radValue=radValue;
+        this.aqiValue=aqiValue;
+        this.windSpeed=windSpeed;
+        this.windDirection=windDirection;
+        this.temp=temp;
+        this.weatherIcon=weatherIcon;
+        this.city=city;
+        this.viewCount=viewCount;
+        this.isCurrent=isCurrent;
     }
 
-    public Query(double rating, double radValue, int aqiValue, double windSpeed, int windDirection, int temp, String weatherIcon) {
-        this.rating = rating;
-        this.radValue = radValue;
-        this.aqiValue = aqiValue;
-        this.windSpeed = windSpeed;
-        this.windDirection = windDirection;
-        this.temp = temp;
-        this.weatherIcon = weatherIcon;
+    public int getId() {
+        return id;
     }
 
     public double getRating() {
@@ -120,5 +126,29 @@ public class Query {
 
     public void setUpdateTimestamp(Date updateTimestamp) {
         this.updateTimestamp = updateTimestamp;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city=city;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount=viewCount;
+    }
+
+    public boolean isCurrent() {
+        return isCurrent;
+    }
+
+    public void setCurrent(boolean current) {
+        isCurrent=current;
     }
 }

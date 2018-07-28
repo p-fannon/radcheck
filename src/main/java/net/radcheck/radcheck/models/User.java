@@ -10,6 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @Entity
 public class User {
@@ -22,7 +23,8 @@ public class User {
     @NotNull
     private String password;
     @ManyToMany
-    private HashMap<LatLon, String> userLocations;
+    private List<LatLon> userLocations;
+    private List<String> customNames;
     @CreationTimestamp
     private Date joinedOn;
     @UpdateTimestamp
@@ -52,12 +54,20 @@ public class User {
         this.password = password;
     }
 
-    public HashMap<LatLon, String> getUserLocations() {
+    public List<LatLon> getUserLocations() {
         return userLocations;
     }
 
-    public void setUserLocations(HashMap<LatLon, String> userLocations) {
+    public void setUserLocations(List<LatLon> userLocations) {
         this.userLocations = userLocations;
+    }
+
+    public List<String> getCustomNames() {
+        return customNames;
+    }
+
+    public void setCustomNames(List<String> customNames) {
+        this.customNames=customNames;
     }
 
     public Date getJoinedOn() {
@@ -70,6 +80,21 @@ public class User {
 
     public void setLastLogon(Date lastLogon) {
         this.lastLogon = lastLogon;
+    }
+
+    public void addLocation(LatLon newLocation, String locationName) {
+        userLocations.add(newLocation);
+        customNames.add(locationName);
+    }
+    public void editLocation(LatLon currentLocation, String newName) {
+        int index = userLocations.indexOf(currentLocation);
+        customNames.remove(index);
+        customNames.add(index, newName);
+    }
+    public void removeLocation(LatLon deleteLocation) {
+        int index = userLocations.indexOf(deleteLocation);
+        userLocations.remove(index);
+        customNames.remove(index);
     }
 
 }
