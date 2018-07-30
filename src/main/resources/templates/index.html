@@ -10,8 +10,8 @@
 <div class="container"><form class="form-inline" action="/" method="POST" th:object="${gmap}">
     <div id="floating-panel" class="form-group">
         <label for="address">Search the map:&nbsp;&nbsp;</label>
-        <input id="address" type="search" class="form-control" th:value="${address}" th:field="*{address}"></input>
-        <button id="locate" type="button" class="btn btn-primary">🔍Locate</button>
+        <input id="address" type="search" class="form-control" th:value="${address}" th:field="*{address}">
+        <button id="locate" type="button" class="btn btn-primary">🔍</button>
     </div>
     <script>
         initMap();

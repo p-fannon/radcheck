@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Entity
