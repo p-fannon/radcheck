@@ -1,33 +1,45 @@
 package net.radcheck.radcheck.models;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private int id;
-    @NotNull
+    @Column(name = "email")
+    @Email(message = "Please provide a valid email")
+    @NotEmpty(message = "Please provide an email")
     private String email;
-    @NotNull
+    @Column(name = "password")
+    @Length(min = 5, message = "Your password needs at least 5 characters")
+    @NotEmpty(message = "Please provide your password")
+    @org.springframework.data.annotation.Transient
     private String password;
+    @Column(name = "active")
+    private int active;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
     @ManyToMany
+    @JoinTable(name = "user_locations", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "location_id"))
     private List<LatLon> userLocations;
+    @Column(name = "location_names")
+    @ElementCollection(targetClass=String.class)
     private List<String> customNames;
     @CreationTimestamp
     private Date joinedOn;
-    @UpdateTimestamp
-    private Date lastLogon;
 
     public User() {
     }
@@ -73,14 +85,6 @@ public class User {
         return joinedOn;
     }
 
-    public Date getLastLogon() {
-        return lastLogon;
-    }
-
-    public void setLastLogon(Date lastLogon) {
-        this.lastLogon = lastLogon;
-    }
-
     public void addLocation(LatLon newLocation, String locationName) {
         userLocations.add(newLocation);
         customNames.add(locationName);
@@ -96,4 +100,19 @@ public class User {
         customNames.remove(index);
     }
 
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }

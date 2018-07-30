@@ -33,6 +33,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('mysql:mysql-connector-java')
+	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
 	compile('com.google.code.gson:gson:2.8.5')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	testCompile('org.springframework.boot:spring-boot-starter-test')

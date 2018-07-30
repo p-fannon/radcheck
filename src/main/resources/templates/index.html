@@ -41,7 +41,7 @@
             });
         }
     </script>
-    <script th:attr="src=${key}" async="async" defer="defer"></script>
+    <script th:attr="src=${key}" async defer></script>
         <button type="submit" class="btn btn-block">Find measurement here</button>
             <span th:errors="*{address}" class="error"></span>
     </form></div>

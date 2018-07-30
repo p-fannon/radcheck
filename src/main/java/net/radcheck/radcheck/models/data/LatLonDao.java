@@ -1,12 +1,12 @@
 package net.radcheck.radcheck.models.data;
 
 import net.radcheck.radcheck.models.LatLon;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 
-@Repository
+@Repository("locationRepository")
 @Transactional
-public interface LatLonDao extends CrudRepository<LatLon, Integer> {
+public interface LatLonDao extends JpaRepository<LatLon, Integer> {
 }

@@ -18,7 +18,6 @@ public class AddLocationItemForm {
     @NotNull
     private int locationId;
 
-    @NotNull
     @Size(min=3, max=30, message="Please enter a name for this location between 3 and 30 characters")
     private String locationName;
 

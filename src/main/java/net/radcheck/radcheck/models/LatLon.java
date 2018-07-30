@@ -2,20 +2,19 @@ package net.radcheck.radcheck.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
+@Table(name = "location")
 public class LatLon {
 
     @Id
     @GeneratedValue
+    @Column(name = "location_id")
     private int id;
     @NotNull
     private double lat;
     @NotNull
     private double lon;
-    @ManyToMany(mappedBy = "userLocations")
-    private List<User> ownerList;
     @OneToOne
     private Query query;
 
@@ -39,20 +38,12 @@ public class LatLon {
         return lon;
     }
 
-    public List<User> getOwnerList() {
-        return ownerList;
-    }
-
     public void setLat(double lat) {
         this.lat = lat;
     }
 
     public void setLon(double lon) {
         this.lon = lon;
-    }
-
-    public void setOwnerList(List<User> ownerList) {
-        this.ownerList = ownerList;
     }
 
     public void setQuery(Query query) {
