@@ -2,10 +2,11 @@ package net.radcheck.radcheck.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.radcheck.radcheck.models.AirQuality;
-import net.radcheck.radcheck.models.GMap;
-import net.radcheck.radcheck.models.Geo;
-import net.radcheck.radcheck.models.Measurements;
+import net.radcheck.radcheck.models.*;
+import net.radcheck.radcheck.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +22,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.util.Collection;
 
 @org.springframework.stereotype.Controller
@@ -40,11 +43,15 @@ public class SearchController {
     private String geocode;
     private static Gson gson = new Gson();
 
-
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String index(Model model) {
         String address = "The Gateway Arch, St. Louis, MO";
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Pick A Location");
         model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
         model.addAttribute("address", address);
@@ -53,10 +60,16 @@ public class SearchController {
         return "index";
     }
 
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
-                             errors) throws IOException {
+                             errors, Principal principal) throws IOException {
         if (errors.hasErrors()) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Pick A Location");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
@@ -66,8 +79,13 @@ public class SearchController {
 
         Geo geoReturn = getGeo(newMap.getAddress());
 
-        if (geoReturn.getResults().size() == 0) {
+        if (geoReturn.getResults().size() == 0 || !geoReturn.getStatus().equals("OK")) {
             // add an alert here about the maps API failing
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Pick A Location");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
@@ -82,6 +100,9 @@ public class SearchController {
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Current readings at this location");
         model.addAttribute("return", safeCastReturns);
         model.addAttribute("latitude", aLatitude);
@@ -92,9 +113,12 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/manual", method=RequestMethod.GET)
-    public String manualSearch(Model model) {
+    public String manualSearch(Model model, Principal principal) {
         model.addAttribute("title", "Pick A Location");
         model.addAttribute("measurements", new Measurements());
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
 
         return "manual-search";
     }
@@ -102,11 +126,14 @@ public class SearchController {
     @RequestMapping(value = "/manual", method = RequestMethod.POST)
     public String manualResult(Model model,
                          @ModelAttribute @Valid Measurements newMeasurement,
-                         Errors errors) throws IOException {
+                         Errors errors, Principal principal) throws IOException {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Pick A Location");
             model.addAttribute("measurements", newMeasurement);
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
             return "manual-search";
         }
 
@@ -130,6 +157,9 @@ public class SearchController {
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Current readings at the given location");
         model.addAttribute("return", safeCastReturns);
         model.addAttribute("latitude", aLatitude);
@@ -220,5 +250,25 @@ public class SearchController {
 
         Geo results = gson.fromJson(geoJson, Geo.class);
         return results;
+    }
+    public User getAccount() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        return user;
+    }
+    public String getUser() {
+        String account = "";
+        User theUser = getAccount();
+        if (theUser != null) {
+            account = theUser.getEmail();
+        }
+        return account;
+    }
+    public boolean checkAccount(String account) {
+        boolean isLoggedIn = false;
+        if (!account.equals("")) {
+            isLoggedIn = true;
+        }
+        return isLoggedIn;
     }
 }

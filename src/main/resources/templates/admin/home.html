@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col"><span class="badge badge-pill badge-primary" th:text="${userName}"></span></div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col"><img src="radcheck.png" class="rounded"></div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col"><span class="badge badge-pill badge-info" th:text="${adminMessage}"></span></div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col"><img src="radiation.png" class="rounded"></div>
+    </div>
+</div>
+
+</body>
+</html>

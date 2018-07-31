@@ -58,24 +58,34 @@
             height: 32px;
         }
     </style>
-    <link id="favicon" rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link id="favicon" rel="icon" type="image/png" sizes="64x64" href="favicon.png" />
 </head>
 <body>
 
     <nav th:fragment="navigation" class="navbar navbar-expand-sm bg-dark navbar-dark">
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="navbar-brand" href="#"><img src="images/favicon.png" alt="Logo" class="logo"></a>
-            </li>
-            <li class="nav-item">
-                <a class="navbar-brand" href="#">RadCheck</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/">New search</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
-            </li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="#"><img src="favicon.png" alt="Logo" class="logo"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="#">RadCheck</a>
+                    </li>
+        </ul>
+        <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">New search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Build Report</a>
+                </li>
+        </ul>
+        <ul class="navbar-nav ml-auto" th:if="${isLoggedIn} == false">
+                <li class="nav-item"><a class="nav-link" href="/register">☢&nbsp;Sign Up</a></li>
+                <li class="nav-item"><a class="nav-link" href="/login">🔑&nbsp;Login</a></li>
+        </ul>
+        <ul class="navbar-nav ml-auto" th:if="${isLoggedIn} == true">
+                <li class="nav-item"><a class="nav-link" href="/admin/home">👤&nbsp;<span th:text="${account}"></span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">🔒&nbsp;Logout</a></li>
         </ul>
     </nav>
 
