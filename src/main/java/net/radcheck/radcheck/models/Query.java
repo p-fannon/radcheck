@@ -4,7 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "query")
@@ -26,9 +26,12 @@ public class Query {
     @OneToOne(mappedBy = "query")
     private LatLon location;
     @CreationTimestamp
-    private Date creationTimestamp;
+    private Timestamp creationTimestamp;
     @UpdateTimestamp
-    private Date updateTimestamp;
+    private Timestamp updateTimestamp;
+    private Timestamp minMeasurementTimestamp;
+    private Timestamp maxMeasurementTimestamp;
+    private Timestamp aqiTimestamp;
 
     public Query() {
     }
@@ -82,11 +85,11 @@ public class Query {
         return location;
     }
 
-    public Date getCreationTimestamp() {
+    public Timestamp getCreationTimestamp() {
         return creationTimestamp;
     }
 
-    public Date getUpdateTimestamp() {
+    public Timestamp getUpdateTimestamp() {
         return updateTimestamp;
     }
 
@@ -122,7 +125,7 @@ public class Query {
         this.location = location;
     }
 
-    public void setUpdateTimestamp(Date updateTimestamp) {
+    public void setUpdateTimestamp(Timestamp updateTimestamp) {
         this.updateTimestamp = updateTimestamp;
     }
 
@@ -148,5 +151,29 @@ public class Query {
 
     public void setCurrent(boolean current) {
         isCurrent=current;
+    }
+
+    public Timestamp getMinMeasurementTimestamp() {
+        return minMeasurementTimestamp;
+    }
+
+    public void setMinMeasurementTimestamp(Timestamp minMeasurementTimestamp) {
+        this.minMeasurementTimestamp = minMeasurementTimestamp;
+    }
+
+    public Timestamp getMaxMeasurementTimestamp() {
+        return maxMeasurementTimestamp;
+    }
+
+    public void setMaxMeasurementTimestamp(Timestamp maxMeasurementTimestamp) {
+        this.maxMeasurementTimestamp = maxMeasurementTimestamp;
+    }
+
+    public Timestamp getAqiTimestamp() {
+        return aqiTimestamp;
+    }
+
+    public void setAqiTimestamp(Timestamp aqiTimestamp) {
+        this.aqiTimestamp = aqiTimestamp;
     }
 }

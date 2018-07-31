@@ -12,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class UserController {
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     @Autowired
     private UserService userService;
@@ -45,6 +50,11 @@ public class UserController {
                     .rejectValue("email", "error.user",
                             "There is already a user registered with the email provided");
         }
+        boolean isValid = validate(user.getEmail());
+        if (isValid == false) {
+            bindingResult.rejectValue("email", "error.user",
+                        "Please provide a valid email address");
+        }
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
@@ -66,5 +76,10 @@ public class UserController {
         modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
         modelAndView.setViewName("admin/home");
         return modelAndView;
+    }
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
     }
 }
