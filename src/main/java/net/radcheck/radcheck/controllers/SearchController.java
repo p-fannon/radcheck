@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,7 +22,12 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/")
@@ -42,6 +46,7 @@ public class SearchController {
     private static String aqiKey = "3RDkWgP8CSpxMTGFM";
     private String geocode;
     private static Gson gson = new Gson();
+    private static String minScTs = "2011-03-10T00:00:00Z";
 
     @Autowired
     private UserService userService;
@@ -99,6 +104,10 @@ public class SearchController {
         Collection<Measurements> safeCastReturns = getMeasurements(aLatitude, aLongitude);
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
+
+        Query queryObject = makeQuery(safeCastReturns, airVisualReturn);
+
+        LatLon latLonObject = makeLatLon(aLatitude, aLongitude, queryObject);
 
         String account = getUser();
         model.addAttribute("account", account);
@@ -170,32 +179,27 @@ public class SearchController {
         return "result";
     }
 
-    public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {
-        int distance = 1200;
-        decodedString = "";
+    public Collection<Measurements> getMeasurements(double lat, double lng) {
         json = "";
-        HttpsURLConnection scCall = (HttpsURLConnection) (new URL(BaseURL + "?distance=" + distance
-                + "&latitude=" + lat + "&longitude=" + lng).openConnection());
-        scCall.setRequestProperty("Content-Type", "application/json");
-        scCall.setRequestProperty("Accept", "application/json");
-        scCall.setRequestMethod("GET");
-        scCall.connect();
-
+        Instant newInstant = Instant.now();
+        String capturedBefore = newInstant.toString();
+        Instant oneYearAgo = newInstant.minusSeconds(31557600);
+        String capturedAfter = oneYearAgo.toString();
         try {
-            BufferedReader inreader = new BufferedReader(new InputStreamReader(scCall.getInputStream()));
-            while ((decodedString=inreader.readLine()) != null) {
-                json+=decodedString;
-            }
-            inreader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            json = callSafecast(capturedBefore, capturedAfter, lat, lng);
+        } catch (Exception e) { e.printStackTrace(); }
+        if (!json.equals("")) {
+            Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
+            Collection<Measurements> results = gson.fromJson(json, collectionType);
+            return results;
+        } else {
+            try {
+                json = callSafecast(capturedBefore, minScTs, lat, lng);
+            } catch (Exception e) { e.printStackTrace(); }
+            Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
+            Collection<Measurements> results = gson.fromJson(json, collectionType);
+            return results;
         }
-
-        scCall.disconnect();
-
-        Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
-        Collection<Measurements> results = gson.fromJson(json, collectionType);
-        return results;
     }
 
     public AirQuality getAQI(double lat, double lng) throws IOException {
@@ -270,5 +274,67 @@ public class SearchController {
             isLoggedIn = true;
         }
         return isLoggedIn;
+    }
+    public String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng) throws IOException {
+        int distance = 1200;
+        decodedString = "";
+        String result = "";
+        HttpsURLConnection scCall = (HttpsURLConnection) (new URL(BaseURL + "?distance=" + distance
+                + "&latitude=" + lat + "&longitude=" + lng + "&captured_before=" +
+        capturedBefore + "&captured_after=" + capturedAfter).openConnection());
+        scCall.setRequestProperty("Content-Type", "application/json");
+        scCall.setRequestProperty("Accept", "application/json");
+        scCall.setRequestMethod("GET");
+        scCall.connect();
+
+        try {
+            BufferedReader inreader = new BufferedReader(new InputStreamReader(scCall.getInputStream()));
+            while ((decodedString=inreader.readLine()) != null) {
+                result+=decodedString;
+            }
+            inreader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        scCall.disconnect();
+        return result;
+    }
+    public Query makeQuery(Collection<Measurements> sc, AirQuality av) {
+        Query newQuery = new Query();
+        double rad = 0.0;
+        ArrayList<Timestamp> ts = new ArrayList<>();
+        for (Measurements entry : sc) {
+            if (entry.getRadUnit().equals("cpm")) {
+                rad += entry.getRadValue() / 330;
+            } else {
+                rad += entry.getRadValue();
+            }
+            Timestamp parsedDate = Timestamp.valueOf(entry.getRadTimestamp());
+            ts.add(parsedDate);
+        }
+        rad = rad / sc.size();
+        newQuery.setRadValue(rad);
+        newQuery.setMinMeasurementTimestamp(Collections.min(ts));
+        newQuery.setMaxMeasurementTimestamp(Collections.max(ts));
+        newQuery.setAqiValue(av.getAqiData().getAqiCurrent().getAqiPollution().getAqiUsStd());
+        Timestamp aqiParse = Timestamp.valueOf(av.getAqiData().getAqiCurrent().getAqiPollution().getPollutionTimestamp());
+        newQuery.setAqiTimestamp(aqiParse);
+        newQuery.setWindSpeed(av.getAqiData().getAqiCurrent().getAqiWeather().getWindSpeed());
+        newQuery.setWindDirection(av.getAqiData().getAqiCurrent().getAqiWeather().getWindDirection());
+        newQuery.setTemp(av.getAqiData().getAqiCurrent().getAqiWeather().getTempCelsius());
+        newQuery.setMainPollutant(av.getAqiData().getAqiCurrent().getAqiPollution().getMainUsPollutant());
+        newQuery.setWeatherIcon(av.getAqiData().getAqiCurrent().getAqiWeather().getWeatherIcon());
+        newQuery.setCity(av.getAqiData().getAqiCity());
+        newQuery.setCountry(av.getAqiData().getAqiCountry());
+        // test for minimum radTimestamp by one year for isCurrent
+
+
+
+        return newQuery;
+    }
+    public LatLon makeLatLon(double lat, double lon, Query query) {
+        LatLon newLatLon = new LatLon();
+
+        return newLatLon;
     }
 }

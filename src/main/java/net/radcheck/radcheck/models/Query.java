@@ -13,14 +13,16 @@ public class Query {
     @Id
     @GeneratedValue
     private int id;
-    private double rating;
+    private String rating;
     private double radValue;
     private int aqiValue;
     private double windSpeed;
     private int windDirection;
     private int temp;
+    private String mainPollutant;
     private String weatherIcon;
     private String city;
+    private String country;
     private int viewCount;
     private boolean isCurrent;
     @OneToOne(mappedBy = "query")
@@ -36,15 +38,17 @@ public class Query {
     public Query() {
     }
 
-    public Query(double rating, double radValue, int aqiValue, double windSpeed, int windDirection, int temp, String weatherIcon, String city, int viewCount, boolean isCurrent) {
+    public Query(String rating, double radValue, int aqiValue, double windSpeed, int windDirection, int temp, String mainPollutant, String weatherIcon, String city, String country, int viewCount, boolean isCurrent) {
         this.rating=rating;
         this.radValue=radValue;
         this.aqiValue=aqiValue;
         this.windSpeed=windSpeed;
         this.windDirection=windDirection;
         this.temp=temp;
+        this.mainPollutant = mainPollutant;
         this.weatherIcon=weatherIcon;
-        this.city=city;
+        this.city = city;
+        this.country = country;
         this.viewCount=viewCount;
         this.isCurrent=isCurrent;
     }
@@ -53,7 +57,7 @@ public class Query {
         return id;
     }
 
-    public double getRating() {
+    public String getRating() {
         return rating;
     }
 
@@ -77,6 +81,14 @@ public class Query {
         return temp;
     }
 
+    public String getMainPollutant() {
+        return mainPollutant;
+    }
+
+    public void setMainPollutant(String mainPollutant) {
+        this.mainPollutant = mainPollutant;
+    }
+
     public String getWeatherIcon() {
         return weatherIcon;
     }
@@ -93,7 +105,7 @@ public class Query {
         return updateTimestamp;
     }
 
-    public void setRating(double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -134,7 +146,15 @@ public class Query {
     }
 
     public void setCity(String city) {
-        this.city=city;
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public int getViewCount() {
