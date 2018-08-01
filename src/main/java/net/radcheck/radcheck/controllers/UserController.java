@@ -33,7 +33,6 @@ public class UserController {
         modelAndView.addObject("isLoggedIn", checkAccount(account));
         return modelAndView;
     }
-    //@RequestMapping(value = "/login", method = RequestMethod.POST)
 
 
 
