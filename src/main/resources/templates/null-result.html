@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container">
+    <p th:unless="${return} and ${return.size()}">No results 🤔</p>
+</div>
+
+</body>
+</html>

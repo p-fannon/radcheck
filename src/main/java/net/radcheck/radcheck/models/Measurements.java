@@ -17,23 +17,23 @@ public class Measurements {
     @SerializedName("location_name")
     private String radLocationName;
     @SerializedName("device_id")
-    private int radDeviceId;
+    private String radDeviceId;
     @SerializedName("original_id")
-    private int radOriginalId;
+    private String radOriginalId;
     @SerializedName("mesaurement_import_id")
-    private int radMeasurementImportId;
+    private String radMeasurementImportId;
     @SerializedName("captured_at")
     private String radTimestamp;
     @SerializedName("height")
     private double radHeight;
     @SerializedName("devicetype_id")
-    private int radDevicetypeId;
+    private String radDevicetypeId;
     @SerializedName("sensor_id")
-    private int radSensorId;
+    private String radSensorId;
     @SerializedName("station_id")
-    private int radStationId;
+    private String radStationId;
     @SerializedName("channel_id")
-    private int radChannelId;
+    private String radChannelId;
     @NotNull
     @SerializedName("latitude")
     private double radLat;
@@ -44,7 +44,7 @@ public class Measurements {
     public Measurements() {
     }
 
-    public Measurements(int radId, int radUserId, double radValue, String radUnit, String radLocationName, int radDeviceId, int radOriginalId, int radMeasurementImportId, String radTimestamp, double radHeight, int radDevicetypeId, int radSensorId, int radStationId, int radChannelId, double radLat, double radLng) {
+    public Measurements(int radId, int radUserId, double radValue, String radUnit, String radLocationName, String radDeviceId, String radOriginalId, String radMeasurementImportId, String radTimestamp, double radHeight, String radDevicetypeId, String radSensorId, String radStationId, String radChannelId, double radLat, double radLng) {
         this.radId = radId;
         this.radUserId = radUserId;
         this.radValue = radValue;
@@ -127,27 +127,27 @@ public class Measurements {
         this.radLocationName = radLocationName;
     }
 
-    public int getRadDeviceId() {
+    public String getRadDeviceId() {
         return radDeviceId;
     }
 
-    public void setRadDeviceId(int radDeviceId) {
+    public void setRadDeviceId(String radDeviceId) {
         this.radDeviceId = radDeviceId;
     }
 
-    public int getRadOriginalId() {
+    public String getRadOriginalId() {
         return radOriginalId;
     }
 
-    public void setRadOriginalId(int radOriginalId) {
+    public void setRadOriginalId(String radOriginalId) {
         this.radOriginalId = radOriginalId;
     }
 
-    public int getRadMeasurementImportId() {
+    public String getRadMeasurementImportId() {
         return radMeasurementImportId;
     }
 
-    public void setRadMeasurementImportId(int radMeasurementImportId) {
+    public void setRadMeasurementImportId(String radMeasurementImportId) {
         this.radMeasurementImportId = radMeasurementImportId;
     }
 
@@ -159,35 +159,35 @@ public class Measurements {
         this.radHeight = radHeight;
     }
 
-    public int getRadDevicetypeId() {
+    public String getRadDevicetypeId() {
         return radDevicetypeId;
     }
 
-    public void setRadDevicetypeId(int radDevicetypeId) {
+    public void setRadDevicetypeId(String radDevicetypeId) {
         this.radDevicetypeId = radDevicetypeId;
     }
 
-    public int getRadSensorId() {
+    public String getRadSensorId() {
         return radSensorId;
     }
 
-    public void setRadSensorId(int radSensorId) {
+    public void setRadSensorId(String radSensorId) {
         this.radSensorId = radSensorId;
     }
 
-    public int getRadStationId() {
+    public String getRadStationId() {
         return radStationId;
     }
 
-    public void setRadStationId(int radStationId) {
+    public void setRadStationId(String radStationId) {
         this.radStationId = radStationId;
     }
 
-    public int getRadChannelId() {
+    public String getRadChannelId() {
         return radChannelId;
     }
 
-    public void setRadChannelId(int radChannelId) {
+    public void setRadChannelId(String radChannelId) {
         this.radChannelId = radChannelId;
     }
 

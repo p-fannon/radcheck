@@ -24,7 +24,6 @@ import java.net.URLEncoder;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -103,6 +102,14 @@ public class SearchController {
 
         Collection<Measurements> safeCastReturns = getMeasurements(aLatitude, aLongitude);
 
+        if (safeCastReturns.size() == 0) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "No results to display :(");
+            return "null-result";
+        }
+
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
         Query queryObject = makeQuery(safeCastReturns, airVisualReturn);
@@ -113,11 +120,10 @@ public class SearchController {
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Current readings at this location");
-        model.addAttribute("return", safeCastReturns);
+        model.addAttribute("return", latLonObject);
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
         model.addAttribute("key", mapsKey);
-        model.addAttribute("aqi", airVisualReturn);
         return "result";
     }
 
@@ -188,12 +194,13 @@ public class SearchController {
         try {
             json = callSafecast(capturedBefore, capturedAfter, lat, lng);
         } catch (Exception e) { e.printStackTrace(); }
-        if (!json.equals("")) {
+        if (!json.equals("[]")) {
             Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
             Collection<Measurements> results = gson.fromJson(json, collectionType);
             return results;
         } else {
             try {
+                json = "";
                 json = callSafecast(capturedBefore, minScTs, lat, lng);
             } catch (Exception e) { e.printStackTrace(); }
             Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
@@ -255,26 +262,6 @@ public class SearchController {
         Geo results = gson.fromJson(geoJson, Geo.class);
         return results;
     }
-    public User getAccount() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
-        return user;
-    }
-    public String getUser() {
-        String account = "";
-        User theUser = getAccount();
-        if (theUser != null) {
-            account = theUser.getEmail();
-        }
-        return account;
-    }
-    public boolean checkAccount(String account) {
-        boolean isLoggedIn = false;
-        if (!account.equals("")) {
-            isLoggedIn = true;
-        }
-        return isLoggedIn;
-    }
     public String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng) throws IOException {
         int distance = 1200;
         decodedString = "";
@@ -302,22 +289,32 @@ public class SearchController {
     public Query makeQuery(Collection<Measurements> sc, AirQuality av) {
         Query newQuery = new Query();
         double rad = 0.0;
+        int measurementCount = 0;
         ArrayList<Timestamp> ts = new ArrayList<>();
         for (Measurements entry : sc) {
             if (entry.getRadUnit().equals("cpm")) {
                 rad += entry.getRadValue() / 330;
-            } else {
+                measurementCount++;
+                Instant isoInstant = Instant.parse(entry.getRadTimestamp());
+                Timestamp parsedDate = Timestamp.from(isoInstant);
+                ts.add(parsedDate);
+            } else if (entry.getRadUnit().equals("usv")) {
                 rad += entry.getRadValue();
+                measurementCount++;
+                Instant isoInstant = Instant.parse(entry.getRadTimestamp());
+                Timestamp parsedDate = Timestamp.from(isoInstant);
+                ts.add(parsedDate);
             }
-            Timestamp parsedDate = Timestamp.valueOf(entry.getRadTimestamp());
-            ts.add(parsedDate);
         }
-        rad = rad / sc.size();
+        rad = rad / measurementCount;
         newQuery.setRadValue(rad);
-        newQuery.setMinMeasurementTimestamp(Collections.min(ts));
-        newQuery.setMaxMeasurementTimestamp(Collections.max(ts));
+        newQuery.setTotalMeasurements(measurementCount);
+        Collections.sort(ts);
+        newQuery.setMinMeasurementTimestamp(ts.get(0));
+        newQuery.setMaxMeasurementTimestamp(ts.get(ts.size() - 1));
         newQuery.setAqiValue(av.getAqiData().getAqiCurrent().getAqiPollution().getAqiUsStd());
-        Timestamp aqiParse = Timestamp.valueOf(av.getAqiData().getAqiCurrent().getAqiPollution().getPollutionTimestamp());
+        Instant aqiInstant = Instant.parse(av.getAqiData().getAqiCurrent().getAqiPollution().getPollutionTimestamp());
+        Timestamp aqiParse = Timestamp.from(aqiInstant);
         newQuery.setAqiTimestamp(aqiParse);
         newQuery.setWindSpeed(av.getAqiData().getAqiCurrent().getAqiWeather().getWindSpeed());
         newQuery.setWindDirection(av.getAqiData().getAqiCurrent().getAqiWeather().getWindDirection());
@@ -326,15 +323,58 @@ public class SearchController {
         newQuery.setWeatherIcon(av.getAqiData().getAqiCurrent().getAqiWeather().getWeatherIcon());
         newQuery.setCity(av.getAqiData().getAqiCity());
         newQuery.setCountry(av.getAqiData().getAqiCountry());
-        // test for minimum radTimestamp by one year for isCurrent
-
-
+        Instant rightNow = Instant.now();
+        Instant oneYearAndADayAgo = rightNow.minusSeconds(31644000);
+        Instant minTs = newQuery.getMinMeasurementTimestamp().toInstant();
+        if (minTs.isAfter(oneYearAndADayAgo)) {
+            newQuery.setCurrent(true);
+        } else {
+            newQuery.setCurrent(false);
+        }
+        double testRad = newQuery.getRadValue();
+        int testAqi = newQuery.getAqiValue();
+        if (testRad > .7714 || testAqi > 300) {
+            newQuery.setRating("Hazardous");
+        } else if (testRad > .5771 || testAqi > 200) {
+            newQuery.setRating("Very unhealthy");
+        } else if (testRad > .4028 || testAqi > 150) {
+            newQuery.setRating("Unhealthy");
+        } else if (testRad > .2485 || testAqi > 100) {
+            newQuery.setRating("Unhealthy for sensitive groups");
+        } else if (testRad > .1142 || testAqi > 50) {
+            newQuery.setRating("Moderately safe");
+        } else {
+            newQuery.setRating("Safe");
+        }
 
         return newQuery;
     }
     public LatLon makeLatLon(double lat, double lon, Query query) {
         LatLon newLatLon = new LatLon();
+        newLatLon.setLat(lat);
+        newLatLon.setLon(lon);
+        newLatLon.setQuery(query);
 
         return newLatLon;
+    }
+    public User getAccount() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        return user;
+    }
+    public String getUser() {
+        String account = "";
+        User theUser = getAccount();
+        if (theUser != null) {
+            account = theUser.getEmail();
+        }
+        return account;
+    }
+    public boolean checkAccount(String account) {
+        boolean isLoggedIn = false;
+        if (!account.equals("")) {
+            isLoggedIn = true;
+        }
+        return isLoggedIn;
     }
 }

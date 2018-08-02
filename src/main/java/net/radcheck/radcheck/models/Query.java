@@ -15,6 +15,7 @@ public class Query {
     private int id;
     private String rating;
     private double radValue;
+    private int totalMeasurements;
     private int aqiValue;
     private double windSpeed;
     private int windDirection;
@@ -38,9 +39,10 @@ public class Query {
     public Query() {
     }
 
-    public Query(String rating, double radValue, int aqiValue, double windSpeed, int windDirection, int temp, String mainPollutant, String weatherIcon, String city, String country, int viewCount, boolean isCurrent) {
+    public Query(String rating, double radValue, int totalMeasurements, int aqiValue, double windSpeed, int windDirection, int temp, String mainPollutant, String weatherIcon, String city, String country, int viewCount, boolean isCurrent) {
         this.rating=rating;
         this.radValue=radValue;
+        this.totalMeasurements = totalMeasurements;
         this.aqiValue=aqiValue;
         this.windSpeed=windSpeed;
         this.windDirection=windDirection;
@@ -59,6 +61,10 @@ public class Query {
 
     public String getRating() {
         return rating;
+    }
+
+    public int getTotalMeasurements() {
+        return totalMeasurements;
     }
 
     public double getRadValue() {
@@ -111,6 +117,10 @@ public class Query {
 
     public void setRadValue(double radValue) {
         this.radValue = radValue;
+    }
+
+    public void setTotalMeasurements(int totalMeasurements) {
+        this.totalMeasurements = totalMeasurements;
     }
 
     public void setAqiValue(int aqiValue) {

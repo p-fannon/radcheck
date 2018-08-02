@@ -7,59 +7,35 @@
 <nav th:replace="fragments :: navigation"></nav>
 
 <div class="container">
-    <h3>Found the following measurements:</h3>
-    <p th:unless="${return} and ${return.size()}">No results 🤔</p>
+    <h3>Found the following measurement:</h3>
 </div>
 
-<div class="container-fluid" th:if="${return} and ${return.size()}">
+<div class="container">
     <div class="row">
         <div class="col">
-            <table class="table-striped" style="padding:8px">
-                <thead>
-                    <tr>
-                        <th>Unit</th>
-                        <th>Value</th>
-                        <th>Time Captured</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="entry : ${return}">
-                        <td th:text="${entry.radUnit}"></td>
-                        <td th:text="${entry.radValue}"></td>
-                        <td th:text="${entry.radTimestamp}"></td>
-                        <td th:text="${entry.radLat} + '°'"></td>
-                        <td th:text="${entry.radLng} + '°'"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col">
-            <iframe width="475" height="350" frameborder="0" style="border: 2px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=15&amp;center=' + ${latitude} + '%2C' + ${longitude} + '&amp;key=' + ${key}"></iframe>
+            <iframe width="768" height="576" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${latitude} + '%2C' + ${longitude} + '&amp;key=' + ${key}"></iframe>
             <p><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank">View this measurement result on Safecast.</a></p>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <h4 class="card-title">Rating for this location:</h4>
+                <h2 class="card-text text-center" th:text="${return.getQuery().getRating()}"></h2>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <p class="lead">The aggregate radiation reading here is <strong th:text="${#numbers.formatDecimal(return.getQuery().getRadValue(),1,2)}"></strong> µSv/h<span th:if="${return.getQuery().isCurrent()} == false">*</span></p>
+            <p class="small">The latest measurement from this reading was taken on <span th:text="${return.getQuery().getMaxMeasurementTimestamp().toString()}"></span> and was made from <span th:text="${return.getQuery().getTotalMeasurements()}"></span> collected measurements.</p>
+            <p th:text="'Air quality index is currently ' + ${return.getQuery().getAqiValue()}"></p>
+            <p th:text="'This AQI rating was made on ' + ${return.getQuery().getAqiTimestamp().toString()} + ' and was taken in ' + ${return.getQuery().getCity()} + ', ' + ${return.getQuery().getCountry()}" class="small"></p>
+        </div>
+    </div>
+</div>
+<div th:if="${return.getQuery().isCurrent()} == false" class="container">
+    <div class="row">
         <div class="col">
-            <table class="table-striped" style="padding:8px">
-                <thead>
-                    <tr>
-                        <th>Location</th>
-                        <th>AQI</th>
-                        <th>Wind Direction</th>
-                        <th>Wind Speed</th>
-                        <th>Time Captured</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td th:text="${aqi.aqiData.aqiCity} + ', ' + ${aqi.aqiData.aqiCountry}"></td>
-                        <td th:text="${aqi.aqiData.aqiCurrent.aqiPollution.aqiUsStd}"></td>
-                        <td th:text="${aqi.aqiData.aqiCurrent.aqiWeather.windDirection}"></td>
-                        <td th:text="${aqi.aqiData.aqiCurrent.aqiWeather.windSpeed}"></td>
-                        <td th:text="${aqi.aqiData.aqiCurrent.aqiPollution.pollutionTimestamp}"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <p>*This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>
