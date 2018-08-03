@@ -5,6 +5,7 @@
     <title th:text="${title}">Default Title</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" />
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <style>
@@ -89,7 +90,7 @@
                 <li class="nav-item"><a class="nav-link" href="/login">🔑&nbsp;Login</a></li>
         </ul>
         <ul class="navbar-nav ml-auto" th:if="${isLoggedIn} == true">
-                <li class="nav-item"><a class="nav-link" href="/admin/home">👤&nbsp;<span th:text="${account}"></span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/user/profile">👤&nbsp;<span th:text="${account}"></span></a></li>
                 <li class="nav-item"><a class="nav-link" href="/logout">🔒&nbsp;Logout</a></li>
         </ul>
     </nav>

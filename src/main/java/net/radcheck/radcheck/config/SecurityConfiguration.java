@@ -49,6 +49,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
+                .antMatchers("/manual").permitAll()
+                .antMatchers("/save").hasAuthority("USER")
+                .antMatchers("/save").hasAuthority("ADMIN")
+                .antMatchers("/profile").hasAuthority("USER")
+                .antMatchers("/profile").hasAuthority("ADMIN")
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
@@ -57,8 +62,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
+                .logoutSuccessUrl("/?logout=true").and().exceptionHandling()
+                .accessDeniedPage("/?error=true");
     }
 
     @Override

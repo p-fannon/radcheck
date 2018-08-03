@@ -5,7 +5,11 @@
 <body>
 
 <nav th:replace="fragments :: navigation"></nav>
-
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 <div class="container">
     <h3 class="py-sm-1">Your search found the following measurement:</h3>
 </div>
@@ -31,7 +35,7 @@
             <p th:text="'This AQI rating made on ' + ${return.getQuery().getAqiTimestamp().toString()} + ' UTC and taken in ' + ${return.getQuery().getCity()} + ', ' + ${return.getQuery().getCountry()}" class="small"></p>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">View details 👇</button>
             <div id="details" class="collapse py-sm-1">
-                <p><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank">View this measurement result on Safecast.</a></p>
+                <p><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                 <h4><img th:attr="src='https://airvisual.com/images/' + ${return.getQuery().getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(return.getQuery().getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                 <p>Wind is blowing <span th:if="${return.getQuery().getWindDirection() > 349 and return.getQuery().getWindDirection() <= 11}">north</span>
                     <span th:if="${return.getQuery().getWindDirection() > 11 and return.getQuery().getWindDirection() <= 33}">north-by-northeast</span>
