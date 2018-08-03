@@ -21,7 +21,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.security.Principal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class SearchController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
-                             errors, Principal principal) throws IOException {
+                             errors) throws IOException {
         if (errors.hasErrors()) {
             String account = getUser();
             model.addAttribute("account", account);
@@ -112,15 +111,20 @@ public class SearchController {
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
-        Query queryObject = makeQuery(safeCastReturns, airVisualReturn);
+        Query returnedQuery = makeQuery(safeCastReturns, airVisualReturn);
 
-        LatLon latLonObject = makeLatLon(aLatitude, aLongitude, queryObject);
+        LatLon returnedLatLon = makeLatLon(aLatitude, aLongitude, returnedQuery);
+
+        String ratingClass = getRatingClass(returnedLatLon);
+        String ratingInfo = getRatingInfo(returnedLatLon);
 
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Current readings at this location");
-        model.addAttribute("return", latLonObject);
+        model.addAttribute("return", returnedLatLon);
+        model.addAttribute("rating_class", ratingClass);
+        model.addAttribute("rating_info", ratingInfo);
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
         model.addAttribute("key", mapsKey);
@@ -128,7 +132,7 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/manual", method=RequestMethod.GET)
-    public String manualSearch(Model model, Principal principal) {
+    public String manualSearch(Model model) {
         model.addAttribute("title", "Pick A Location");
         model.addAttribute("measurements", new Measurements());
         String account = getUser();
@@ -141,7 +145,7 @@ public class SearchController {
     @RequestMapping(value = "/manual", method = RequestMethod.POST)
     public String manualResult(Model model,
                          @ModelAttribute @Valid Measurements newMeasurement,
-                         Errors errors, Principal principal) throws IOException {
+                         Errors errors) throws IOException {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Pick A Location");
@@ -184,11 +188,16 @@ public class SearchController {
 
         LatLon returnedLatLon = makeLatLon(aLatitude, aLongitude, returnedQuery);
 
+        String ratingClass = getRatingClass(returnedLatLon);
+        String ratingInfo = getRatingInfo(returnedLatLon);
+
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Current readings at this location");
         model.addAttribute("return", returnedLatLon);
+        model.addAttribute("rating_class", ratingClass);
+        model.addAttribute("rating_info", ratingInfo);
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
         model.addAttribute("key", mapsKey);
@@ -372,6 +381,42 @@ public class SearchController {
         newLatLon.setQuery(query);
 
         return newLatLon;
+    }
+    public String getRatingClass(LatLon location) {
+        String ratingClass = "";
+        switch (location.getQuery().getRating()) {
+            case "Safe": ratingClass = "card bg-success text-white";
+            break;
+            case "Moderately safe": ratingClass = "card bg-success text-white";
+            break;
+            case "Unhealthy for sensitive groups": ratingClass = "card bg-warning text-white";
+            break;
+            case "Unhealthy": ratingClass = "card bg-warning text-white";
+            break;
+            case "Very unhealthy": ratingClass = "card bg-danger text-white";
+            break;
+            case "Hazardous": ratingClass = "card bg-danger text-white";
+            break;
+        }
+        return ratingClass;
+    }
+    public String getRatingInfo(LatLon location) {
+        String ratingInfo = "";
+        switch (location.getQuery().getRating()) {
+            case "Safe": ratingInfo = "The environment here poses little to no health risk. Enjoy your usual outdoor activities, and try opening windows to ventilate your home with oxygen-rich air.";
+                break;
+            case "Moderately safe": ratingInfo = "The environment here is acceptable and poses little health risk. Enjoy your usual outdoor activities, and try opening windows to ventilate your home with oxygen-rich air.";
+                break;
+            case "Unhealthy for sensitive groups": ratingInfo = "The general public should limit exposure to the environment. Sensitive groups should avoid any prolonged outdoor activities. Recommended to wear a pollution mask outdoors. Ventilation is discouraged. Air purifiers should be turned on if indoor levels of contamination are elevated.";
+                break;
+            case "Unhealthy": ratingInfo = "Exposure to the environment, particularly for sensitive groups, should be limited. Everyone should take care to wear a pollution mask. Ventilation is not recommended. Air purifiers should be turned on if indoor levels of contamination are elevated.";
+                break;
+            case "Very unhealthy": ratingInfo = "The general public should greatly reduce exposure to the environment. Sensitive groups should avoid any outdoor activities. Everyone should take care to wear a pollution mask and cover up exposed body parts. Ventilation is not recommended. Air purifiers should be turned on.";
+                break;
+            case "Hazardous": ratingInfo = "The general public should avoid exposure to the environment. Everyone should take care to wear a quality pollution mask and cover up exposed body parts. Ventilation is not recommended. Air purifiers should be turned on.";
+                break;
+        }
+        return ratingInfo;
     }
     public User getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
