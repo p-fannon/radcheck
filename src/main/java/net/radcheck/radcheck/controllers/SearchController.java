@@ -170,42 +170,58 @@ public class SearchController {
 
         Collection<Measurements> safeCastReturns = getMeasurements(aLatitude, aLongitude);
 
+        if (safeCastReturns.size() == 0) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "No results to display :(");
+            return "null-result";
+        }
+
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
+
+        Query returnedQuery = makeQuery(safeCastReturns, airVisualReturn);
+
+        LatLon returnedLatLon = makeLatLon(aLatitude, aLongitude, returnedQuery);
 
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("title", "Current readings at the given location");
-        model.addAttribute("return", safeCastReturns);
+        model.addAttribute("title", "Current readings at this location");
+        model.addAttribute("return", returnedLatLon);
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
         model.addAttribute("key", mapsKey);
-        model.addAttribute("aqi", airVisualReturn);
-
         return "result";
     }
 
-    public Collection<Measurements> getMeasurements(double lat, double lng) {
+    public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {
         json = "";
         Instant newInstant = Instant.now();
         String capturedBefore = newInstant.toString();
-        Instant oneYearAgo = newInstant.minusSeconds(31557600);
-        String capturedAfter = oneYearAgo.toString();
-        try {
-            json = callSafecast(capturedBefore, capturedAfter, lat, lng);
-        } catch (Exception e) { e.printStackTrace(); }
+        Instant oneMonthAgo = newInstant.minusSeconds(2592000);
+        String capturedAfter = oneMonthAgo.toString();
+        json = callSafecast(capturedBefore, capturedAfter, lat, lng);
         if (!json.equals("[]")) {
             Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
             Collection<Measurements> results = gson.fromJson(json, collectionType);
             return results;
         } else {
-            try {
+            json = "";
+            Instant oneYearAgo = newInstant.minusSeconds(31557600);
+            String newCapturedAfter = oneYearAgo.toString();
+            json = callSafecast(capturedBefore, newCapturedAfter, lat, lng);
+            if (!json.equals("[]")) {
+                Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
+                Collection<Measurements> results = gson.fromJson(json, collectionType);
+                return results;
+            } else {
                 json = "";
                 json = callSafecast(capturedBefore, minScTs, lat, lng);
-            } catch (Exception e) { e.printStackTrace(); }
-            Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
-            Collection<Measurements> results = gson.fromJson(json, collectionType);
-            return results;
+                Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
+                Collection<Measurements> results = gson.fromJson(json, collectionType);
+                return results;
+            }
         }
     }
 
@@ -263,7 +279,7 @@ public class SearchController {
         return results;
     }
     public String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng) throws IOException {
-        int distance = 1200;
+        int distance = 1000;
         decodedString = "";
         String result = "";
         HttpsURLConnection scCall = (HttpsURLConnection) (new URL(BaseURL + "?distance=" + distance
