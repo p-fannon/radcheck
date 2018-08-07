@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class SearchController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
-                             errors) throws IOException {
+                             errors, HttpSession session) throws IOException {
         if (errors.hasErrors()) {
             String account = getUser();
             model.addAttribute("account", account);
@@ -134,7 +135,7 @@ public class SearchController {
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
         if (checkAccount(account)) {
-            model.addAttribute("formQuery", returnedQuery);
+            session.setAttribute("formLocation", returnedLatLon);
         }
         model.addAttribute("key", mapsKey);
         return "result";
@@ -154,7 +155,7 @@ public class SearchController {
     @RequestMapping(value = "/manual", method = RequestMethod.POST)
     public String manualResult(Model model,
                          @ModelAttribute @Valid Measurements newMeasurement,
-                         Errors errors) throws IOException {
+                         Errors errors, HttpSession session) throws IOException {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Pick A Location");
@@ -212,10 +213,11 @@ public class SearchController {
         model.addAttribute("rating_info", ratingInfo);
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
-        model.addAttribute("key", mapsKey);
         if (checkAccount(account)) {
-            model.addAttribute("formQuery", returnedQuery);
+            session.setAttribute("formLocation", returnedLatLon);
         }
+        model.addAttribute("key", mapsKey);
+
         return "result";
     }
 

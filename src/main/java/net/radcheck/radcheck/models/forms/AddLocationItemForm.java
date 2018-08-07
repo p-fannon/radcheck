@@ -1,6 +1,7 @@
 package net.radcheck.radcheck.models.forms;
 
 import net.radcheck.radcheck.models.LatLon;
+import net.radcheck.radcheck.models.Location;
 import net.radcheck.radcheck.models.Query;
 import net.radcheck.radcheck.models.User;
 
@@ -28,10 +29,10 @@ public class AddLocationItemForm {
     public AddLocationItemForm() {
     }
 
-    public AddLocationItemForm(@NotNull User user, @NotNull Query query) {
+    public AddLocationItemForm(@NotNull User user, @NotNull LatLon location) {
         this.user = user;
-        this.query = query;
-        this.location = query.getLocation();
+        this.location = location;
+        this.query = location.getQuery();
         this.userId = user.getId();
         this.city = query.getCity();
         this.country = query.getCountry();

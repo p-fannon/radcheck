@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,6 +30,7 @@ public class UserController {
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    private static String mapsKey = "AIzaSyDen0WZLZt-OQ68yU5D5uoNb7sr34mdycQ";
 
     @Autowired
     private UserService userService;
@@ -118,15 +120,16 @@ public class UserController {
         return "user/profile";
     }
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-    public String confirmLocation(Model model, HttpServletRequest request) {
+    public String confirmLocation(Model model, HttpSession session) {
         User user = getAccount();
         String account = user.getEmail();
-        Query query = (Query) request.getAttribute("formQuery");
+        LatLon location = (LatLon) session.getAttribute("formLocation");
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Name and confirm this location");
         model.addAttribute("user", user);
-        model.addAttribute("form", new AddLocationItemForm(user, query));
+        model.addAttribute("key", mapsKey);
+        model.addAttribute("form", new AddLocationItemForm(user, location));
         return "save-location";
     }
     @RequestMapping(value = "/save", method = RequestMethod.POST)
