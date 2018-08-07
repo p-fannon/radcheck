@@ -6,10 +6,50 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
+<div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.success}">
+    The location "<span th:text="${newName}"></span>" has been successfully saved to your account.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <div class="container">
     <div class="row p-sm-3">
         <div class="col">
             <p>Your account at <strong th:text="${user.getEmail()}"></strong> registered to RadCheck on <span th:text="${user.getJoinedOn().toString()}"></span></p>
+        </div>
+    </div>
+    <div class="row p-sm-3">
+        <div class="col" th:unless="${user.userLocations} and ${user.getUserLocations().size()}">
+            <p>You don't have any locations saved to this account. Start searching!</p>
+        </div>
+        <div class="col" th:if="${user.userLocations} and ${user.getUserLocations().size()}">
+            <table class="table table-dark table-striped">
+                <thead>
+                <tr>
+                    <th>Location No.</th>
+                    <th>Location Name</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="location : $(user.userLocations}" th:each="name : ${user.customNames}">
+                    <td th:text="${#numbers.formatInteger(user.getUserLocations.indexOf(location) + 1,1)}"></td>
+                    <td th:text="${name}"></td>
+                    <td th:text="${#numbers.formatDecimal(location.getLat(),1,'POINT',6)}"></td>
+                    <td th:text="${#numbers.formatDecimal(location.getLon(),1,'POINT',6)}"></td>
+                    <td>
+                        <div class="btn-group btn-group-large">
+                            <a href="#" role="button" class="btn btn-primary">View</a>
+                            <a href="#" role="button" class="btn btn-secondary">Update</a>
+                            <a href="#" role="button" class="btn btn-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -16,7 +16,7 @@ public class User {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
-    private int id;
+    private long id;
     @Column(name = "email")
     @NotEmpty(message = "Please provide an email")
     private String email;
@@ -47,7 +47,7 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

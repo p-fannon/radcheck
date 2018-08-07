@@ -9,19 +9,19 @@
 <h3 class="text-center p-sm-3">You are about to save the following location to your account:</h3>
 
 <div class="container">
-    <form class="form-control" th:object="${form}">
+    <form class="form-control" method="POST" th:action="@{/save}" th:object="${form}">
         <div class="row">
             <div class="col-sm-6 embed-responsive embed-responsive-4by3">
-                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location.getLat()} + '%2C' + ${location.getLon()} + '&amp;key=' + ${key}"></iframe>
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + *{location.getLat()} + '%2C' + *{location.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div class="col-sm-4 offset-sm-1 form-group">
-                <h4 class="p-sm-2" th:text="'Latitude: ' + ${location.getLat()}"></h4>
-                <h4 class="p-sm-2" th:text="'Longitude: ' + ${location.getLon()}"></h4>
-                <label for="name">Enter a name for this location:</label>
-                <input name="name" id="name" />
-                <div align="center" th:if="${param.error}">
-                    <p>Please enter a name between 3 and 30 characters.</p>
-                </div>
+                <h4 class="p-sm-2" th:text="'Latitude: ' + *{location.getLat().toString()}"></h4>
+                <h4 class="p-sm-2" th:text="'Longitude: ' + *{location.getLon().toString()}"></h4>
+                <label th:for="locationName">Enter a name for this location:</label>
+                <input th:field="*{locationName}" type="text" th:placeholder="*{city} + ', ' + *{country}" />
+                <p th:errors="*{locationName}" class="error"></p>
+                <input type="hidden" th:value="*{userId}" />
+                <button type="submit" class="btn btn-primary form-control">Confirm location</button>
             </div>
         </div>
     </form>

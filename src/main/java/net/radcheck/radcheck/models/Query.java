@@ -2,12 +2,14 @@ package net.radcheck.radcheck.models;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "query")
+@ControllerAdvice
 public class Query {
 
     @Id
@@ -26,6 +28,8 @@ public class Query {
     private String country;
     private int viewCount;
     private boolean isCurrent;
+    private double lat;
+    private double lon;
     @OneToOne(mappedBy = "query")
     private LatLon location;
     @CreationTimestamp
@@ -39,7 +43,7 @@ public class Query {
     public Query() {
     }
 
-    public Query(String rating, double radValue, int totalMeasurements, int aqiValue, double windSpeed, int windDirection, int temp, String mainPollutant, String weatherIcon, String city, String country, int viewCount, boolean isCurrent) {
+    public Query(String rating, double radValue, int totalMeasurements, int aqiValue, double windSpeed, int windDirection, int temp, String mainPollutant, String weatherIcon, String city, String country, boolean isCurrent, double lat, double lon, Timestamp minMeasurementTimestamp, Timestamp maxMeasurementTimestamp, Timestamp aqiTimestamp) {
         this.rating=rating;
         this.radValue=radValue;
         this.totalMeasurements = totalMeasurements;
@@ -51,8 +55,11 @@ public class Query {
         this.weatherIcon=weatherIcon;
         this.city = city;
         this.country = country;
-        this.viewCount=viewCount;
         this.isCurrent=isCurrent;
+        this.lat = lat;
+        this.lon = lon;
+        this.minMeasurementTimestamp = minMeasurementTimestamp;
+        this.maxMeasurementTimestamp = maxMeasurementTimestamp;
     }
 
     public int getId() {
@@ -181,6 +188,22 @@ public class Query {
 
     public void setCurrent(boolean current) {
         isCurrent=current;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
     }
 
     public Timestamp getMinMeasurementTimestamp() {

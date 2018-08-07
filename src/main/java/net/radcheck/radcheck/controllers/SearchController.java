@@ -3,6 +3,8 @@ package net.radcheck.radcheck.controllers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.radcheck.radcheck.models.*;
+import net.radcheck.radcheck.models.data.LatLonDao;
+import net.radcheck.radcheck.models.data.UserDao;
 import net.radcheck.radcheck.models.forms.AddLocationItemForm;
 import net.radcheck.radcheck.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.validation.Valid;
@@ -78,13 +81,12 @@ public class SearchController {
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
             model.addAttribute("address", newMap.getAddress());
-            return "index";
+            return "redirect:/?maperror=true";
         }
 
         Geo geoReturn = getGeo(newMap.getAddress());
 
         if (geoReturn.getResults().size() == 0 || !geoReturn.getStatus().equals("OK")) {
-            // add an alert here about the maps API failing
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -94,7 +96,7 @@ public class SearchController {
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
             model.addAttribute("address", newMap.getAddress());
-            return "index";
+            return "redirect:/?apierror=true";
         }
 
         double aLatitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLatitude();
@@ -114,7 +116,10 @@ public class SearchController {
 
         Query returnedQuery = makeQuery(safeCastReturns, airVisualReturn);
 
-        LatLon returnedLatLon = makeLatLon(aLatitude, aLongitude, returnedQuery);
+        LatLon returnedLatLon = new LatLon(aLatitude, aLongitude, returnedQuery);
+        returnedQuery.setLocation(returnedLatLon);
+        returnedQuery.setLat(aLatitude);
+        returnedQuery.setLon(aLongitude);
 
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
@@ -128,6 +133,9 @@ public class SearchController {
         model.addAttribute("rating_info", ratingInfo);
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
+        if (checkAccount(account)) {
+            model.addAttribute("formQuery", returnedQuery);
+        }
         model.addAttribute("key", mapsKey);
         return "result";
     }
@@ -187,7 +195,10 @@ public class SearchController {
 
         Query returnedQuery = makeQuery(safeCastReturns, airVisualReturn);
 
-        LatLon returnedLatLon = makeLatLon(aLatitude, aLongitude, returnedQuery);
+        LatLon returnedLatLon = new LatLon(aLatitude, aLongitude, returnedQuery);
+        returnedQuery.setLocation(returnedLatLon);
+        returnedQuery.setLat(aLatitude);
+        returnedQuery.setLon(aLongitude);
 
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
@@ -202,20 +213,10 @@ public class SearchController {
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
         model.addAttribute("key", mapsKey);
+        if (checkAccount(account)) {
+            model.addAttribute("formQuery", returnedQuery);
+        }
         return "result";
-    }
-
-    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-    public String saveLocation(@ModelAttribute @Valid LatLon candidateLocation,
-                               Model model) {
-        User user = getAccount();
-        String account = user.getEmail();
-        model.addAttribute("account", account);
-        model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("user", user);
-        model.addAttribute("location", candidateLocation);
-        model.addAttribute("form", new AddLocationItemForm(user, candidateLocation));
-        return "save-location";
     }
 
     public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {
@@ -387,14 +388,6 @@ public class SearchController {
         }
 
         return newQuery;
-    }
-    public LatLon makeLatLon(double lat, double lon, Query query) {
-        LatLon newLatLon = new LatLon();
-        newLatLon.setLat(lat);
-        newLatLon.setLon(lon);
-        newLatLon.setQuery(query);
-
-        return newLatLon;
     }
     public String getRatingClass(LatLon location) {
         String ratingClass = "";

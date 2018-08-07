@@ -62,8 +62,9 @@ $(document).ready(function(){
                     <span th:case="'co'">carbon monoxide.</span>
                 </span></p>
             </div>
-            <form action="/save" th:object="${return}" th:if="${isLoggedIn} == true">
-                <a href="/confirm"><button class="btn btn-info text-white form-control" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button></a>
+            <form th:action="@{/confirm/}" method="POST" class="py-sm-1" th:object="${formQuery}" th:if="${isLoggedIn} == true">
+                <!-- need to implement a #session attribute, use #ctx object -->
+                <button class="btn btn-primary form-control" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button>
             </form>
         </div>
     </div>
