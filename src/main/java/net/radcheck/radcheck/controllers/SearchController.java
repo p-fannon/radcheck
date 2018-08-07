@@ -3,6 +3,7 @@ package net.radcheck.radcheck.controllers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.radcheck.radcheck.models.*;
+import net.radcheck.radcheck.models.forms.AddLocationItemForm;
 import net.radcheck.radcheck.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -202,6 +203,19 @@ public class SearchController {
         model.addAttribute("longitude", aLongitude);
         model.addAttribute("key", mapsKey);
         return "result";
+    }
+
+    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
+    public String saveLocation(@ModelAttribute @Valid LatLon candidateLocation,
+                               Model model) {
+        User user = getAccount();
+        String account = user.getEmail();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("user", user);
+        model.addAttribute("location", candidateLocation);
+        model.addAttribute("form", new AddLocationItemForm(user, candidateLocation));
+        return "save-location";
     }
 
     public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {

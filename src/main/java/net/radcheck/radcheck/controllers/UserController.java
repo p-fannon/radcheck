@@ -1,5 +1,6 @@
 package net.radcheck.radcheck.controllers;
 
+import net.radcheck.radcheck.models.LatLon;
 import net.radcheck.radcheck.models.User;
 import net.radcheck.radcheck.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -93,7 +95,7 @@ public class UserController {
         return "admin/home";
     }
 
-    @RequestMapping(value = "user/profile", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/profile", method = RequestMethod.GET)
     public String userProfile(Model model) {
         User user = getAccount();
         String account = user.getEmail();

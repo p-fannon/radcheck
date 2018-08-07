@@ -24,9 +24,8 @@ public class AddLocationItemForm {
     public AddLocationItemForm() {
     }
 
-    public AddLocationItemForm(User user, LatLon location, String locationName) {
+    public AddLocationItemForm(User user, LatLon location) {
         this.user = user;
         this.location = location;
-        this.locationName = locationName;
     }
 }
