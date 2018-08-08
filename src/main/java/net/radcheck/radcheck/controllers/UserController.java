@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -112,6 +113,7 @@ public class UserController {
         model.addAttribute("account", account);
         model.addAttribute("title", "Your user profile");
         model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("names", user.getNames());
         model.addAttribute("user", user);
 
         return "user/profile";
@@ -154,9 +156,9 @@ public class UserController {
         String account = user.getEmail();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("locale", locationName);
         model.addAttribute("title", "Your user profile");
         model.addAttribute("user", user);
-        model.addAttribute("newName", locationName);
         session.removeAttribute("candidateLocation");
 
         return "redirect:/user/profile/?success=true";

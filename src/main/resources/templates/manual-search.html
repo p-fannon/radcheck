@@ -7,7 +7,7 @@
 <nav th:replace="fragments :: navigation"></nav>
 
 
-<div class="container"><form method="POST" action="/manual" style="max-width:600px" th:object="${measurements}">
+<div class="container p-sm-3"><form method="POST" class="form-control" action="/manual" th:object="${measurements}">
 
     <div class="form-group">
         <label th:for="radLat">Enter latitude of measurement</label>
@@ -20,7 +20,7 @@
         <span th:errors="*{radLng}" class="error"></span>
     </div>
 
-    <input type="submit" value="Find measurement" />
+    <button type="submit" class="btn btn-primary">Find measurement</button>
 </form></div>
 
 </body>

@@ -7,7 +7,7 @@
 <nav th:replace="fragments :: navigation"></nav>
 
 <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.success}">
-    The location "<span th:text="${newName}"></span>" has been successfully saved to your account.
+    The location <strong th:text="{locale}"></strong> has been successfully saved to your account.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -19,12 +19,12 @@
             <p>Your account at <strong th:text="${user.getEmail()}"></strong> registered to RadCheck on <span th:text="${user.getJoinedOn().toString()}"></span></p>
         </div>
     </div>
-    <div class="row p-sm-3">
+    <div class="row p-sm-1">
         <div class="col" th:unless="${user.locations} and ${user.locations.size()}">
             <p>You don't have any locations saved to this account. Start searching!</p>
         </div>
         <div class="col" th:if="${user.locations} and ${user.locations.size()}">
-            <table class="table table-dark table-striped">
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>Location No.</th>
@@ -35,15 +35,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="location : $(user.locations}" th:each="name : ${user.names}">
+                <tr th:each="location : ${user.locations}">
                     <td th:text="${#numbers.formatInteger(user.getLocations().indexOf(location) + 1,1)}"></td>
-                    <td th:text="${name}"></td>
-                    <td th:text="${location.lat}"></td>
-                    <td th:text="${location.lon}"></td>
+                    <td th:text="${names.get(user.getLocations().indexOf(location))}"></td>
+                    <td th:text="${#numbers.formatDecimal(location.lat,1,6)}"></td>
+                    <td th:text="${#numbers.formatDecimal(location.lon,1,6)}"></td>
                     <td>
                         <div class="btn-group btn-group-large">
                             <a href="#" role="button" class="btn btn-primary">View</a>
-                            <a href="#" role="button" class="btn btn-secondary">Update</a>
+                            <a href="#" role="button" class="btn btn-info">Update</a>
                             <a href="#" role="button" class="btn btn-danger">Delete</a>
                         </div>
                     </td>

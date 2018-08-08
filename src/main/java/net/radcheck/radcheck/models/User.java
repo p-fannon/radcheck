@@ -3,6 +3,7 @@ package net.radcheck.radcheck.models;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
+@ControllerAdvice
 public class User {
 
     @Id

@@ -86,7 +86,7 @@ public class SearchController {
 
         Geo geoReturn = getGeo(newMap.getAddress());
 
-        if (geoReturn.getResults().size() == 0 || !geoReturn.getStatus().equals("OK")) {
+        if (geoReturn.getResults().size() == 0) {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -113,6 +113,19 @@ public class SearchController {
         }
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
+
+        if (airVisualReturn.getAqiData() == null) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Pick A Location");
+            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
+            model.addAttribute("gmap", newMap);
+            model.addAttribute("address", newMap.getAddress());
+            return "redirect:/?apierror=true";
+        }
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
 
@@ -187,6 +200,19 @@ public class SearchController {
         }
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
+
+        if (airVisualReturn.getAqiData() == null) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Pick A Location");
+            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
+            model.addAttribute("gmap", new GMap());
+            model.addAttribute("address", "The Gateway Arch, St. Louis, MO");
+            return "redirect:/?apierror=true";
+        }
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
 
