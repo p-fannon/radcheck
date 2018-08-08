@@ -1,10 +1,8 @@
 package net.radcheck.radcheck.controllers;
 
 import net.radcheck.radcheck.models.LatLon;
-import net.radcheck.radcheck.models.Query;
 import net.radcheck.radcheck.models.User;
 import net.radcheck.radcheck.models.data.LatLonDao;
-import net.radcheck.radcheck.models.data.QueryDao;
 import net.radcheck.radcheck.models.data.UserDao;
 import net.radcheck.radcheck.models.forms.AddLocationItemForm;
 import net.radcheck.radcheck.service.UserService;
@@ -13,12 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,7 +28,6 @@ public class UserController {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static String mapsKey = "AIzaSyDen0WZLZt-OQ68yU5D5uoNb7sr34mdycQ";
-    private static int queryId;
 
     @Autowired
     private UserService userService;
@@ -42,9 +37,6 @@ public class UserController {
 
     @Autowired
     private LatLonDao latLonDao;
-
-    @Autowired
-    private QueryDao queryDao;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model){
@@ -128,7 +120,7 @@ public class UserController {
     public String confirmLocation(Model model, HttpSession session) {
         User user = getAccount();
         String account = user.getEmail();
-        LatLon location = (LatLon) session.getAttribute("formLocation");
+        LatLon location = (LatLon) session.getAttribute("candidateLocation");
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Name and confirm this location");
@@ -141,28 +133,23 @@ public class UserController {
     public String postConfirmation(Model model, @ModelAttribute @Valid AddLocationItemForm newForm,
                                    Errors errors, HttpSession session) {
         if (errors.hasErrors()) {
-            LatLon aLocation = (LatLon) session.getAttribute("formLocation");
+            LatLon aLocation = (LatLon) session.getAttribute("candidateLocation");
             User user = getAccount();
-            AddLocationItemForm aForm = new AddLocationItemForm(user, aLocation);
             String account = user.getEmail();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Name and confirm this location");
             model.addAttribute("user", user);
             model.addAttribute("key", mapsKey);
-            model.addAttribute("submitForm", newForm);
+            model.addAttribute("submitForm", new AddLocationItemForm(user, aLocation));
             return "redirect:/confirm?error=true";
         }
         User user = getAccount();
-        LatLon newLocation = (LatLon) session.getAttribute("formLocation");
-        Query newQuery = newLocation.getQuery();
-        newQuery.setId(queryId + 1);
-        queryId++;
-        newLocation.setQuery(newQuery);
-        latLonDao.save(newLocation);
-        queryDao.save(newQuery);
+        LatLon newLocation = (LatLon) session.getAttribute("candidateLocation");
         String locationName = newForm.getLocationName();
+        latLonDao.save(newLocation);
         user.addLocation(newLocation, locationName);
+        userDao.save(user);
 
         String account = user.getEmail();
         model.addAttribute("account", account);
@@ -170,7 +157,7 @@ public class UserController {
         model.addAttribute("title", "Your user profile");
         model.addAttribute("user", user);
         model.addAttribute("newName", locationName);
-        session.removeAttribute("formLocation");
+        session.removeAttribute("candidateLocation");
 
         return "redirect:/user/profile/?success=true";
     }

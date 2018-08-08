@@ -114,10 +114,7 @@ public class SearchController {
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
-        Query returnedQuery = makeQuery(safeCastReturns, airVisualReturn);
-
-        LatLon returnedLatLon = new LatLon(aLatitude, aLongitude, returnedQuery);
-        returnedQuery.setLocation(returnedLatLon);
+        LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
 
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
@@ -132,7 +129,7 @@ public class SearchController {
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
         if (checkAccount(account)) {
-            session.setAttribute("formLocation", returnedLatLon);
+            session.setAttribute("candidateLocation", returnedLatLon);
         }
         model.addAttribute("key", mapsKey);
         return "result";
@@ -191,10 +188,7 @@ public class SearchController {
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
-        Query returnedQuery = makeQuery(safeCastReturns, airVisualReturn);
-
-        LatLon returnedLatLon = new LatLon(aLatitude, aLongitude, returnedQuery);
-        returnedQuery.setLocation(returnedLatLon);
+        LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
 
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
@@ -209,7 +203,7 @@ public class SearchController {
         model.addAttribute("latitude", aLatitude);
         model.addAttribute("longitude", aLongitude);
         if (checkAccount(account)) {
-            session.setAttribute("formLocation", returnedLatLon);
+            session.setAttribute("candidateLocation", returnedLatLon);
         }
         model.addAttribute("key", mapsKey);
 
@@ -323,8 +317,8 @@ public class SearchController {
         scCall.disconnect();
         return result;
     }
-    public Query makeQuery(Collection<Measurements> sc, AirQuality av) {
-        Query newQuery = new Query();
+    public LatLon makeQuery(Collection<Measurements> sc, AirQuality av, double lat, double lon) {
+        LatLon newLatLon = new LatLon(lat, lon);
         double rad = 0.0;
         int measurementCount = 0;
         ArrayList<Timestamp> ts = new ArrayList<>();
@@ -344,51 +338,51 @@ public class SearchController {
             }
         }
         rad = rad / measurementCount;
-        newQuery.setRadValue(rad);
-        newQuery.setTotalMeasurements(measurementCount);
+        newLatLon.setRadValue(rad);
+        newLatLon.setTotalMeasurements(measurementCount);
         Collections.sort(ts);
-        newQuery.setMinMeasurementTimestamp(ts.get(0));
-        newQuery.setMaxMeasurementTimestamp(ts.get(ts.size() - 1));
-        newQuery.setAqiValue(av.getAqiData().getAqiCurrent().getAqiPollution().getAqiUsStd());
+        newLatLon.setMinMeasurementTimestamp(ts.get(0));
+        newLatLon.setMaxMeasurementTimestamp(ts.get(ts.size() - 1));
+        newLatLon.setAqiValue(av.getAqiData().getAqiCurrent().getAqiPollution().getAqiUsStd());
         Instant aqiInstant = Instant.parse(av.getAqiData().getAqiCurrent().getAqiPollution().getPollutionTimestamp());
         Timestamp aqiParse = Timestamp.from(aqiInstant);
-        newQuery.setAqiTimestamp(aqiParse);
-        newQuery.setWindSpeed(av.getAqiData().getAqiCurrent().getAqiWeather().getWindSpeed());
-        newQuery.setWindDirection(av.getAqiData().getAqiCurrent().getAqiWeather().getWindDirection());
-        newQuery.setTemp(av.getAqiData().getAqiCurrent().getAqiWeather().getTempCelsius());
-        newQuery.setMainPollutant(av.getAqiData().getAqiCurrent().getAqiPollution().getMainUsPollutant());
-        newQuery.setWeatherIcon(av.getAqiData().getAqiCurrent().getAqiWeather().getWeatherIcon());
-        newQuery.setCity(av.getAqiData().getAqiCity());
-        newQuery.setCountry(av.getAqiData().getAqiCountry());
+        newLatLon.setAqiTimestamp(aqiParse);
+        newLatLon.setWindSpeed(av.getAqiData().getAqiCurrent().getAqiWeather().getWindSpeed());
+        newLatLon.setWindDirection(av.getAqiData().getAqiCurrent().getAqiWeather().getWindDirection());
+        newLatLon.setTemp(av.getAqiData().getAqiCurrent().getAqiWeather().getTempCelsius());
+        newLatLon.setMainPollutant(av.getAqiData().getAqiCurrent().getAqiPollution().getMainUsPollutant());
+        newLatLon.setWeatherIcon(av.getAqiData().getAqiCurrent().getAqiWeather().getWeatherIcon());
+        newLatLon.setCity(av.getAqiData().getAqiCity());
+        newLatLon.setCountry(av.getAqiData().getAqiCountry());
         Instant rightNow = Instant.now();
         Instant oneYearAndADayAgo = rightNow.minusSeconds(31644000);
-        Instant minTs = newQuery.getMinMeasurementTimestamp().toInstant();
+        Instant minTs = newLatLon.getMinMeasurementTimestamp().toInstant();
         if (minTs.isAfter(oneYearAndADayAgo)) {
-            newQuery.setCurrent(true);
+            newLatLon.setCurrent(true);
         } else {
-            newQuery.setCurrent(false);
+            newLatLon.setCurrent(false);
         }
-        double testRad = newQuery.getRadValue();
-        int testAqi = newQuery.getAqiValue();
+        double testRad = newLatLon.getRadValue();
+        int testAqi = newLatLon.getAqiValue();
         if (testRad > .7714 || testAqi > 300) {
-            newQuery.setRating("Hazardous");
+            newLatLon.setRating("Hazardous");
         } else if (testRad > .5771 || testAqi > 200) {
-            newQuery.setRating("Very unhealthy");
+            newLatLon.setRating("Very unhealthy");
         } else if (testRad > .4028 || testAqi > 150) {
-            newQuery.setRating("Unhealthy");
+            newLatLon.setRating("Unhealthy");
         } else if (testRad > .2485 || testAqi > 100) {
-            newQuery.setRating("Unhealthy for sensitive groups");
+            newLatLon.setRating("Unhealthy for sensitive groups");
         } else if (testRad > .1142 || testAqi > 50) {
-            newQuery.setRating("Moderately safe");
+            newLatLon.setRating("Moderately safe");
         } else {
-            newQuery.setRating("Safe");
+            newLatLon.setRating("Safe");
         }
 
-        return newQuery;
+        return newLatLon;
     }
     public String getRatingClass(LatLon location) {
         String ratingClass = "";
-        switch (location.getQuery().getRating()) {
+        switch (location.getRating()) {
             case "Safe": ratingClass = "card bg-success text-white";
             break;
             case "Moderately safe": ratingClass = "card bg-success text-white";
@@ -406,7 +400,7 @@ public class SearchController {
     }
     public String getRatingInfo(LatLon location) {
         String ratingInfo = "";
-        switch (location.getQuery().getRating()) {
+        switch (location.getRating()) {
             case "Safe": ratingInfo = "The environment here poses little to no health risk. Enjoy your usual outdoor activities, and try opening windows to ventilate your home with oxygen-rich air.";
                 break;
             case "Moderately safe": ratingInfo = "The environment here is acceptable and poses little health risk. Enjoy your usual outdoor activities, and try opening windows to ventilate your home with oxygen-rich air.";

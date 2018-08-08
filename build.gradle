@@ -19,7 +19,11 @@ apply plugin: 'org.springframework.boot'
 group = 'net.radcheck'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
-
+gradle.projectsEvaluated {
+	tasks.withType(JavaCompile) {
+		options.compilerArgs << "-parameters"
+	}
+}
 repositories {
 	mavenCentral()
 	maven { url "https://repo.spring.io/snapshot" }

@@ -32,10 +32,10 @@ public class User {
     private Set<Role> roles;
     @ManyToMany
     @JoinTable(name = "user_locations", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "location_id"))
-    private List<LatLon> userLocations;
+    private List<LatLon> locations;
     @Column(name = "location_names")
     @ElementCollection(targetClass=String.class)
-    private List<String> customNames;
+    private List<String> names;
     @CreationTimestamp
     private Date joinedOn;
 
@@ -67,20 +67,20 @@ public class User {
         this.password = password;
     }
 
-    public List<LatLon> getUserLocations() {
-        return userLocations;
+    public List<LatLon> getLocations() {
+        return locations;
     }
 
-    public void setUserLocations(List<LatLon> userLocations) {
-        this.userLocations = userLocations;
+    public void setLocations(List<LatLon> locations) {
+        this.locations = locations;
     }
 
-    public List<String> getCustomNames() {
-        return customNames;
+    public List<String> getNames() {
+        return names;
     }
 
-    public void setCustomNames(List<String> customNames) {
-        this.customNames=customNames;
+    public void setNames(List<String> names) {
+        this.names=names;
     }
 
     public Date getJoinedOn() {
@@ -88,18 +88,18 @@ public class User {
     }
 
     public void addLocation(LatLon newLocation, String locationName) {
-        userLocations.add(newLocation);
-        customNames.add(locationName);
+        locations.add(newLocation);
+        names.add(locationName);
     }
     public void editLocation(LatLon currentLocation, String newName) {
-        int index = userLocations.indexOf(currentLocation);
-        customNames.remove(index);
-        customNames.add(index, newName);
+        int index = locations.indexOf(currentLocation);
+        names.remove(index);
+        names.add(index, newName);
     }
     public void removeLocation(LatLon deleteLocation) {
-        int index = userLocations.indexOf(deleteLocation);
-        userLocations.remove(index);
-        customNames.remove(index);
+        int index = locations.indexOf(deleteLocation);
+        locations.remove(index);
+        names.remove(index);
     }
 
     public int getActive() {

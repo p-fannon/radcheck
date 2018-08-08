@@ -16,7 +16,7 @@ $(document).ready(function(){
 
 <div class="container">
     <div class="row">
-        <div class="col embed-responsive embed-responsive-21by9"">
+        <div class="col embed-responsive embed-responsive-21by9">
             <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${latitude} + '%2C' + ${longitude} + '&amp;key=' + ${key}"></iframe>
         </div>
     </div>
@@ -24,36 +24,36 @@ $(document).ready(function(){
         <div class="col-sm-4">
             <div th:class="${rating_class}">
                 <h4 class="card-header card-title p-sm-2">Rating for this location:</h4>
-                <h2 class="card-body card-text text-center p-sm-1" th:text="${return.getQuery().getRating()}"></h2>
+                <h2 class="card-body card-text text-center p-sm-1" th:text="${return.getRating()}"></h2>
                 <p class="card-footer card-text p-sm-1 small" th:text="${rating_info}"></p>
             </div>
         </div>
         <div class="col-sm-8">
-            <p class="lead">The aggregate radiation reading here is <strong th:text="${#numbers.formatDecimal(return.getQuery().getRadValue(),1,2)}"></strong> µSv/h<span th:if="${return.getQuery().isCurrent()} == false">*</span></p>
-            <p class="small">The latest measurement from this reading taken on <span th:text="${return.getQuery().getMaxMeasurementTimestamp().toString()}"></span> UTC and made from <span th:text="${return.getQuery().getTotalMeasurements()}"></span> collected measurements.</p>
-            <p th:text="'Air quality index is currently ' + ${return.getQuery().getAqiValue()}"></p>
-            <p th:text="'This AQI rating made on ' + ${return.getQuery().getAqiTimestamp().toString()} + ' UTC and taken in ' + ${return.getQuery().getCity()} + ', ' + ${return.getQuery().getCountry()}" class="small"></p>
+            <p class="lead">The aggregate radiation reading here is <strong th:text="${#numbers.formatDecimal(return.getRadValue(),1,2)}"></strong> µSv/h<span th:if="${return.isCurrent()} == false">*</span></p>
+            <p class="small">The latest measurement from this reading taken on <span th:text="${return.getMaxMeasurementTimestamp().toString()}"></span> UTC and made from <span th:text="${return.getTotalMeasurements()}"></span> collected measurements.</p>
+            <p th:text="'Air quality index is currently ' + ${return.getAqiValue()}"></p>
+            <p th:text="'This AQI rating made on ' + ${return.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${return.getCity()} + ', ' + ${return.getCountry()}" class="small"></p>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">View details 👇</button>
             <div id="details" class="collapse py-sm-1">
                 <p><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
-                <h4><img th:attr="src='https://airvisual.com/images/' + ${return.getQuery().getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(return.getQuery().getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
-                <p>Wind is blowing <span th:if="${return.getQuery().getWindDirection() > 349 and return.getQuery().getWindDirection() <= 11}">north</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 11 and return.getQuery().getWindDirection() <= 33}">north-by-northeast</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 33 and return.getQuery().getWindDirection() <= 56}">northeast</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 56 and return.getQuery().getWindDirection() <= 78}">east-by-northeast</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 78 and return.getQuery().getWindDirection() <= 100}">east</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 100 and return.getQuery().getWindDirection() <= 123}">east-by-southeast</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 123 and return.getQuery().getWindDirection() <= 145}">southeast</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 145 and return.getQuery().getWindDirection() <= 168}">south-by-southeast</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 168 and return.getQuery().getWindDirection() <= 191}">south</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 191 and return.getQuery().getWindDirection() <= 213}">south-by-southwest</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 213 and return.getQuery().getWindDirection() <= 236}">southwest</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 236 and return.getQuery().getWindDirection() <= 258}">west-by-southwest</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 258 and return.getQuery().getWindDirection() <= 281}">west</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 281 and return.getQuery().getWindDirection() <= 303}">west-by-northwest</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 303 and return.getQuery().getWindDirection() <= 326}">northwest</span>
-                    <span th:if="${return.getQuery().getWindDirection() > 326 and return.getQuery().getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(return.getQuery().getWindSpeed() * 2.27273,1)}"></span> mph.</p>
-                <p>The main pollutant in the environment is <span th:switch="${return.getQuery().getMainPollutant()}">
+                <h4><img th:attr="src='https://airvisual.com/images/' + ${return.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(return.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                <p>Wind is blowing <span th:if="${return.getWindDirection() > 349 and return.getWindDirection() <= 11}">north</span>
+                    <span th:if="${return.getWindDirection() > 11 and return.getWindDirection() <= 33}">north-by-northeast</span>
+                    <span th:if="${return.getWindDirection() > 33 and return.getWindDirection() <= 56}">northeast</span>
+                    <span th:if="${return.getWindDirection() > 56 and return.getWindDirection() <= 78}">east-by-northeast</span>
+                    <span th:if="${return.getWindDirection() > 78 and return.getWindDirection() <= 100}">east</span>
+                    <span th:if="${return.getWindDirection() > 100 and return.getWindDirection() <= 123}">east-by-southeast</span>
+                    <span th:if="${return.getWindDirection() > 123 and return.getWindDirection() <= 145}">southeast</span>
+                    <span th:if="${return.getWindDirection() > 145 and return.getWindDirection() <= 168}">south-by-southeast</span>
+                    <span th:if="${return.getWindDirection() > 168 and return.getWindDirection() <= 191}">south</span>
+                    <span th:if="${return.getWindDirection() > 191 and return.getWindDirection() <= 213}">south-by-southwest</span>
+                    <span th:if="${return.getWindDirection() > 213 and return.getWindDirection() <= 236}">southwest</span>
+                    <span th:if="${return.getWindDirection() > 236 and return.getWindDirection() <= 258}">west-by-southwest</span>
+                    <span th:if="${return.getWindDirection() > 258 and return.getWindDirection() <= 281}">west</span>
+                    <span th:if="${return.getWindDirection() > 281 and return.getWindDirection() <= 303}">west-by-northwest</span>
+                    <span th:if="${return.getWindDirection() > 303 and return.getWindDirection() <= 326}">northwest</span>
+                    <span th:if="${return.getWindDirection() > 326 and return.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(return.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                <p>The main pollutant in the environment is <span th:switch="${return.getMainPollutant()}">
                     <span th:case="'p2'">PM2.5.</span>
                     <span th:case="'p1'">PM10.</span>
                     <span th:case="'o3'">ozone.</span>
@@ -62,13 +62,13 @@ $(document).ready(function(){
                     <span th:case="'co'">carbon monoxide.</span>
                 </span></p>
             </div>
-            <form th:action="@{/confirm}" method="GET" class="py-sm-1" th:object="${formLocation}" th:if="${isLoggedIn} == true">
+            <form th:action="@{/confirm}" method="GET" class="py-sm-1" th:if="${isLoggedIn} == true">
                 <button class="btn btn-primary form-control" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button>
             </form>
         </div>
     </div>
 </div>
-<div th:if="${return.getQuery().isCurrent()} == false" class="container">
+<div th:if="${return.isCurrent()} == false" class="container">
     <div class="row">
         <div class="col">
             <p class="py-sm-2 small">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>

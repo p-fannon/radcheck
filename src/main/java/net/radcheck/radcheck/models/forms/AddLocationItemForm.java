@@ -1,7 +1,6 @@
 package net.radcheck.radcheck.models.forms;
 
 import net.radcheck.radcheck.models.LatLon;
-import net.radcheck.radcheck.models.Query;
 import net.radcheck.radcheck.models.User;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -13,17 +12,13 @@ public class AddLocationItemForm {
 
     private User user;
 
-    private Query query;
-
     private LatLon location;
 
     private String city;
 
     private String country;
 
-    private long userId;
-
-    @Size(min=3, max=30, message = "Please enter a name between 3 and 30 characters")
+    @Size(min=3, max=30)
     private String locationName;
 
     public AddLocationItemForm() {
@@ -32,10 +27,8 @@ public class AddLocationItemForm {
     public AddLocationItemForm(@NotNull User user, @NotNull LatLon location) {
         this.user = user;
         this.location = location;
-        this.query = location.getQuery();
-        this.userId = user.getId();
-        this.city = query.getCity();
-        this.country = query.getCountry();
+        this.city = location.getCity();
+        this.country = location.getCountry();
     }
 
     public User getUser() {
@@ -52,14 +45,6 @@ public class AddLocationItemForm {
 
     public void setLocation(LatLon location) {
         this.location = location;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
     }
 
     public String getLocationName() {
@@ -86,11 +71,4 @@ public class AddLocationItemForm {
         this.country = country;
     }
 
-    public Query getQuery() {
-        return query;
-    }
-
-    public void setQuery(Query query) {
-        this.query = query;
-    }
 }
