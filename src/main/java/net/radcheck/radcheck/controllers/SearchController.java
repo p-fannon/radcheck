@@ -33,7 +33,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 @org.springframework.stereotype.Controller
-@RequestMapping("/")
 public class SearchController {
 
     private static String BaseURL = "https://api.safecast.org/measurements.json";
@@ -54,7 +53,7 @@ public class SearchController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
         String address = "The Gateway Arch, St. Louis, MO";
         String account = getUser();
@@ -69,7 +68,7 @@ public class SearchController {
     }
 
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
                              errors, HttpSession session) throws IOException {
         if (errors.hasErrors()) {
@@ -119,8 +118,6 @@ public class SearchController {
 
         LatLon returnedLatLon = new LatLon(aLatitude, aLongitude, returnedQuery);
         returnedQuery.setLocation(returnedLatLon);
-        returnedQuery.setLat(aLatitude);
-        returnedQuery.setLon(aLongitude);
 
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
@@ -198,8 +195,6 @@ public class SearchController {
 
         LatLon returnedLatLon = new LatLon(aLatitude, aLongitude, returnedQuery);
         returnedQuery.setLocation(returnedLatLon);
-        returnedQuery.setLat(aLatitude);
-        returnedQuery.setLon(aLongitude);
 
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);

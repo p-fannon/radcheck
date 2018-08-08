@@ -1,13 +1,14 @@
 package net.radcheck.radcheck.models.forms;
 
 import net.radcheck.radcheck.models.LatLon;
-import net.radcheck.radcheck.models.Location;
 import net.radcheck.radcheck.models.Query;
 import net.radcheck.radcheck.models.User;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@ControllerAdvice
 public class AddLocationItemForm {
 
     private User user;
@@ -20,10 +21,9 @@ public class AddLocationItemForm {
 
     private String country;
 
-    @NotNull
     private long userId;
 
-    @Size(min=3, max=30, message="Please enter a name for this location between 3 and 30 characters")
+    @Size(min=3, max=30, message = "Please enter a name between 3 and 30 characters")
     private String locationName;
 
     public AddLocationItemForm() {

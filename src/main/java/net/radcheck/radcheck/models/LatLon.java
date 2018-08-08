@@ -18,7 +18,6 @@ public class LatLon {
     private double lat;
     @NotNull
     private double lon;
-    @NotNull
     @OneToOne
     private Query query;
 
@@ -33,6 +32,10 @@ public class LatLon {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id=id;
     }
 
     public double getLat() {

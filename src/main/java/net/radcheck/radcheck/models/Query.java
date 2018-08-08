@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 public class Query {
 
     @Id
-    @GeneratedValue
     private int id;
     private String rating;
     private double radValue;
@@ -28,8 +27,6 @@ public class Query {
     private String country;
     private int viewCount;
     private boolean isCurrent;
-    private double lat;
-    private double lon;
     @OneToOne(mappedBy = "query")
     private LatLon location;
     @CreationTimestamp
@@ -43,7 +40,7 @@ public class Query {
     public Query() {
     }
 
-    public Query(String rating, double radValue, int totalMeasurements, int aqiValue, double windSpeed, int windDirection, int temp, String mainPollutant, String weatherIcon, String city, String country, boolean isCurrent, double lat, double lon, Timestamp minMeasurementTimestamp, Timestamp maxMeasurementTimestamp, Timestamp aqiTimestamp) {
+    public Query(String rating, double radValue, int totalMeasurements, int aqiValue, double windSpeed, int windDirection, int temp, String mainPollutant, String weatherIcon, String city, String country, boolean isCurrent, Timestamp minMeasurementTimestamp, Timestamp maxMeasurementTimestamp, Timestamp aqiTimestamp) {
         this.rating=rating;
         this.radValue=radValue;
         this.totalMeasurements = totalMeasurements;
@@ -56,14 +53,16 @@ public class Query {
         this.city = city;
         this.country = country;
         this.isCurrent=isCurrent;
-        this.lat = lat;
-        this.lon = lon;
         this.minMeasurementTimestamp = minMeasurementTimestamp;
         this.maxMeasurementTimestamp = maxMeasurementTimestamp;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id=id;
     }
 
     public String getRating() {
@@ -188,22 +187,6 @@ public class Query {
 
     public void setCurrent(boolean current) {
         isCurrent=current;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLon() {
-        return lon;
-    }
-
-    public void setLon(double lon) {
-        this.lon = lon;
     }
 
     public Timestamp getMinMeasurementTimestamp() {
