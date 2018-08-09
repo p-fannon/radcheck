@@ -7,7 +7,7 @@
 <nav th:replace="fragments :: navigation"></nav>
 
 <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.success}">
-    The location <strong th:text="{locale}"></strong> has been successfully saved to your account.
+    The location has been successfully saved to your account.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -42,7 +42,7 @@
                     <td th:text="${#numbers.formatDecimal(location.lon,1,6)}"></td>
                     <td>
                         <div class="btn-group btn-group-large">
-                            <a href="#" role="button" class="btn btn-primary">View</a>
+                            <a th:href="'/view/' + ${location.id}" role="button" class="btn btn-primary">View</a>
                             <a href="#" role="button" class="btn btn-info">Update</a>
                             <a href="#" role="button" class="btn btn-danger">Delete</a>
                         </div>

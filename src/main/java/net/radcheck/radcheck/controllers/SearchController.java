@@ -4,18 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.radcheck.radcheck.models.*;
 import net.radcheck.radcheck.models.data.LatLonDao;
-import net.radcheck.radcheck.models.data.UserDao;
-import net.radcheck.radcheck.models.forms.AddLocationItemForm;
 import net.radcheck.radcheck.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
@@ -44,7 +39,7 @@ public class SearchController {
     private String aqiJson;
     private String geoDecodedString;
     private String geoJson;
-    private static String mapsKey = "AIzaSyDen0WZLZt-OQ68yU5D5uoNb7sr34mdycQ";
+    private static String mapsKey = "AIzaSyAqvB0THWS44yHV3OOBzQQ0znAst9V6uQA"; // AIzaSyDen0WZLZt-OQ68yU5D5uoNb7sr34mdycQ
     private static String aqiKey = "3RDkWgP8CSpxMTGFM";
     private String geocode;
     private static Gson gson = new Gson();
@@ -52,6 +47,9 @@ public class SearchController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LatLonDao latLonDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
@@ -85,6 +83,8 @@ public class SearchController {
         }
 
         Geo geoReturn = getGeo(newMap.getAddress());
+
+        System.out.println(geoReturn.getStatus());
 
         if (geoReturn.getResults().size() == 0) {
             String account = getUser();
@@ -234,6 +234,26 @@ public class SearchController {
         model.addAttribute("key", mapsKey);
 
         return "result";
+    }
+
+    @RequestMapping(value="/view/{locationId}", method=RequestMethod.GET)
+    public String viewSavedResult(Model model, @PathVariable int locationId) {
+        LatLon returnedLatLon = latLonDao.findOne(locationId);
+        String ratingClass = getRatingClass(returnedLatLon);
+        String ratingInfo = getRatingInfo(returnedLatLon);
+
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Current readings at this saved location");
+        model.addAttribute("return", returnedLatLon);
+        model.addAttribute("rating_class", ratingClass);
+        model.addAttribute("rating_info", ratingInfo);
+        model.addAttribute("latitude", returnedLatLon.getLat());
+        model.addAttribute("longitude", returnedLatLon.getLon());
+        model.addAttribute("key", mapsKey);
+
+        return "view-location";
     }
 
     public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {

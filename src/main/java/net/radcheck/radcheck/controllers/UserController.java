@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +27,7 @@ public class UserController {
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    private static String mapsKey = "AIzaSyDen0WZLZt-OQ68yU5D5uoNb7sr34mdycQ";
+    private static String mapsKey = "AIzaSyAqvB0THWS44yHV3OOBzQQ0znAst9V6uQA";
 
     @Autowired
     private UserService userService;
@@ -156,7 +155,6 @@ public class UserController {
         String account = user.getEmail();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("locale", locationName);
         model.addAttribute("title", "Your user profile");
         model.addAttribute("user", user);
         session.removeAttribute("candidateLocation");
