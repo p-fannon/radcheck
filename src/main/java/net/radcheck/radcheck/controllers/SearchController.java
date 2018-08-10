@@ -420,9 +420,9 @@ public class SearchController {
             break;
             case "Moderately safe": ratingClass = "card bg-success text-white";
             break;
-            case "Unhealthy for sensitive groups": ratingClass = "card bg-warning text-white";
+            case "Unhealthy for sensitive groups": ratingClass = "card bg-warning text-dark";
             break;
-            case "Unhealthy": ratingClass = "card bg-warning text-white";
+            case "Unhealthy": ratingClass = "card bg-warning text-dark";
             break;
             case "Very unhealthy": ratingClass = "card bg-danger text-white";
             break;
