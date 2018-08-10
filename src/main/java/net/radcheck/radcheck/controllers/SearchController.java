@@ -59,7 +59,6 @@ public class SearchController {
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Pick A Location");
         model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-        model.addAttribute("address", address);
         model.addAttribute("gmap", new GMap(address));
 
         return "index";
@@ -73,30 +72,21 @@ public class SearchController {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Pick A Location");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
-            model.addAttribute("address", newMap.getAddress());
-            return "redirect:/?maperror=true";
         }
 
         Geo geoReturn = getGeo(newMap.getAddress());
-
-        System.out.println(geoReturn.getStatus());
 
         if (geoReturn.getResults().size() == 0) {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Pick A Location");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
-            model.addAttribute("address", newMap.getAddress());
-            return "redirect:/?apierror=true";
+            return "redirect:/?retry=true";
         }
 
         double aLatitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLatitude();
@@ -114,17 +104,14 @@ public class SearchController {
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
-        if (airVisualReturn.getAqiData() == null) {
+        if (!airVisualReturn.getAqiStatus().equals("success")) {
             String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Pick A Location");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
-            model.addAttribute("address", newMap.getAddress());
-            return "redirect:/?apierror=true";
+            return "redirect:/?retry=true";
         }
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
@@ -201,17 +188,12 @@ public class SearchController {
 
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
-        if (airVisualReturn.getAqiData() == null) {
+        if (!airVisualReturn.getAqiStatus().equals("success")) {
             String account = getUser();
             model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("isLoggedIn", checkAccount(account));;
             model.addAttribute("title", "Pick A Location");
-            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-            model.addAttribute("gmap", new GMap());
-            model.addAttribute("address", "The Gateway Arch, St. Louis, MO");
-            return "redirect:/?apierror=true";
+            return "redirect:/?retry=true";
         }
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
@@ -310,6 +292,11 @@ public class SearchController {
         aqiCall.disconnect();
 
         AirQuality results = gson.fromJson(aqiJson, AirQuality.class);
+        if (results == null) {
+            AirQuality badResults = new AirQuality();
+            badResults.setAqiStatus("failure");
+            return badResults;
+        }
         return results;
     }
     public Geo getGeo(String query) throws IOException {

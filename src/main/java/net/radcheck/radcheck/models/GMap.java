@@ -1,11 +1,14 @@
 package net.radcheck.radcheck.models;
 
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.validation.constraints.Size;
 
 public class GMap {
 
-    @NotNull
+    @NotEmpty
+    @NotBlank
     @Size(min=3)
     private String address;
 

@@ -120,6 +120,15 @@ public class UserController {
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
     public String confirmLocation(Model model, HttpSession session) {
         User user = getAccount();
+        if (user.getLocations().size() > 19) {
+            String account = user.getEmail();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Your user profile");
+            model.addAttribute("user", user);
+            session.removeAttribute("candidateLocation");
+            return "redirect:/user/profile?max=true";
+        }
         String account = user.getEmail();
         LatLon location = (LatLon) session.getAttribute("candidateLocation");
         model.addAttribute("account", account);
@@ -149,6 +158,7 @@ public class UserController {
         LatLon newLocation = (LatLon) session.getAttribute("candidateLocation");
         String locationName = newForm.getLocationName();
         latLonDao.save(newLocation);
+        session.setAttribute("locale", locationName);
         user.addLocation(newLocation, locationName);
         userDao.save(user);
 
