@@ -57,7 +57,7 @@ public class SearchController {
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("title", "Pick A Location");
+        model.addAttribute("title", "Pick A Location To Measure");
         model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
         model.addAttribute("gmap", new GMap(address));
 
@@ -72,7 +72,7 @@ public class SearchController {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location");
+            model.addAttribute("title", "Pick A Location To Measure");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
         }
@@ -83,7 +83,7 @@ public class SearchController {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location");
+            model.addAttribute("title", "Pick A Location To Measure");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
             return "redirect:/?retry=true";
@@ -108,7 +108,7 @@ public class SearchController {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location");
+            model.addAttribute("title", "Pick A Location To Measure");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
             return "redirect:/?retry=true";
@@ -137,7 +137,7 @@ public class SearchController {
 
     @RequestMapping(value = "/manual", method=RequestMethod.GET)
     public String manualSearch(Model model) {
-        model.addAttribute("title", "Pick A Location");
+        model.addAttribute("title", "Pick A Location To Measure");
         model.addAttribute("measurements", new Measurements());
         String account = getUser();
         model.addAttribute("account", account);
@@ -152,7 +152,11 @@ public class SearchController {
                          Errors errors, HttpSession session) throws IOException {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Pick A Location");
+            errors.rejectValue("radLat", "error.measurements", "Please enter a valid" +
+                    " decimal number for the latitude.");
+            errors.rejectValue("radLng", "error.measurements", "Please enter a valid" +
+                    " decimal number for the longitude.");
+            model.addAttribute("title", "Pick A Location To Measure");
             model.addAttribute("measurements", newMeasurement);
             String account = getUser();
             model.addAttribute("account", account);
@@ -192,7 +196,7 @@ public class SearchController {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));;
-            model.addAttribute("title", "Pick A Location");
+            model.addAttribute("title", "Pick A Location To Measure");
             return "redirect:/?retry=true";
         }
 

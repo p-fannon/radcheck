@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="row p-sm-1">
-        <div class="col" th:unless="${user.locations} and ${user.locations.size()}">
+        <div class="col p-sm-2" th:unless="${user.locations} and ${user.locations.size()}">
             <p>You don't have any locations saved to this account. Start searching! 🕵️</p>
         </div>
         <div class="col" th:if="${user.locations} and ${user.locations.size()}">

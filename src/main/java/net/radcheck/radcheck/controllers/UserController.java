@@ -33,9 +33,6 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private UserDao userDao;
-
-    @Autowired
     private LatLonDao latLonDao;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -160,7 +157,7 @@ public class UserController {
         latLonDao.save(newLocation);
         session.setAttribute("locale", locationName);
         user.addLocation(newLocation, locationName);
-        userDao.save(user);
+        userService.saveUser(user);
 
         String account = user.getEmail();
         model.addAttribute("account", account);
