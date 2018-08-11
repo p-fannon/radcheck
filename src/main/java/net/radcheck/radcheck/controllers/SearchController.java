@@ -152,10 +152,6 @@ public class SearchController {
                          Errors errors, HttpSession session) throws IOException {
 
         if (errors.hasErrors()) {
-            errors.rejectValue("radLat", "error.measurements", "Please enter a valid" +
-                    " decimal number for the latitude.");
-            errors.rejectValue("radLng", "error.measurements", "Please enter a valid" +
-                    " decimal number for the longitude.");
             model.addAttribute("title", "Pick A Location To Measure");
             model.addAttribute("measurements", newMeasurement);
             String account = getUser();

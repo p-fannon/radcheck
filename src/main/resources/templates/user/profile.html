@@ -49,7 +49,7 @@
                     <td th:text="${#numbers.formatDecimal(location.lon,1,6)}"></td>
                     <td>
                         <div class="btn-group btn-group-large">
-                            <a th:href="'/view/' + ${location.id}" role="button" class="btn btn-primary">View</a>
+                            <a th:href="@{'/view/' + ${location.id}}" role="button" class="btn btn-primary">View</a>
                             <a href="#" role="button" class="btn btn-info">Update</a>
                             <a href="#" role="button" class="btn btn-danger">Delete</a>
                         </div>
