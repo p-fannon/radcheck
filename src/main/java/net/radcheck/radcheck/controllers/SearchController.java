@@ -49,7 +49,7 @@ public class SearchController {
     private UserService userService;
 
     @Autowired
-    private LatLonDao latLonDao;
+    private LatLonDao locationRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
@@ -220,7 +220,7 @@ public class SearchController {
 
     @RequestMapping(value="/view/{locationId}", method=RequestMethod.GET)
     public String viewSavedResult(Model model, @PathVariable int locationId) {
-        LatLon returnedLatLon = latLonDao.findOne(locationId);
+        LatLon returnedLatLon = locationRepository.findOne(locationId);
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
 

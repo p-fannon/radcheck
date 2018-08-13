@@ -13,12 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,15 +30,16 @@ public class UserController {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static String mapsKey = "AIzaSyAqvB0THWS44yHV3OOBzQQ0znAst9V6uQA";
+    private static double angularDistance = 250 / 6371e3;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private LatLonDao latLonDao;
+    private LatLonDao locationRepository;
 
     @Autowired
-    private UserDao userDao;
+    private UserDao userRepository;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model){
@@ -129,14 +132,72 @@ public class UserController {
             session.removeAttribute("candidateLocation");
             return "redirect:/user/profile?max=true";
         }
-        String account = user.getEmail();
         LatLon location = (LatLon) session.getAttribute("candidateLocation");
+        if (user.getLocations().size() > 0) {
+            List<LatLon> possibleDuplicates = checkDuplicates(location);
+            if (possibleDuplicates.size() > 0) {
+                String account = user.getEmail();
+                model.addAttribute("account", account);
+                model.addAttribute("isLoggedIn", checkAccount(account));
+                model.addAttribute("title", "Duplicate locations found");
+                model.addAttribute("user", user);
+                model.addAttribute("locations", possibleDuplicates);
+                model.addAttribute("key", mapsKey);
+                session.removeAttribute("candidateLocation");
+                return "duplicates";
+            }
+        }
+        String account = user.getEmail();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Name and confirm this location");
         model.addAttribute("user", user);
         model.addAttribute("key", mapsKey);
         model.addAttribute("submitForm", new AddLocationItemForm(user, location));
+        return "save-location";
+    }
+    @RequestMapping(value = "/confirm/{locationId}", method = RequestMethod.GET)
+    public String confirmPersistentLocation(Model model, @PathVariable int locationId,
+                                            HttpSession session) {
+        User user = getAccount();
+        if (user.getLocations().size() > 19) {
+            String account = user.getEmail();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Your user profile");
+            model.addAttribute("user", user);
+            return "redirect:/user/profile?max=true";
+        }
+        LatLon confirmLocation = locationRepository.findOne(locationId);
+        List<LatLon> userLocations = user.getLocations();
+        if (userLocations.size() > 0) {
+            boolean isInAccount = false;
+            int duplicateIndex = 0;
+            for (LatLon location : userLocations) {
+                if (location.getId() == confirmLocation.getId()) {
+                    isInAccount = true;
+                    duplicateIndex = userLocations.indexOf(location);
+                }
+            }
+            if (isInAccount) {
+                String account = user.getEmail();
+                model.addAttribute("account", account);
+                model.addAttribute("isLoggedIn", checkAccount(account));
+                model.addAttribute("title", "Your user profile");
+                model.addAttribute("user", user);
+                session.setAttribute("locale", user.getNames().get(duplicateIndex));
+
+                return "redirect:/user/profile?duplicate=true";
+            }
+        }
+        session.setAttribute("candidateLocation", confirmLocation);
+        String account = user.getEmail();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Name and confirm this location");
+        model.addAttribute("user", user);
+        model.addAttribute("key", mapsKey);
+        model.addAttribute("submitForm", new AddLocationItemForm(user, confirmLocation));
         return "save-location";
     }
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -155,12 +216,27 @@ public class UserController {
             return "redirect:/confirm?error=true";
         }
         User user = getAccount();
-        LatLon newLocation = (LatLon) session.getAttribute("candidateLocation");
         String locationName = newForm.getLocationName();
-        latLonDao.save(newLocation);
+        LatLon newLocation = (LatLon) session.getAttribute("candidateLocation");
+        if (newLocation.getId() != 0) {
+            LatLon confirmLocation = locationRepository.findOne(newLocation.getId());
+            session.setAttribute("locale", locationName);
+            user.addLocation(confirmLocation, locationName);
+            userRepository.save(user);
+
+            String account = user.getEmail();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Your user profile");
+            model.addAttribute("user", user);
+            session.removeAttribute("candidateLocation");
+
+            return "redirect:/user/profile?success=true";
+        }
+        locationRepository.save(newLocation);
         session.setAttribute("locale", locationName);
         user.addLocation(newLocation, locationName);
-        userDao.save(user);
+        userRepository.save(user);
 
         String account = user.getEmail();
         model.addAttribute("account", account);
@@ -169,7 +245,33 @@ public class UserController {
         model.addAttribute("user", user);
         session.removeAttribute("candidateLocation");
 
-        return "redirect:/user/profile/?success=true";
+        return "redirect:/user/profile?success=true";
+    }
+
+    public List<LatLon> checkDuplicates(LatLon userLocation) {
+        double lat = Math.toRadians(userLocation.getLat());
+        double lon = Math.toRadians(userLocation.getLon());
+        double northLat = findBoundaryLat(lat, Math.toRadians(0.0));
+        double southLat = findBoundaryLat(lat, Math.toRadians(180.0));
+        double eastLon = findBoundaryLon(lat, lon, Math.toRadians(90.0));
+        double westLon = findBoundaryLon(lat, lon, Math.toRadians(270.0));
+        return locationRepository.findDuplicates(northLat, southLat, eastLon, westLon);
+    }
+
+    public double findBoundaryLat(double lat, double brng) {
+        double diffLat = angularDistance * Math.cos( brng );
+        double lat2 = lat + diffLat;
+        return Math.toDegrees(lat2);
+    }
+
+    public double findBoundaryLon(double lat1, double lon, double brng) {
+        double latDiff = angularDistance * Math.cos( brng );
+        double lat2 = lat1 + latDiff;
+        double pLatDiff = Math.log( Math.tan( lat2 / 2 + Math.PI / 4 ) / Math.tan( lat1 / 2 + Math.PI / 4 ));
+        double q = Math.abs( pLatDiff ) > 10e-12 ? latDiff / pLatDiff : Math.cos( lat1 );
+        double diffLon = angularDistance * Math.sin( brng ) / q;
+        double lon2 = lon + diffLon;
+        return Math.toDegrees(lon2);
     }
 
     public static boolean validate(String emailStr) {

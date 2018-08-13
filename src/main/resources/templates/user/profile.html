@@ -20,6 +20,13 @@
     </button>
 </div>
 
+<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.duplicate}">
+    The location <strong th:text="${session.locale}" th:unless="${session.locale == null}"></strong> is already saved to your account.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <div class="container">
     <div class="row p-sm-3">
         <div class="col">
@@ -27,7 +34,7 @@
         </div>
     </div>
     <div class="row p-sm-1">
-        <div class="col p-sm-2" th:unless="${user.locations} and ${user.locations.size()}">
+        <div class="col p-sm-3" th:unless="${user.locations} and ${user.locations.size()}">
             <p>You don't have any locations saved to this account. Start searching! 🕵️</p>
         </div>
         <div class="col" th:if="${user.locations} and ${user.locations.size()}">

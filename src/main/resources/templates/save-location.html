@@ -22,8 +22,8 @@
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid Black" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + *{location.getLat()} + '%2C' + *{location.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div class="col-sm-4 offset-sm-1 form-group">
-                <h4 class="p-sm-2" th:text="'Latitude: ' + *{location.getLat().toString()}"></h4>
-                <h4 class="p-sm-2" th:text="'Longitude: ' + *{location.getLon().toString()}"></h4>
+                <h4 class="p-sm-2" th:text="'Latitude: ' + *{#numbers.formatDecimal(location.getLat().toString(),1,6)}"></h4>
+                <h4 class="p-sm-2" th:text="'Longitude: ' + *{#numbers.formatDecimal(location.getLon().toString(),1,6)}"></h4>
                 <label th:for="locationName">Enter a name for this location:</label>
                 <input th:field="*{locationName}" type="text" th:placeholder="*{city} + ', ' + *{country}" />
                 <div class="p-sm-2">
