@@ -219,11 +219,13 @@ public class SearchController {
     }
 
     @RequestMapping(value="/view/{locationId}", method=RequestMethod.GET)
-    public String viewSavedResult(Model model, @PathVariable int locationId) {
+    public String viewSavedResult(Model model, @PathVariable int locationId,
+                                  HttpSession session) {
         LatLon returnedLatLon = locationRepository.findOne(locationId);
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
 
+        User user = getAccount();
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -234,6 +236,7 @@ public class SearchController {
         model.addAttribute("latitude", returnedLatLon.getLat());
         model.addAttribute("longitude", returnedLatLon.getLon());
         model.addAttribute("key", mapsKey);
+        session.setAttribute("locale", user.getNames().get(user.getLocations().indexOf(returnedLatLon)));
 
         return "view-location";
     }

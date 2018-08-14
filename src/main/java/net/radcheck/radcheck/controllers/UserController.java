@@ -247,6 +247,67 @@ public class UserController {
 
         return "redirect:/user/profile?success=true";
     }
+    @RequestMapping(value = "/edit/{locationId}", method=RequestMethod.GET)
+    public String editLocationName(Model model, @PathVariable int locationId,
+                                   HttpSession session) {
+        User user = getAccount();
+        LatLon editLocation = locationRepository.findOne(locationId);
+        String account = user.getEmail();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Rename this location");
+        model.addAttribute("user", user);
+        model.addAttribute("key", mapsKey);
+        model.addAttribute("submitForm", new AddLocationItemForm(user, editLocation));
+        session.setAttribute("editLocation", editLocation);
+        return "edit-location";
+    }
+    @RequestMapping(value = "/edit", method=RequestMethod.POST)
+    public String confirmEditLocation(Model model, @ModelAttribute @Valid AddLocationItemForm editForm,
+                                      Errors errors, HttpSession session) {
+        if (errors.hasErrors()) {
+            LatLon aLocation = (LatLon) session.getAttribute("candidateLocation");
+            User user = getAccount();
+            String account = user.getEmail();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Rename this location");
+            model.addAttribute("user", user);
+            model.addAttribute("key", mapsKey);
+            model.addAttribute("submitForm", new AddLocationItemForm(user, aLocation));
+            return "redirect:/edit" + aLocation.getId() + "?error=true";
+        }
+        User user = getAccount();
+        LatLon updatedLocation = (LatLon) session.getAttribute("editLocation");
+        String locationName = editForm.getLocationName();
+        session.setAttribute("locale", locationName);
+        user.editLocation(updatedLocation, locationName);
+        userRepository.save(user);
+
+        String account = user.getEmail();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Your user profile");
+        model.addAttribute("user", user);
+        session.removeAttribute("editLocation");
+
+        return "redirect:/user/profile?success=true";
+    }
+    @RequestMapping(value = "/delete/{locationId}", method=RequestMethod.GET)
+    public String removeLocation(Model model, @PathVariable int locationId, HttpSession session) {
+        User user = getAccount();
+        LatLon deleteLocation = locationRepository.findOne(locationId);
+        String account = user.getEmail();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Your user profile");
+        model.addAttribute("user", user);
+        session.setAttribute("locale", user.getNames().get(user.getLocations().indexOf(deleteLocation)));
+        user.removeLocation(deleteLocation);
+        userRepository.save(user);
+
+        return "redirect:/user/profile?remove=true";
+    }
 
     public List<LatLon> checkDuplicates(LatLon userLocation) {
         double lat = Math.toRadians(userLocation.getLat());

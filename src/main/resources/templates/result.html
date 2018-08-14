@@ -53,7 +53,7 @@ $(document).ready(function(){
                 <span class="small" th:if="${return.getRadValue() < 29.88 and return.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                 <span class="small" th:if="${return.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${return.isCurrent()} == false">*</span></p>
             <p class="small">The latest measurement from this reading taken on <span th:text="${return.getMaxMeasurementTimestamp().toString()}"></span> UTC and made from <span th:text="${return.getTotalMeasurements()}"></span> collected measurements.</p>
-            <p th:text="'Air quality index is currently ' + ${return.getAqiValue()}"></p>
+            <p>Air quality index is currently <strong th:text="${return.getAqiValue()}"></strong></p>
             <p th:text="'This AQI rating made on ' + ${return.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${return.getCity()} + ', ' + ${return.getCountry()}" class="small"></p>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">View details 👇</button>
             <div id="details" class="collapse pt-sm-1">

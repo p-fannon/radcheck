@@ -5,6 +5,13 @@
 <body>
 
 <nav th:replace="fragments :: navigation"></nav>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="confirmation"]').confirmation({
+        rootSelector: '[data-toggle="confirmation"]'
+    });
+});
+</script>
 
 <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.success}">
     The location <strong th:text="${session.locale}" th:unless="${session.locale == null}"></strong> has been successfully saved to your account.
@@ -13,8 +20,15 @@
     </button>
 </div>
 
+<div class="alert alert-info alert-dismissible fade show" role="alert" th:if="${param.remove}">
+    The location <strong th:text="${session.locale}" th:unless="${session.locale == null}"></strong> has been successfully removed from your account.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.max}">
-    Your account has already saved the maximum of 20 locations. Please remove locations in order to add more.
+    Your account has already saved the maximum of 20 locations. Please remove unused locations in order to add more.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -55,11 +69,14 @@
                     <td th:text="${#numbers.formatDecimal(location.lat,1,6)}"></td>
                     <td th:text="${#numbers.formatDecimal(location.lon,1,6)}"></td>
                     <td>
-                        <div class="btn-group btn-group-large">
-                            <a th:href="@{'/view/' + ${location.id}}" role="button" class="btn btn-primary">View</a>
-                            <a href="#" role="button" class="btn btn-info">Update</a>
-                            <a href="#" role="button" class="btn btn-danger">Delete</a>
-                        </div>
+                        <a th:href="@{'/view/' + ${location.id}}" class="btn btn-primary">View</a>
+                        <a th:href="@{'/edit/' + ${location.id}}" class="btn btn-info">Update</a>
+                        <a th:href="@{'/delete/' + ${location.id}}" class="btn btn-danger" data-toggle="confirmation"
+                           th:attr="data-title='Remove ' + ${names.get(user.getLocations().indexOf(location))}"
+                           data-content="Are you sure you want to delete this location from your account?"
+                           data-placement="right" data-singleton="true" data-popout="true" data-btn-ok-label="Yes 👍"
+                           data-btn-ok-class="btn-success" data-btn-cancel-label="No 👎"
+                           data-btn-cancel-class="btn-danger">Delete</a>
                     </td>
                 </tr>
                 </tbody>

@@ -94,12 +94,22 @@ public class User {
         names.add(locationName);
     }
     public void editLocation(LatLon currentLocation, String newName) {
-        int index = locations.indexOf(currentLocation);
+        int index = 0;
+        for (LatLon location : locations) {
+            if (currentLocation.getId() == location.getId()) {
+                index = locations.indexOf(location);
+            }
+        }
         names.remove(index);
         names.add(index, newName);
     }
     public void removeLocation(LatLon deleteLocation) {
-        int index = locations.indexOf(deleteLocation);
+        int index = 0;
+        for (LatLon location : locations) {
+            if (deleteLocation.getId() == location.getId()) {
+                index = locations.indexOf(location);
+            }
+        }
         locations.remove(index);
         names.remove(index);
     }
