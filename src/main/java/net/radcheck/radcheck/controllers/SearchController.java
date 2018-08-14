@@ -44,6 +44,7 @@ public class SearchController {
     private String geocode;
     private static Gson gson = new Gson();
     private static String minScTs = "2011-03-10T00:00:00Z";
+    private static long twentyOneHours = 75600000L;
 
     @Autowired
     private UserService userService;
@@ -220,8 +221,15 @@ public class SearchController {
 
     @RequestMapping(value="/view/{locationId}", method=RequestMethod.GET)
     public String viewSavedResult(Model model, @PathVariable int locationId,
-                                  HttpSession session) {
+                                  HttpSession session) throws IOException {
         LatLon returnedLatLon = locationRepository.findOne(locationId);
+        Instant hereAndNow = Instant.now();
+        Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
+        if (!returnedLatLon.getUpdateTimestamp().after(twentyOneHoursAgo)) {
+            returnedLatLon = refreshLocation(returnedLatLon);
+        }
+        returnedLatLon.setViewCount(returnedLatLon.getViewCount() + 1);
+        locationRepository.save(returnedLatLon);
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
 
@@ -398,23 +406,38 @@ public class SearchController {
         } else {
             newLatLon.setCurrent(false);
         }
-        double testRad = newLatLon.getRadValue();
-        int testAqi = newLatLon.getAqiValue();
-        if (testRad > .7714 || testAqi > 300) {
-            newLatLon.setRating("Hazardous");
-        } else if (testRad > .5771 || testAqi > 200) {
-            newLatLon.setRating("Very unhealthy");
-        } else if (testRad > .4028 || testAqi > 150) {
-            newLatLon.setRating("Unhealthy");
-        } else if (testRad > .2485 || testAqi > 100) {
-            newLatLon.setRating("Unhealthy for sensitive groups");
-        } else if (testRad > .1142 || testAqi > 50) {
-            newLatLon.setRating("Moderately safe");
-        } else {
-            newLatLon.setRating("Safe");
-        }
+        newLatLon.setRating(getNewRating(newLatLon.getRadValue(), newLatLon.getAqiValue()));
 
         return newLatLon;
+    }
+    public LatLon refreshLocation(LatLon refresh) throws IOException {
+        Collection<Measurements> refreshedMeasurements = getMeasurements(refresh.getLat(), refresh.getLon());
+        refresh = updateMeasurements(refresh, refreshedMeasurements);
+        AirQuality refreshedAqi = getAQI(refresh.getLat(), refresh.getLon());
+        if (refreshedAqi.getAqiStatus().equals("success")) {
+            refresh = updateAqi(refresh, refreshedAqi);
+        }
+        refresh.setRating(getNewRating(refresh.getRadValue(), refresh.getAqiValue()));
+
+        return refresh;
+    }
+    public String getNewRating(double testRad, double testAqi) {
+        String rating;
+        if (testRad > .7714 || testAqi > 300) {
+            rating = "Hazardous";
+        } else if (testRad > .5771 || testAqi > 200) {
+            rating = "Very unhealthy";
+        } else if (testRad > .4028 || testAqi > 150) {
+            rating = "Unhealthy";
+        } else if (testRad > .2485 || testAqi > 100) {
+            rating = "Unhealthy for sensitive groups";
+        } else if (testRad > .1142 || testAqi > 50) {
+            rating = "Moderately safe";
+        } else {
+            rating = "Safe";
+        }
+
+        return rating;
     }
     public String getRatingClass(LatLon location) {
         String ratingClass = "";
@@ -451,6 +474,57 @@ public class SearchController {
                 break;
         }
         return ratingInfo;
+    }
+    public LatLon updateMeasurements(LatLon updateLocation, Collection<Measurements> measurements) {
+        double rad = 0.0;
+        int measurementCount = 0;
+        ArrayList<Timestamp> ts = new ArrayList<>();
+        for (Measurements entry : measurements) {
+            if (entry.getRadUnit().equals("cpm")) {
+                rad += entry.getRadValue() / 345;
+                measurementCount++;
+                Instant isoInstant = Instant.parse(entry.getRadTimestamp());
+                Timestamp parsedDate = Timestamp.from(isoInstant);
+                ts.add(parsedDate);
+            } else if (entry.getRadUnit().equals("usv")) {
+                rad += entry.getRadValue();
+                measurementCount++;
+                Instant isoInstant = Instant.parse(entry.getRadTimestamp());
+                Timestamp parsedDate = Timestamp.from(isoInstant);
+                ts.add(parsedDate);
+            }
+        }
+        rad = rad / measurementCount;
+        updateLocation.setRadValue(rad);
+        updateLocation.setTotalMeasurements(measurementCount);
+        Collections.sort(ts);
+        updateLocation.setMinMeasurementTimestamp(ts.get(0));
+        updateLocation.setMaxMeasurementTimestamp(ts.get(ts.size() - 1));
+        Instant rightNow = Instant.now();
+        Instant oneYearAndADayAgo = rightNow.minusSeconds(31644000);
+        Instant minTs = updateLocation.getMinMeasurementTimestamp().toInstant();
+        if (minTs.isAfter(oneYearAndADayAgo)) {
+            updateLocation.setCurrent(true);
+        } else {
+            updateLocation.setCurrent(false);
+        }
+
+        return updateLocation;
+    }
+    public LatLon updateAqi(LatLon updateLocation, AirQuality aqi) {
+        updateLocation.setAqiValue(aqi.getAqiData().getAqiCurrent().getAqiPollution().getAqiUsStd());
+        Instant aqiInstant = Instant.parse(aqi.getAqiData().getAqiCurrent().getAqiPollution().getPollutionTimestamp());
+        Timestamp aqiParse = Timestamp.from(aqiInstant);
+        updateLocation.setAqiTimestamp(aqiParse);
+        updateLocation.setWindSpeed(aqi.getAqiData().getAqiCurrent().getAqiWeather().getWindSpeed());
+        updateLocation.setWindDirection(aqi.getAqiData().getAqiCurrent().getAqiWeather().getWindDirection());
+        updateLocation.setTemp(aqi.getAqiData().getAqiCurrent().getAqiWeather().getTempCelsius());
+        updateLocation.setMainPollutant(aqi.getAqiData().getAqiCurrent().getAqiPollution().getMainUsPollutant());
+        updateLocation.setWeatherIcon(aqi.getAqiData().getAqiCurrent().getAqiWeather().getWeatherIcon());
+        updateLocation.setCity(aqi.getAqiData().getAqiCity());
+        updateLocation.setCountry(aqi.getAqiData().getAqiCountry());
+
+        return updateLocation;
     }
     public User getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
