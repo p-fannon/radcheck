@@ -357,7 +357,7 @@ public class SearchController {
         ArrayList<Timestamp> ts = new ArrayList<>();
         for (Measurements entry : sc) {
             if (entry.getRadUnit().equals("cpm")) {
-                rad += entry.getRadValue() / 330;
+                rad += entry.getRadValue() / 345;
                 measurementCount++;
                 Instant isoInstant = Instant.parse(entry.getRadTimestamp());
                 Timestamp parsedDate = Timestamp.from(isoInstant);

@@ -29,13 +29,35 @@ $(document).ready(function(){
             </div>
         </div>
         <div class="col-sm-8">
-            <p class="lead">The aggregate radiation reading here is <strong th:text="${#numbers.formatDecimal(return.getRadValue(),1,2)}"></strong> µSv/h<span th:if="${return.isCurrent()} == false">*</span></p>
+            <p class="lead">The aggregate radiation reading here is <strong th:text="${#numbers.formatDecimal(return.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${return.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 0.44 and return.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 0.64 and return.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 0.89 and return.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 1.06 and return.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 1.28 and return.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 1.41 and return.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 1.57 and return.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 1.74 and return.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 2.19 and return.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 2.48 and return.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 2.83 and return.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 3.26 and return.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 3.79 and return.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 4.46 and return.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 5.34 and return.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 6.5 and return.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 8.11 and return.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 10.42 and return.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 13.92 and return.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 19.63 and return.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() < 29.88 and return.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                <span class="small" th:if="${return.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${return.isCurrent()} == false">*</span></p>
             <p class="small">The latest measurement from this reading taken on <span th:text="${return.getMaxMeasurementTimestamp().toString()}"></span> UTC and made from <span th:text="${return.getTotalMeasurements()}"></span> collected measurements.</p>
             <p th:text="'Air quality index is currently ' + ${return.getAqiValue()}"></p>
             <p th:text="'This AQI rating made on ' + ${return.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${return.getCity()} + ', ' + ${return.getCountry()}" class="small"></p>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">View details 👇</button>
-            <div id="details" class="collapse py-sm-1">
-                <p><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+            <div id="details" class="collapse pt-sm-1">
+                <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                 <h4><img th:attr="src='https://airvisual.com/images/' + ${return.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(return.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                 <p>Wind is blowing <span th:if="${return.getWindDirection() > 349 and return.getWindDirection() <= 11}">north</span>
                     <span th:if="${return.getWindDirection() > 11 and return.getWindDirection() <= 33}">north-by-northeast</span>
@@ -61,6 +83,7 @@ $(document).ready(function(){
                     <span th:case="'s2'">sulfur dioxide.</span>
                     <span th:case="'co'">carbon monoxide.</span>
                 </span></p>
+                <p>After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((return.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
             </div>
             <form th:action="@{/confirm}" method="GET" class="py-sm-1" th:if="${isLoggedIn} == true">
                 <button class="btn btn-primary form-control" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button>
@@ -71,7 +94,7 @@ $(document).ready(function(){
 <div th:if="${return.isCurrent()} == false" class="container">
     <div class="row">
         <div class="col">
-            <p class="py-sm-2 small">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="pt-sm-2 small">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>
