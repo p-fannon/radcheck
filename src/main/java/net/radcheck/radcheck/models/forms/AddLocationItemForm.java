@@ -10,8 +10,6 @@ import javax.validation.constraints.Size;
 @ControllerAdvice
 public class AddLocationItemForm {
 
-    private User user;
-
     private LatLon location;
 
     private String city;
@@ -24,19 +22,10 @@ public class AddLocationItemForm {
     public AddLocationItemForm() {
     }
 
-    public AddLocationItemForm(@NotNull User user, @NotNull LatLon location) {
-        this.user = user;
+    public AddLocationItemForm(@NotNull LatLon location) {
         this.location = location;
         this.city = location.getCity();
         this.country = location.getCountry();
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public LatLon getLocation() {

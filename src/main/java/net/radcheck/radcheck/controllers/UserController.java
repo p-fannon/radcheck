@@ -140,7 +140,6 @@ public class UserController {
                 model.addAttribute("account", account);
                 model.addAttribute("isLoggedIn", checkAccount(account));
                 model.addAttribute("title", "Duplicate locations found");
-                model.addAttribute("user", user);
                 model.addAttribute("locations", possibleDuplicates);
                 model.addAttribute("key", mapsKey);
                 session.removeAttribute("candidateLocation");
@@ -151,9 +150,8 @@ public class UserController {
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Name and confirm this location");
-        model.addAttribute("user", user);
         model.addAttribute("key", mapsKey);
-        model.addAttribute("submitForm", new AddLocationItemForm(user, location));
+        model.addAttribute("submitForm", new AddLocationItemForm(location));
         return "save-location";
     }
     @RequestMapping(value = "/confirm/{locationId}", method = RequestMethod.GET)
@@ -195,9 +193,8 @@ public class UserController {
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Name and confirm this location");
-        model.addAttribute("user", user);
         model.addAttribute("key", mapsKey);
-        model.addAttribute("submitForm", new AddLocationItemForm(user, confirmLocation));
+        model.addAttribute("submitForm", new AddLocationItemForm(confirmLocation));
         return "save-location";
     }
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -210,9 +207,8 @@ public class UserController {
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Name and confirm this location");
-            model.addAttribute("user", user);
             model.addAttribute("key", mapsKey);
-            model.addAttribute("submitForm", new AddLocationItemForm(user, aLocation));
+            model.addAttribute("submitForm", new AddLocationItemForm(aLocation));
             return "redirect:/confirm?error=true";
         }
         User user = getAccount();
@@ -256,9 +252,8 @@ public class UserController {
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Rename this location");
-        model.addAttribute("user", user);
         model.addAttribute("key", mapsKey);
-        model.addAttribute("submitForm", new AddLocationItemForm(user, editLocation));
+        model.addAttribute("submitForm", new AddLocationItemForm(editLocation));
         session.setAttribute("editLocation", editLocation);
         return "edit-location";
     }
@@ -272,9 +267,8 @@ public class UserController {
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Rename this location");
-            model.addAttribute("user", user);
             model.addAttribute("key", mapsKey);
-            model.addAttribute("submitForm", new AddLocationItemForm(user, aLocation));
+            model.addAttribute("submitForm", new AddLocationItemForm(aLocation));
             return "redirect:/edit" + aLocation.getId() + "?error=true";
         }
         User user = getAccount();
