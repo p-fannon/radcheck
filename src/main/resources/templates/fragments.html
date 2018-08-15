@@ -68,6 +68,10 @@
             width: 72px;
             height: 64px;
         }
+        .report-cell {
+            width: 50%;
+            height: 50%;
+        }
     </style>
     <link id="favicon" rel="icon" type="image/png" sizes="64x64" th:href="@{/images/favicon.png}" />
 </head>
@@ -87,7 +91,7 @@
                     <a class="nav-link" th:href="@{/}">New search</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Build Report</a>
+                    <a class="nav-link" th:href="@{/build-report}">Build Report</a>
                 </li>
         </ul>
         <ul class="navbar-nav ml-auto" th:if="${isLoggedIn} == false">

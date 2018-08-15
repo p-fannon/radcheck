@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<h2 class="p-sm-3">Choose which type of report you want to build with your saved locations:</h2>
+
+<ul>
+    <li><a th:href="@{/two-by-two}">2x2 report with four locations</a></li>
+    <li><a th:href="@{/three-by-three}">3x3 report with nine locations</a></li>
+    <li><a th:href="@{/four-by-four}">4x4 report with sixteen locations</a></li>
+</ul>
+</body>
+</html>

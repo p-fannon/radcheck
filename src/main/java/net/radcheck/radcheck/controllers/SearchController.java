@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.radcheck.radcheck.models.*;
 import net.radcheck.radcheck.models.data.LatLonDao;
+import net.radcheck.radcheck.models.forms.BuildReportForm;
 import net.radcheck.radcheck.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,14 +19,13 @@ import javax.validation.Valid;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 @org.springframework.stereotype.Controller
 public class SearchController {
@@ -219,7 +219,7 @@ public class SearchController {
         return "result";
     }
 
-    @RequestMapping(value="/view/{locationId}", method=RequestMethod.GET)
+    @RequestMapping(value = "/view/{locationId}", method=RequestMethod.GET)
     public String viewSavedResult(Model model, @PathVariable int locationId,
                                   HttpSession session) throws IOException {
         LatLon returnedLatLon = locationRepository.findOne(locationId);
@@ -247,6 +247,122 @@ public class SearchController {
         session.setAttribute("locale", user.getNames().get(user.getLocations().indexOf(returnedLatLon)));
 
         return "view-location";
+    }
+
+    @RequestMapping(value = "/build-report", method = RequestMethod.GET)
+    public String chooseReport(Model model) {
+        User user = getAccount();
+        if (user.getLocations().size() < 4) {
+            String account = user.getEmail();
+            model.addAttribute("account", account);
+            model.addAttribute("title", "Your user profile");
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("names", user.getNames());
+            model.addAttribute("user", user);
+
+            return "redirect:/user/profile?toofew=true";
+        }
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Choose which report you want to build");
+
+        return "report/choose-a-report";
+    }
+
+    @RequestMapping(value = "/two-by-two", method=RequestMethod.GET)
+    public String buildTwoByTwoReport(Model model) {
+        User user = getAccount();
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Build a 2x2 report");
+        model.addAttribute("form", new BuildReportForm(user));
+
+        return "report/2x2-builder";
+    }
+
+    @RequestMapping(value = "/two-by-two", method=RequestMethod.POST)
+    public String serveTwoByTwoReport(@ModelAttribute @Valid BuildReportForm reportForm,
+                                      Errors errors,
+                                      @RequestParam List<Integer> locationIds,
+                                      @RequestParam String reportName,
+                                      Model model) {
+        Set<LatLon> reportLatLon = new HashSet<>();
+        for (int index : locationIds) {
+            if (reportLatLon.contains(locationRepository.findOne(index))) {
+                errors.rejectValue("locationIds", "error.buildreportform",
+                        "There are duplicate locations on this report. Please choose unique locations.");
+            } else {
+                reportLatLon.add(locationRepository.findOne(index));
+            }
+        }
+        if (errors.hasErrors()) {
+            User user = getAccount();
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Build a 2x2 report");
+            model.addAttribute("form", reportForm);
+            return "redirect:/two-by-two?error=true";
+        }
+        LatLon[] reportLocations = reportLatLon.toArray(new LatLon[0]);
+        String[] locationNames = {"", "", "", ""};
+        String[] locationClasses = {"", "", "", ""};
+        String[] locationInfo = {"", "", "", ""};
+        User user = getAccount();
+        List<LatLon> savedLocations = user.getLocations();
+        boolean isCurrent = true;
+        for (LatLon location : savedLocations) {
+            if (reportLocations[0].getId() == location.getId()) {
+                Array.set(locationNames, 0, user.getNames().get(user.getLocations().indexOf(location)));
+                Array.set(locationClasses, 0, getRatingClass(location));
+                Array.set(locationInfo, 0, getRatingInfo(location));
+            }
+            if (reportLocations[1].getId() == location.getId()) {
+                Array.set(locationNames, 1, user.getNames().get(user.getLocations().indexOf(location)));
+                Array.set(locationClasses, 1, getRatingClass(location));
+                Array.set(locationInfo, 1, getRatingInfo(location));
+            }
+            if (reportLocations[2].getId() == location.getId()) {
+                Array.set(locationNames, 2, user.getNames().get(user.getLocations().indexOf(location)));
+                Array.set(locationClasses, 2, getRatingClass(location));
+                Array.set(locationInfo, 2, getRatingInfo(location));
+            }
+            if (reportLocations[3].getId() == location.getId()) {
+                Array.set(locationNames, 3, user.getNames().get(user.getLocations().indexOf(location)));
+                Array.set(locationClasses, 3, getRatingClass(location));
+                Array.set(locationInfo, 3, getRatingInfo(location));
+            }
+            if (location.isCurrent() == false) {
+                isCurrent = false;
+            }
+        }
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", reportName);
+        model.addAttribute("message", "Your report for " + reportName + ":");
+        model.addAttribute("current", isCurrent);
+        model.addAttribute("location01", reportLocations[0]);
+        model.addAttribute("name01", locationNames[0]);
+        model.addAttribute("rating01", locationClasses[0]);
+        model.addAttribute("info01", locationInfo[0]);
+        model.addAttribute("location02", reportLocations[1]);
+        model.addAttribute("name02", locationNames[1]);
+        model.addAttribute("rating02", locationClasses[1]);
+        model.addAttribute("info02", locationInfo[1]);
+        model.addAttribute("location03", reportLocations[2]);
+        model.addAttribute("name03", locationNames[2]);
+        model.addAttribute("rating03", locationClasses[2]);
+        model.addAttribute("info03", locationInfo[2]);
+        model.addAttribute("location04", reportLocations[3]);
+        model.addAttribute("name04", locationNames[3]);
+        model.addAttribute("rating04", locationClasses[3]);
+        model.addAttribute("info04", locationInfo[3]);
+        model.addAttribute("key", mapsKey);
+
+        return "report/2x2-report";
     }
 
     public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {
