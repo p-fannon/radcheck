@@ -5,7 +5,11 @@
 <body>
 
 <nav th:replace="fragments :: navigation"></nav>
-
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
     You entered duplicate locations in your report. Please choose unique locations and try again.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -15,7 +19,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col"><h2 class="p-sm-3">Build your 2x2 report</h2></div>
+        <div class="col"><h2 class="p-sm-3 text-center">Build your two-by-two report</h2></div>
     </div>
 
 <form method="POST" th:action="@{/two-by-two}" th:object="${form}">
@@ -60,7 +64,7 @@
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" class="btn btn-block btn-primary" value="Build the report" />
+        <input type="submit" class="btn btn-block btn-primary" value="Build the report" data-toggle="tooltip" data-placement="bottom" title="Results will be refreshed when using this report builder." />
     </div>
 </form>
 </div>
