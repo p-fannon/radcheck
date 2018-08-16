@@ -5,6 +5,1152 @@
 <body>
 
 <nav th:replace="fragments :: navigation"></nav>
-
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+<div class="container">
+    <div class="row">
+        <div class="col"><h2 class="p-sm-3 text-center" th:text="${message}"></h2></div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 clearfix border border-top-0 border-left-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location01.getLat()} + '%2C' + ${location01.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating01}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name01} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location01.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info01}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location01.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location01.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 0.44 and location01.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 0.64 and location01.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 0.89 and location01.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 1.06 and location01.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 1.28 and location01.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 1.41 and location01.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 1.57 and location01.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 1.74 and location01.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 2.19 and location01.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 2.48 and location01.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 2.83 and location01.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 3.26 and location01.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 3.79 and location01.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 4.46 and location01.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 5.34 and location01.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 6.5 and location01.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 8.11 and location01.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 10.42 and location01.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 13.92 and location01.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 19.63 and location01.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() < 29.88 and location01.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location01.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location01.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location01.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location01.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location01.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location01.getAqiTimestamp().toString()} + ' UTC in ' + ${location01.getCity()} + ', ' + ${location01.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details01">Details</button>
+                <div id="details01" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location01.getLat()} + '&amp;x=' + ${location01.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location01.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location01.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location01.getWindDirection() > 349 and location01.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location01.getWindDirection() > 11 and location01.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location01.getWindDirection() > 33 and location01.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location01.getWindDirection() > 56 and location01.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location01.getWindDirection() > 78 and location01.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location01.getWindDirection() > 100 and location01.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location01.getWindDirection() > 123 and location01.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location01.getWindDirection() > 145 and location01.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location01.getWindDirection() > 168 and location01.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location01.getWindDirection() > 191 and location01.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location01.getWindDirection() > 213 and location01.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location01.getWindDirection() > 236 and location01.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location01.getWindDirection() > 258 and location01.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location01.getWindDirection() > 281 and location01.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location01.getWindDirection() > 303 and location01.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location01.getWindDirection() > 326 and location01.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location01.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location01.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location01.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border border-top-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location02.getLat()} + '%2C' + ${location02.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating02}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name02} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location02.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info02}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location02.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location02.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 0.44 and location02.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 0.64 and location02.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 0.89 and location02.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 1.06 and location02.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 1.28 and location02.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 1.41 and location02.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 1.57 and location02.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 1.74 and location02.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 2.19 and location02.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 2.48 and location02.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 2.83 and location02.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 3.26 and location02.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 3.79 and location02.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 4.46 and location02.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 5.34 and location02.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 6.5 and location02.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 8.11 and location02.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 10.42 and location02.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 13.92 and location02.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 19.63 and location02.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() < 29.88 and location02.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location02.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location02.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location02.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location02.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location02.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location02.getAqiTimestamp().toString()} + ' UTC in ' + ${location02.getCity()} + ', ' + ${location02.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details02">Details</button>
+                <div id="details02" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location02.getLat()} + '&amp;x=' + ${location02.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location02.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location02.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location02.getWindDirection() > 349 and location02.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location02.getWindDirection() > 11 and location02.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location02.getWindDirection() > 33 and location02.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location02.getWindDirection() > 56 and location02.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location02.getWindDirection() > 78 and location02.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location02.getWindDirection() > 100 and location02.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location02.getWindDirection() > 123 and location02.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location02.getWindDirection() > 145 and location02.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location02.getWindDirection() > 168 and location02.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location02.getWindDirection() > 191 and location02.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location02.getWindDirection() > 213 and location02.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location02.getWindDirection() > 236 and location02.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location02.getWindDirection() > 258 and location02.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location02.getWindDirection() > 281 and location02.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location02.getWindDirection() > 303 and location02.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location02.getWindDirection() > 326 and location02.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location02.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location02.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location02.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border border-top-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location03.getLat()} + '%2C' + ${location03.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating03}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name03} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location03.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info03}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location03.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location03.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 0.44 and location03.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 0.64 and location03.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 0.89 and location03.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 1.06 and location03.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 1.28 and location03.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 1.41 and location03.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 1.57 and location03.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 1.74 and location03.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 2.19 and location03.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 2.48 and location03.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 2.83 and location03.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 3.26 and location03.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 3.79 and location03.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 4.46 and location03.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 5.34 and location03.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 6.5 and location03.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 8.11 and location03.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 10.42 and location03.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 13.92 and location03.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 19.63 and location03.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() < 29.88 and location03.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location03.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location03.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location03.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location03.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location03.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location03.getAqiTimestamp().toString()} + ' UTC in ' + ${location03.getCity()} + ', ' + ${location03.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details03">Details</button>
+                <div id="details03" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location03.getLat()} + '&amp;x=' + ${location03.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location03.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location03.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location03.getWindDirection() > 349 and location03.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location03.getWindDirection() > 11 and location03.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location03.getWindDirection() > 33 and location03.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location03.getWindDirection() > 56 and location03.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location03.getWindDirection() > 78 and location03.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location03.getWindDirection() > 100 and location03.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location03.getWindDirection() > 123 and location03.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location03.getWindDirection() > 145 and location03.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location03.getWindDirection() > 168 and location03.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location03.getWindDirection() > 191 and location03.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location03.getWindDirection() > 213 and location03.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location03.getWindDirection() > 236 and location03.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location03.getWindDirection() > 258 and location03.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location03.getWindDirection() > 281 and location03.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location03.getWindDirection() > 303 and location03.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location03.getWindDirection() > 326 and location03.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location03.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location03.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location03.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border border-top-0 border-right-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location04.getLat()} + '%2C' + ${location04.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating04}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name04} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location04.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info04}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location04.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location04.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 0.44 and location04.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 0.64 and location04.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 0.89 and location04.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 1.06 and location04.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 1.28 and location04.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 1.41 and location04.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 1.57 and location04.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 1.74 and location04.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 2.19 and location04.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 2.48 and location04.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 2.83 and location04.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 3.26 and location04.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 3.79 and location04.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 4.46 and location04.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 5.34 and location04.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 6.5 and location04.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 8.11 and location04.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 10.42 and location04.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 13.92 and location04.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 19.63 and location04.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() < 29.88 and location04.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location04.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location04.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location04.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location04.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location04.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location04.getAqiTimestamp().toString()} + ' UTC in ' + ${location04.getCity()} + ', ' + ${location04.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details04">Details</button>
+                <div id="details04" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location04.getLat()} + '&amp;x=' + ${location04.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location04.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location04.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location04.getWindDirection() > 349 and location04.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location04.getWindDirection() > 11 and location04.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location04.getWindDirection() > 33 and location04.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location04.getWindDirection() > 56 and location04.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location04.getWindDirection() > 78 and location04.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location04.getWindDirection() > 100 and location04.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location04.getWindDirection() > 123 and location04.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location04.getWindDirection() > 145 and location04.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location04.getWindDirection() > 168 and location04.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location04.getWindDirection() > 191 and location04.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location04.getWindDirection() > 213 and location04.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location04.getWindDirection() > 236 and location04.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location04.getWindDirection() > 258 and location04.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location04.getWindDirection() > 281 and location04.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location04.getWindDirection() > 303 and location04.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location04.getWindDirection() > 326 and location04.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location04.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location04.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location04.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 clearfix border border-left-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location05.getLat()} + '%2C' + ${location05.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating05}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name05} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location05.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info05}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location05.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location05.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 0.44 and location05.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 0.64 and location05.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 0.89 and location05.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 1.06 and location05.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 1.28 and location05.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 1.41 and location05.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 1.57 and location05.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 1.74 and location05.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 2.19 and location05.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 2.48 and location05.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 2.83 and location05.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 3.26 and location05.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 3.79 and location05.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 4.46 and location05.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 5.34 and location05.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 6.5 and location05.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 8.11 and location05.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 10.42 and location05.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 13.92 and location05.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 19.63 and location05.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() < 29.88 and location05.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location05.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location05.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location05.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location05.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location05.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location05.getAqiTimestamp().toString()} + ' UTC in ' + ${location05.getCity()} + ', ' + ${location05.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details05">Details</button>
+                <div id="details05" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location05.getLat()} + '&amp;x=' + ${location05.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location05.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location05.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location05.getWindDirection() > 349 and location05.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location05.getWindDirection() > 11 and location05.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location05.getWindDirection() > 33 and location05.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location05.getWindDirection() > 56 and location05.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location05.getWindDirection() > 78 and location05.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location05.getWindDirection() > 100 and location05.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location05.getWindDirection() > 123 and location05.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location05.getWindDirection() > 145 and location05.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location05.getWindDirection() > 168 and location05.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location05.getWindDirection() > 191 and location05.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location05.getWindDirection() > 213 and location05.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location05.getWindDirection() > 236 and location05.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location05.getWindDirection() > 258 and location05.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location05.getWindDirection() > 281 and location05.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location05.getWindDirection() > 303 and location05.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location05.getWindDirection() > 326 and location05.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location05.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location05.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location05.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location06.getLat()} + '%2C' + ${location06.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating06}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name06} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location06.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info06}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location06.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location06.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 0.44 and location06.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 0.64 and location06.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 0.89 and location06.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 1.06 and location06.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 1.28 and location06.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 1.41 and location06.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 1.57 and location06.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 1.74 and location06.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 2.19 and location06.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 2.48 and location06.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 2.83 and location06.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 3.26 and location06.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 3.79 and location06.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 4.46 and location06.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 5.34 and location06.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 6.5 and location06.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 8.11 and location06.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 10.42 and location06.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 13.92 and location06.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 19.63 and location06.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() < 29.88 and location06.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location06.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location06.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location06.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location06.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location06.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location06.getAqiTimestamp().toString()} + ' UTC in ' + ${location06.getCity()} + ', ' + ${location06.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details06">Details</button>
+                <div id="details06" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location06.getLat()} + '&amp;x=' + ${location06.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location06.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location06.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location06.getWindDirection() > 349 and location06.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location06.getWindDirection() > 11 and location06.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location06.getWindDirection() > 33 and location06.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location06.getWindDirection() > 56 and location06.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location06.getWindDirection() > 78 and location06.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location06.getWindDirection() > 100 and location06.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location06.getWindDirection() > 123 and location06.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location06.getWindDirection() > 145 and location06.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location06.getWindDirection() > 168 and location06.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location06.getWindDirection() > 191 and location06.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location06.getWindDirection() > 213 and location06.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location06.getWindDirection() > 236 and location06.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location06.getWindDirection() > 258 and location06.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location06.getWindDirection() > 281 and location06.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location06.getWindDirection() > 303 and location06.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location06.getWindDirection() > 326 and location06.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location06.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location06.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location06.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location07.getLat()} + '%2C' + ${location07.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating07}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name07} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location07.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info07}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location07.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location07.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 0.44 and location07.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 0.64 and location07.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 0.89 and location07.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 1.06 and location07.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 1.28 and location07.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 1.41 and location07.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 1.57 and location07.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 1.74 and location07.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 2.19 and location07.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 2.48 and location07.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 2.83 and location07.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 3.26 and location07.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 3.79 and location07.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 4.46 and location07.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 5.34 and location07.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 6.5 and location07.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 8.11 and location07.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 10.42 and location07.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 13.92 and location07.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 19.63 and location07.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() < 29.88 and location07.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location07.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location07.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location07.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location07.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location07.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location07.getAqiTimestamp().toString()} + ' UTC in ' + ${location07.getCity()} + ', ' + ${location07.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details07">Details</button>
+                <div id="details07" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location07.getLat()} + '&amp;x=' + ${location07.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location07.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location07.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location07.getWindDirection() > 349 and location07.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location07.getWindDirection() > 11 and location07.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location07.getWindDirection() > 33 and location07.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location07.getWindDirection() > 56 and location07.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location07.getWindDirection() > 78 and location07.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location07.getWindDirection() > 100 and location07.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location07.getWindDirection() > 123 and location07.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location07.getWindDirection() > 145 and location07.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location07.getWindDirection() > 168 and location07.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location07.getWindDirection() > 191 and location07.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location07.getWindDirection() > 213 and location07.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location07.getWindDirection() > 236 and location07.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location07.getWindDirection() > 258 and location07.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location07.getWindDirection() > 281 and location07.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location07.getWindDirection() > 303 and location07.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location07.getWindDirection() > 326 and location07.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location07.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location07.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location07.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border border-right-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location08.getLat()} + '%2C' + ${location08.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating08}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name08} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location08.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info08}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location08.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location08.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 0.44 and location08.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 0.64 and location08.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 0.89 and location08.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 1.06 and location08.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 1.28 and location08.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 1.41 and location08.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 1.57 and location08.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 1.74 and location08.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 2.19 and location08.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 2.48 and location08.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 2.83 and location08.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 3.26 and location08.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 3.79 and location08.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 4.46 and location08.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 5.34 and location08.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 6.5 and location08.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 8.11 and location08.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 10.42 and location08.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 13.92 and location08.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 19.63 and location08.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() < 29.88 and location08.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location08.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location08.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location08.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location08.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location08.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location08.getAqiTimestamp().toString()} + ' UTC in ' + ${location08.getCity()} + ', ' + ${location08.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details08">Details</button>
+                <div id="details08" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location08.getLat()} + '&amp;x=' + ${location08.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location08.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location08.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location08.getWindDirection() > 349 and location08.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location08.getWindDirection() > 11 and location08.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location08.getWindDirection() > 33 and location08.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location08.getWindDirection() > 56 and location08.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location08.getWindDirection() > 78 and location08.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location08.getWindDirection() > 100 and location08.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location08.getWindDirection() > 123 and location08.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location08.getWindDirection() > 145 and location08.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location08.getWindDirection() > 168 and location08.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location08.getWindDirection() > 191 and location08.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location08.getWindDirection() > 213 and location08.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location08.getWindDirection() > 236 and location08.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location08.getWindDirection() > 258 and location08.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location08.getWindDirection() > 281 and location08.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location08.getWindDirection() > 303 and location08.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location08.getWindDirection() > 326 and location08.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location08.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location08.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location08.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 clearfix border border-left-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location09.getLat()} + '%2C' + ${location09.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating09}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name09} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location09.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info09}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location09.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location09.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 0.44 and location09.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 0.64 and location09.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 0.89 and location09.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 1.06 and location09.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 1.28 and location09.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 1.41 and location09.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 1.57 and location09.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 1.74 and location09.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 2.19 and location09.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 2.48 and location09.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 2.83 and location09.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 3.26 and location09.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 3.79 and location09.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 4.46 and location09.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 5.34 and location09.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 6.5 and location09.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 8.11 and location09.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 10.42 and location09.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 13.92 and location09.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 19.63 and location09.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() < 29.88 and location09.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location09.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location09.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location09.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location09.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location09.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location09.getAqiTimestamp().toString()} + ' UTC in ' + ${location09.getCity()} + ', ' + ${location09.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details09">Details</button>
+                <div id="details09" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location09.getLat()} + '&amp;x=' + ${location09.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location09.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location09.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location09.getWindDirection() > 349 and location09.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location09.getWindDirection() > 11 and location09.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location09.getWindDirection() > 33 and location09.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location09.getWindDirection() > 56 and location09.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location09.getWindDirection() > 78 and location09.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location09.getWindDirection() > 100 and location09.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location09.getWindDirection() > 123 and location09.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location09.getWindDirection() > 145 and location09.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location09.getWindDirection() > 168 and location09.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location09.getWindDirection() > 191 and location09.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location09.getWindDirection() > 213 and location09.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location09.getWindDirection() > 236 and location09.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location09.getWindDirection() > 258 and location09.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location09.getWindDirection() > 281 and location09.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location09.getWindDirection() > 303 and location09.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location09.getWindDirection() > 326 and location09.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location09.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location09.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location09.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location010.getLat()} + '%2C' + ${location010.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating010}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name010} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location010.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info010}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location010.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location010.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 0.44 and location010.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 0.64 and location010.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 0.89 and location010.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 1.06 and location010.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 1.28 and location010.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 1.41 and location010.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 1.57 and location010.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 1.74 and location010.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 2.19 and location010.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 2.48 and location010.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 2.83 and location010.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 3.26 and location010.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 3.79 and location010.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 4.46 and location010.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 5.34 and location010.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 6.5 and location010.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 8.11 and location010.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 10.42 and location010.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 13.92 and location010.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 19.63 and location010.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() < 29.88 and location010.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location010.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location010.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location010.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location010.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location010.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location010.getAqiTimestamp().toString()} + ' UTC in ' + ${location010.getCity()} + ', ' + ${location010.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details010">Details</button>
+                <div id="details010" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location010.getLat()} + '&amp;x=' + ${location010.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location010.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location010.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location010.getWindDirection() > 349 and location010.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location010.getWindDirection() > 11 and location010.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location010.getWindDirection() > 33 and location010.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location010.getWindDirection() > 56 and location010.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location010.getWindDirection() > 78 and location010.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location010.getWindDirection() > 100 and location010.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location010.getWindDirection() > 123 and location010.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location010.getWindDirection() > 145 and location010.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location010.getWindDirection() > 168 and location010.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location010.getWindDirection() > 191 and location010.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location010.getWindDirection() > 213 and location010.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location010.getWindDirection() > 236 and location010.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location010.getWindDirection() > 258 and location010.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location010.getWindDirection() > 281 and location010.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location010.getWindDirection() > 303 and location010.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location010.getWindDirection() > 326 and location010.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location010.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location010.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location010.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location011.getLat()} + '%2C' + ${location011.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating011}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name011} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location011.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info011}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location011.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location011.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 0.44 and location011.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 0.64 and location011.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 0.89 and location011.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 1.06 and location011.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 1.28 and location011.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 1.41 and location011.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 1.57 and location011.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 1.74 and location011.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 2.19 and location011.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 2.48 and location011.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 2.83 and location011.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 3.26 and location011.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 3.79 and location011.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 4.46 and location011.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 5.34 and location011.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 6.5 and location011.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 8.11 and location011.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 10.42 and location011.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 13.92 and location011.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 19.63 and location011.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() < 29.88 and location011.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location011.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location011.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location011.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location011.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location011.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location011.getAqiTimestamp().toString()} + ' UTC in ' + ${location011.getCity()} + ', ' + ${location011.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details011">Details</button>
+                <div id="details011" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location011.getLat()} + '&amp;x=' + ${location011.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location011.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location011.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location011.getWindDirection() > 349 and location011.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location011.getWindDirection() > 11 and location011.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location011.getWindDirection() > 33 and location011.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location011.getWindDirection() > 56 and location011.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location011.getWindDirection() > 78 and location011.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location011.getWindDirection() > 100 and location011.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location011.getWindDirection() > 123 and location011.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location011.getWindDirection() > 145 and location011.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location011.getWindDirection() > 168 and location011.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location011.getWindDirection() > 191 and location011.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location011.getWindDirection() > 213 and location011.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location011.getWindDirection() > 236 and location011.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location011.getWindDirection() > 258 and location011.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location011.getWindDirection() > 281 and location011.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location011.getWindDirection() > 303 and location011.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location011.getWindDirection() > 326 and location011.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location011.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location011.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location011.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border border-right-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location012.getLat()} + '%2C' + ${location012.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating012}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name012} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location012.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info012}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location012.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location012.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 0.44 and location012.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 0.64 and location012.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 0.89 and location012.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 1.06 and location012.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 1.28 and location012.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 1.41 and location012.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 1.57 and location012.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 1.74 and location012.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 2.19 and location012.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 2.48 and location012.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 2.83 and location012.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 3.26 and location012.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 3.79 and location012.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 4.46 and location012.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 5.34 and location012.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 6.5 and location012.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 8.11 and location012.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 10.42 and location012.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 13.92 and location012.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 19.63 and location012.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() < 29.88 and location012.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location012.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location012.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location012.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location012.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location012.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location012.getAqiTimestamp().toString()} + ' UTC in ' + ${location012.getCity()} + ', ' + ${location012.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details012">Details</button>
+                <div id="details012" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location012.getLat()} + '&amp;x=' + ${location012.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location012.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location012.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location012.getWindDirection() > 349 and location012.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location012.getWindDirection() > 11 and location012.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location012.getWindDirection() > 33 and location012.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location012.getWindDirection() > 56 and location012.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location012.getWindDirection() > 78 and location012.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location012.getWindDirection() > 100 and location012.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location012.getWindDirection() > 123 and location012.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location012.getWindDirection() > 145 and location012.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location012.getWindDirection() > 168 and location012.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location012.getWindDirection() > 191 and location012.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location012.getWindDirection() > 213 and location012.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location012.getWindDirection() > 236 and location012.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location012.getWindDirection() > 258 and location012.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location012.getWindDirection() > 281 and location012.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location012.getWindDirection() > 303 and location012.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location012.getWindDirection() > 326 and location012.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location012.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location012.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location012.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 clearfix border border-bottom-0 border-left-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location013.getLat()} + '%2C' + ${location013.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating013}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name013} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location013.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info013}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location013.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location013.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 0.44 and location013.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 0.64 and location013.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 0.89 and location013.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 1.06 and location013.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 1.28 and location013.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 1.41 and location013.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 1.57 and location013.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 1.74 and location013.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 2.19 and location013.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 2.48 and location013.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 2.83 and location013.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 3.26 and location013.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 3.79 and location013.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 4.46 and location013.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 5.34 and location013.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 6.5 and location013.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 8.11 and location013.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 10.42 and location013.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 13.92 and location013.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 19.63 and location013.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() < 29.88 and location013.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location013.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location013.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location013.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location013.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location013.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location013.getAqiTimestamp().toString()} + ' UTC in ' + ${location013.getCity()} + ', ' + ${location013.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details013">Details</button>
+                <div id="details013" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location013.getLat()} + '&amp;x=' + ${location013.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location013.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location013.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location013.getWindDirection() > 349 and location013.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location013.getWindDirection() > 11 and location013.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location013.getWindDirection() > 33 and location013.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location013.getWindDirection() > 56 and location013.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location013.getWindDirection() > 78 and location013.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location013.getWindDirection() > 100 and location013.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location013.getWindDirection() > 123 and location013.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location013.getWindDirection() > 145 and location013.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location013.getWindDirection() > 168 and location013.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location013.getWindDirection() > 191 and location013.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location013.getWindDirection() > 213 and location013.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location013.getWindDirection() > 236 and location013.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location013.getWindDirection() > 258 and location013.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location013.getWindDirection() > 281 and location013.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location013.getWindDirection() > 303 and location013.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location013.getWindDirection() > 326 and location013.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location013.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location013.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location013.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border border-bottom-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location014.getLat()} + '%2C' + ${location014.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating014}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name014} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location014.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info014}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location014.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location014.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 0.44 and location014.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 0.64 and location014.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 0.89 and location014.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 1.06 and location014.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 1.28 and location014.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 1.41 and location014.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 1.57 and location014.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 1.74 and location014.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 2.19 and location014.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 2.48 and location014.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 2.83 and location014.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 3.26 and location014.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 3.79 and location014.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 4.46 and location014.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 5.34 and location014.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 6.5 and location014.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 8.11 and location014.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 10.42 and location014.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 13.92 and location014.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 19.63 and location014.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() < 29.88 and location014.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location014.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location014.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location014.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location014.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location014.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location014.getAqiTimestamp().toString()} + ' UTC in ' + ${location014.getCity()} + ', ' + ${location014.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details014">Details</button>
+                <div id="details014" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location014.getLat()} + '&amp;x=' + ${location014.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location014.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location014.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location014.getWindDirection() > 349 and location014.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location014.getWindDirection() > 11 and location014.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location014.getWindDirection() > 33 and location014.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location014.getWindDirection() > 56 and location014.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location014.getWindDirection() > 78 and location014.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location014.getWindDirection() > 100 and location014.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location014.getWindDirection() > 123 and location014.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location014.getWindDirection() > 145 and location014.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location014.getWindDirection() > 168 and location014.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location014.getWindDirection() > 191 and location014.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location014.getWindDirection() > 213 and location014.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location014.getWindDirection() > 236 and location014.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location014.getWindDirection() > 258 and location014.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location014.getWindDirection() > 281 and location014.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location014.getWindDirection() > 303 and location014.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location014.getWindDirection() > 326 and location014.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location014.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location014.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location014.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border border-bottom-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location015.getLat()} + '%2C' + ${location015.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating015}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name015} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location015.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info015}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location015.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location015.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 0.44 and location015.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 0.64 and location015.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 0.89 and location015.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 1.06 and location015.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 1.28 and location015.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 1.41 and location015.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 1.57 and location015.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 1.74 and location015.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 2.19 and location015.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 2.48 and location015.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 2.83 and location015.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 3.26 and location015.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 3.79 and location015.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 4.46 and location015.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 5.34 and location015.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 6.5 and location015.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 8.11 and location015.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 10.42 and location015.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 13.92 and location015.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 19.63 and location015.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() < 29.88 and location015.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location015.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location015.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location015.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location015.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location015.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location015.getAqiTimestamp().toString()} + ' UTC in ' + ${location015.getCity()} + ', ' + ${location015.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details015">Details</button>
+                <div id="details015" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location015.getLat()} + '&amp;x=' + ${location015.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location015.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location015.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location015.getWindDirection() > 349 and location015.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location015.getWindDirection() > 11 and location015.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location015.getWindDirection() > 33 and location015.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location015.getWindDirection() > 56 and location015.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location015.getWindDirection() > 78 and location015.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location015.getWindDirection() > 100 and location015.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location015.getWindDirection() > 123 and location015.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location015.getWindDirection() > 145 and location015.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location015.getWindDirection() > 168 and location015.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location015.getWindDirection() > 191 and location015.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location015.getWindDirection() > 213 and location015.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location015.getWindDirection() > 236 and location015.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location015.getWindDirection() > 258 and location015.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location015.getWindDirection() > 281 and location015.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location015.getWindDirection() > 303 and location015.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location015.getWindDirection() > 326 and location015.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location015.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location015.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location015.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 clearfix border border-bottom-0 border-right-0">
+            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location016.getLat()} + '%2C' + ${location016.getLon()} + '&amp;key=' + ${key}"></iframe>
+            </div>
+            <div th:class="'report-cell float-right ' + ${rating016}">
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name016} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location016.getRating()}"></h5>
+                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info016}"></p>
+            </div>
+            <div class="report-cell float-left">
+                <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location016.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location016.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 0.44 and location016.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 0.64 and location016.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 0.89 and location016.getRadValue() >= 0.64}">&plusmn;0.03 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 1.06 and location016.getRadValue() >= 0.89}">&plusmn;0.04 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 1.28 and location016.getRadValue() >= 1.06}">&plusmn;0.05 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 1.41 and location016.getRadValue() >= 1.28}">&plusmn;0.06 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 1.57 and location016.getRadValue() >= 1.41}">&plusmn;0.07 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 1.74 and location016.getRadValue() >= 1.57}">&plusmn;0.10 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 2.19 and location016.getRadValue() >= 1.74}">&plusmn;0.13 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 2.48 and location016.getRadValue() >= 2.19}">&plusmn;0.16 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 2.83 and location016.getRadValue() >= 2.48}">&plusmn;0.19 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 3.26 and location016.getRadValue() >= 2.83}">&plusmn;0.24 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 3.79 and location016.getRadValue() >= 3.26}">&plusmn;0.30 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 4.46 and location016.getRadValue() >= 3.79}">&plusmn;0.38 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 5.34 and location016.getRadValue() >= 4.46}">&plusmn;0.50 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 6.5 and location016.getRadValue() >= 5.34}">&plusmn;0.67 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 8.11 and location016.getRadValue() >= 6.5}">&plusmn;0.94 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 10.42 and location016.getRadValue() >= 8.11}">&plusmn;1.37 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 13.92 and location016.getRadValue() >= 10.42}">&plusmn;2.13 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 19.63 and location016.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() < 29.88 and location016.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
+                    <span class="small" th:if="${location016.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location016.isCurrent()} == false">*</span></p>
+                <p class="small">Latest measurement: <span th:text="${location016.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location016.getTotalMeasurements()}"></span> total measurements.</p>
+                <p>AQI: <strong th:text="${location016.getAqiValue()}"></strong></p>
+                <p th:text="'AQI Timestamp: ' + ${location016.getAqiTimestamp().toString()} + ' UTC in ' + ${location016.getCity()} + ', ' + ${location016.getCountry()}" class="small"></p>
+            </div>
+            <div class="report-cell float-right">
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details016">Details</button>
+                <div id="details016" class="collapse pt-sm-1">
+                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location016.getLat()} + '&amp;x=' + ${location016.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location016.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location016.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                    <p class="small">Wind is blowing <span th:if="${location016.getWindDirection() > 349 and location016.getWindDirection() <= 11}">north</span>
+                        <span th:if="${location016.getWindDirection() > 11 and location016.getWindDirection() <= 33}">north-by-northeast</span>
+                        <span th:if="${location016.getWindDirection() > 33 and location016.getWindDirection() <= 56}">northeast</span>
+                        <span th:if="${location016.getWindDirection() > 56 and location016.getWindDirection() <= 78}">east-by-northeast</span>
+                        <span th:if="${location016.getWindDirection() > 78 and location016.getWindDirection() <= 100}">east</span>
+                        <span th:if="${location016.getWindDirection() > 100 and location016.getWindDirection() <= 123}">east-by-southeast</span>
+                        <span th:if="${location016.getWindDirection() > 123 and location016.getWindDirection() <= 145}">southeast</span>
+                        <span th:if="${location016.getWindDirection() > 145 and location016.getWindDirection() <= 168}">south-by-southeast</span>
+                        <span th:if="${location016.getWindDirection() > 168 and location016.getWindDirection() <= 191}">south</span>
+                        <span th:if="${location016.getWindDirection() > 191 and location016.getWindDirection() <= 213}">south-by-southwest</span>
+                        <span th:if="${location016.getWindDirection() > 213 and location016.getWindDirection() <= 236}">southwest</span>
+                        <span th:if="${location016.getWindDirection() > 236 and location016.getWindDirection() <= 258}">west-by-southwest</span>
+                        <span th:if="${location016.getWindDirection() > 258 and location016.getWindDirection() <= 281}">west</span>
+                        <span th:if="${location016.getWindDirection() > 281 and location016.getWindDirection() <= 303}">west-by-northwest</span>
+                        <span th:if="${location016.getWindDirection() > 303 and location016.getWindDirection() <= 326}">northwest</span>
+                        <span th:if="${location016.getWindDirection() > 326 and location016.getWindDirection() <= 349}">north-by-northwest</span> at <span th:text="${#numbers.formatInteger(location016.getWindSpeed() * 2.27273,1)}"></span> mph.</p>
+                    <p class="small">The main pollutant in the environment is <span th:switch="${location016.getMainPollutant()}">
+                    <span th:case="'p2'">PM2.5.</span>
+                    <span th:case="'p1'">PM10.</span>
+                    <span th:case="'o3'">ozone.</span>
+                    <span th:case="'n2'">nitrogen dioxide.</span>
+                    <span th:case="'s2'">sulfur dioxide.</span>
+                    <span th:case="'co'">carbon monoxide.</span>
+                </span></p>
+                    <p class="small">After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((location016.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:if="${current == false}" class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <p class="pt-sm-1 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+        </div>
+    </div>
+</div>
 </body>
 </html>

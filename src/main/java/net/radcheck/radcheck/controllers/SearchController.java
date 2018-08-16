@@ -290,12 +290,12 @@ public class SearchController {
                                       Errors errors,
                                       @RequestParam List<Integer> locationIds,
                                       Model model) throws IOException {
-        Set<LatLon> reportLatLon = new HashSet<>();
+        ArrayList<LatLon> orderedLatLon = new ArrayList<>();
         for (int index : locationIds) {
-            if (reportLatLon.contains(locationRepository.findOne(index))) {
+            if (orderedLatLon.contains(locationRepository.findOne(index))) {
                 errors.rejectValue("locationIds", "error.buildreportform");
             } else {
-                reportLatLon.add(locationRepository.findOne(index));
+                orderedLatLon.add(locationRepository.findOne(index));
             }
         }
         if (errors.hasErrors()) {
@@ -307,7 +307,7 @@ public class SearchController {
             model.addAttribute("form", reportForm);
             return "redirect:/two-by-two?error=true";
         }
-        LatLon[] reportLocations = reportLatLon.toArray(new LatLon[0]);
+        LatLon[] reportLocations = orderedLatLon.toArray(new LatLon[0]);
         String[] locationNames = {"", "", "", ""};
         String[] locationClasses = {"", "", "", ""};
         String[] locationInfo = {"", "", "", ""};
@@ -315,64 +315,14 @@ public class SearchController {
         List<LatLon> savedLocations = user.getLocations();
         boolean isCurrent = true;
         for (LatLon location : savedLocations) {
-            if (reportLocations[0].getId() == location.getId()) {
-                Array.set(locationNames, 0, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 0, getRatingClass(location));
-                Array.set(locationInfo, 0, getRatingInfo(location));
-                Instant hereAndNow = Instant.now();
-                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
-                if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
-                    location = refreshLocation(location);
-                    location.setViewCount(location.getViewCount() + 1);
-                    locationRepository.save(location);
-                }
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[1].getId() == location.getId()) {
-                Array.set(locationNames, 1, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 1, getRatingClass(location));
-                Array.set(locationInfo, 1, getRatingInfo(location));
-                Instant hereAndNow = Instant.now();
-                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
-                if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
-                    location = refreshLocation(location);
-                    location.setViewCount(location.getViewCount() + 1);
-                    locationRepository.save(location);
-                }
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[2].getId() == location.getId()) {
-                Array.set(locationNames, 2, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 2, getRatingClass(location));
-                Array.set(locationInfo, 2, getRatingInfo(location));
-                Instant hereAndNow = Instant.now();
-                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
-                if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
-                    location = refreshLocation(location);
-                    location.setViewCount(location.getViewCount() + 1);
-                    locationRepository.save(location);
-                }
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[3].getId() == location.getId()) {
-                Array.set(locationNames, 3, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 3, getRatingClass(location));
-                Array.set(locationInfo, 3, getRatingInfo(location));
-                Instant hereAndNow = Instant.now();
-                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
-                if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
-                    location = refreshLocation(location);
-                    location.setViewCount(location.getViewCount() + 1);
-                    locationRepository.save(location);
-                }
-                if (!location.isCurrent()) {
-                    isCurrent = false;
+            for (int i = 0; i < 4; i++) {
+                if (reportLocations[i].getId() == location.getId()) {
+                    Array.set(locationNames, i, user.getNames().get(user.getLocations().indexOf(location)));
+                    Array.set(locationClasses, i, getRatingClass(location));
+                    Array.set(locationInfo, i, getRatingInfo(location));
+                    if (!location.isCurrent()) {
+                        isCurrent = false;
+                    }
                 }
             }
         }
@@ -383,22 +333,12 @@ public class SearchController {
         model.addAttribute("title", "Your 2x2 Report");
         model.addAttribute("message", "Your report generated on " + todayDate.toString() + ":");
         model.addAttribute("current", isCurrent);
-        model.addAttribute("location01", reportLocations[0]);
-        model.addAttribute("name01", locationNames[0]);
-        model.addAttribute("rating01", locationClasses[0]);
-        model.addAttribute("info01", locationInfo[0]);
-        model.addAttribute("location02", reportLocations[1]);
-        model.addAttribute("name02", locationNames[1]);
-        model.addAttribute("rating02", locationClasses[1]);
-        model.addAttribute("info02", locationInfo[1]);
-        model.addAttribute("location03", reportLocations[2]);
-        model.addAttribute("name03", locationNames[2]);
-        model.addAttribute("rating03", locationClasses[2]);
-        model.addAttribute("info03", locationInfo[2]);
-        model.addAttribute("location04", reportLocations[3]);
-        model.addAttribute("name04", locationNames[3]);
-        model.addAttribute("rating04", locationClasses[3]);
-        model.addAttribute("info04", locationInfo[3]);
+        for (int j = 0; j < 4; j++) {
+            model.addAttribute("location0" + (j+1), reportLocations[j]);
+            model.addAttribute("name0" + (j+1), locationNames[j]);
+            model.addAttribute("rating0" + (j+1), locationClasses[j]);
+            model.addAttribute("info0" + (j+1), locationInfo[j]);
+        }
         model.addAttribute("key", mapsKey);
 
         return "report/2x2-report";
@@ -407,6 +347,16 @@ public class SearchController {
     @RequestMapping(value = "/three-by-three", method=RequestMethod.GET)
     public String buildThreeByThreeReport(Model model){
         User user = getAccount();
+        if (user.getLocations().size() < 9) {
+            String account = user.getEmail();
+            model.addAttribute("account", account);
+            model.addAttribute("title", "Your user profile");
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("names", user.getNames());
+            model.addAttribute("user", user);
+
+            return "redirect:/user/profile?toofewthree=true";
+        }
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -421,12 +371,12 @@ public class SearchController {
                                           Errors errors,
                                           @RequestParam List<Integer> locationIds,
                                           Model model) {
-        Set<LatLon> reportLatLon = new HashSet<>();
+        ArrayList<LatLon> orderedLatLon = new ArrayList<>();
         for (int index : locationIds) {
-            if (reportLatLon.contains(locationRepository.findOne(index))) {
+            if (orderedLatLon.contains(locationRepository.findOne(index))) {
                 errors.rejectValue("locationIds", "error.buildreportform");
             } else {
-                reportLatLon.add(locationRepository.findOne(index));
+                orderedLatLon.add(locationRepository.findOne(index));
             }
         }
         if (errors.hasErrors()) {
@@ -434,11 +384,11 @@ public class SearchController {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Build a 2x2 report");
+            model.addAttribute("title", "Build a 3x3 report");
             model.addAttribute("form", reportForm);
             return "redirect:/three-by-three?error=true";
         }
-        LatLon[] reportLocations = reportLatLon.toArray(new LatLon[0]);
+        LatLon[] reportLocations = orderedLatLon.toArray(new LatLon[0]);
         String[] locationNames = {"", "", "", "", "", "", "", "", ""};
         String[] locationClasses = {"", "", "", "", "", "", "", "", ""};
         String[] locationInfo = {"", "", "", "", "", "", "", "", ""};
@@ -446,73 +396,14 @@ public class SearchController {
         List<LatLon> savedLocations = user.getLocations();
         boolean isCurrent = true;
         for (LatLon location : savedLocations) {
-            if (reportLocations[0].getId() == location.getId()) {
-                Array.set(locationNames, 0, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 0, getRatingClass(location));
-                Array.set(locationInfo, 0, getRatingInfo(location));
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-                }
-            if (reportLocations[1].getId() == location.getId()) {
-                Array.set(locationNames, 1, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 1, getRatingClass(location));
-                Array.set(locationInfo, 1, getRatingInfo(location));
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[2].getId() == location.getId()) {
-                Array.set(locationNames, 2, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 2, getRatingClass(location));
-                Array.set(locationInfo, 2, getRatingInfo(location));
-            }
-            if (reportLocations[3].getId() == location.getId()) {
-                Array.set(locationNames, 3, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 3, getRatingClass(location));
-                Array.set(locationInfo, 3, getRatingInfo(location));
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[4].getId() == location.getId()) {
-                Array.set(locationNames, 4, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 4, getRatingClass(location));
-                Array.set(locationInfo, 4, getRatingInfo(location));
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[5].getId() == location.getId()) {
-                Array.set(locationNames, 5, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 5, getRatingClass(location));
-                Array.set(locationInfo, 5, getRatingInfo(location));
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[6].getId() == location.getId()) {
-                Array.set(locationNames, 6, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 6, getRatingClass(location));
-                Array.set(locationInfo, 6, getRatingInfo(location));
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[7].getId() == location.getId()) {
-                Array.set(locationNames, 7, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 7, getRatingClass(location));
-                Array.set(locationInfo, 7, getRatingInfo(location));
-                if (!location.isCurrent()) {
-                    isCurrent = false;
-                }
-            }
-            if (reportLocations[8].getId() == location.getId()) {
-                Array.set(locationNames, 8, user.getNames().get(user.getLocations().indexOf(location)));
-                Array.set(locationClasses, 8, getRatingClass(location));
-                Array.set(locationInfo, 8, getRatingInfo(location));
-                if (!location.isCurrent()) {
-                    isCurrent = false;
+            for (int i = 0; i < 9; i++) {
+                if (reportLocations[i].getId() == location.getId()) {
+                    Array.set(locationNames, i, user.getNames().get(user.getLocations().indexOf(location)));
+                    Array.set(locationClasses, i, getRatingClass(location));
+                    Array.set(locationInfo, i, getRatingInfo(location));
+                    if (!location.isCurrent()) {
+                        isCurrent = false;
+                    }
                 }
             }
         }
@@ -523,45 +414,96 @@ public class SearchController {
         model.addAttribute("title", "Your 3x3 Report");
         model.addAttribute("message", "Your report generated on " + todayDate.toString() + ":");
         model.addAttribute("current", isCurrent);
-        model.addAttribute("location01", reportLocations[0]);
-        model.addAttribute("name01", locationNames[0]);
-        model.addAttribute("rating01", locationClasses[0]);
-        model.addAttribute("info01", locationInfo[0]);
-        model.addAttribute("location02", reportLocations[1]);
-        model.addAttribute("name02", locationNames[1]);
-        model.addAttribute("rating02", locationClasses[1]);
-        model.addAttribute("info02", locationInfo[1]);
-        model.addAttribute("location03", reportLocations[2]);
-        model.addAttribute("name03", locationNames[2]);
-        model.addAttribute("rating03", locationClasses[2]);
-        model.addAttribute("info03", locationInfo[2]);
-        model.addAttribute("location04", reportLocations[3]);
-        model.addAttribute("name04", locationNames[3]);
-        model.addAttribute("rating04", locationClasses[3]);
-        model.addAttribute("info04", locationInfo[3]);
-        model.addAttribute("location05", reportLocations[4]);
-        model.addAttribute("name05", locationNames[4]);
-        model.addAttribute("rating05", locationClasses[4]);
-        model.addAttribute("info05", locationInfo[4]);
-        model.addAttribute("location06", reportLocations[5]);
-        model.addAttribute("name06", locationNames[5]);
-        model.addAttribute("rating06", locationClasses[5]);
-        model.addAttribute("info06", locationInfo[5]);
-        model.addAttribute("location07", reportLocations[6]);
-        model.addAttribute("name07", locationNames[6]);
-        model.addAttribute("rating07", locationClasses[6]);
-        model.addAttribute("info07", locationInfo[6]);
-        model.addAttribute("location08", reportLocations[7]);
-        model.addAttribute("name08", locationNames[7]);
-        model.addAttribute("rating08", locationClasses[7]);
-        model.addAttribute("info08", locationInfo[7]);
-        model.addAttribute("location09", reportLocations[8]);
-        model.addAttribute("name09", locationNames[8]);
-        model.addAttribute("rating09", locationClasses[8]);
-        model.addAttribute("info09", locationInfo[8]);
+        for (int j = 0; j < 9; j++) {
+            model.addAttribute("location0" + (j+1), reportLocations[j]);
+            model.addAttribute("name0" + (j+1), locationNames[j]);
+            model.addAttribute("rating0" + (j+1), locationClasses[j]);
+            model.addAttribute("info0" + (j+1), locationInfo[j]);
+        }
         model.addAttribute("key", mapsKey);
 
         return "report/3x3-report";
+    }
+
+    @RequestMapping(value = "/four-by-four", method=RequestMethod.GET)
+    public String buildFourByFourReport(Model model) {
+        User user = getAccount();
+        if (user.getLocations().size() < 16) {
+            String account = user.getEmail();
+            model.addAttribute("account", account);
+            model.addAttribute("title", "Your user profile");
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("names", user.getNames());
+            model.addAttribute("user", user);
+
+            return "redirect:/user/profile?toofewfour=true";
+        }
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Build a 3x3 report");
+        model.addAttribute("form", new BuildReportForm(user));
+
+        return "report/4x4-builder";
+    }
+
+    @RequestMapping(value = "/four-by-four", method=RequestMethod.POST)
+    public String serveFourByFourReport(@ModelAttribute @Valid BuildReportForm reportForm,
+                                        Errors errors,
+                                        @RequestParam List<Integer> locationIds,
+                                        Model model) {
+        ArrayList<LatLon> orderedLatLon = new ArrayList<>();
+        for (int index : locationIds) {
+            if (orderedLatLon.contains(locationRepository.findOne(index))) {
+                errors.rejectValue("locationIds", "error.buildreportform");
+            } else {
+                orderedLatLon.add(locationRepository.findOne(index));
+            }
+        }
+        if (errors.hasErrors()) {
+            User user = getAccount();
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Build a 4x4 report");
+            model.addAttribute("form", reportForm);
+            return "redirect:/four-by-four?error=true";
+        }
+        LatLon[] reportLocations = orderedLatLon.toArray(new LatLon[0]);
+        String[] locationNames = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+        String[] locationClasses = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+        String[] locationInfo = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+        User user = getAccount();
+        List<LatLon> savedLocations = user.getLocations();
+        boolean isCurrent = true;
+        for (LatLon location : savedLocations) {
+            for (int i = 0; i < 16; i++) {
+                if (reportLocations[i].getId() == location.getId()) {
+                    Array.set(locationNames, i, user.getNames().get(user.getLocations().indexOf(location)));
+                    Array.set(locationClasses, i, getRatingClass(location));
+                    Array.set(locationInfo, i, getRatingInfo(location));
+                    if (!location.isCurrent()) {
+                        isCurrent = false;
+                    }
+                }
+            }
+        }
+        String account = getUser();
+        Date todayDate = Date.from(Instant.now());
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Your 4x4 Report");
+        model.addAttribute("message", "Your report generated on " + todayDate.toString() + ":");
+        model.addAttribute("current", isCurrent);
+        for (int j = 0; j < 16; j++) {
+            model.addAttribute("location0" + (j+1), reportLocations[j]);
+            model.addAttribute("name0" + (j+1), locationNames[j]);
+            model.addAttribute("rating0" + (j+1), locationClasses[j]);
+            model.addAttribute("info0" + (j+1), locationInfo[j]);
+        }
+        model.addAttribute("key", mapsKey);
+
+        return "report/4x4-report";
     }
 
     public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {
