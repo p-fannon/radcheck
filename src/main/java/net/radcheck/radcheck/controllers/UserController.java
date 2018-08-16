@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +33,7 @@ public class UserController {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static String mapsKey = "AIzaSyAqvB0THWS44yHV3OOBzQQ0znAst9V6uQA";
     private static double angularDistance = 250 / 6371e3;
+    private static long twentyOneHours = 75600000L;
 
     @Autowired
     private UserService userService;
@@ -112,11 +115,14 @@ public class UserController {
     public String userProfile(Model model) {
         User user = getAccount();
         String account = user.getEmail();
+        Instant rightNow = Instant.now();
+        Timestamp refresher = Timestamp.from(rightNow.minusMillis(twentyOneHours));
         model.addAttribute("account", account);
         model.addAttribute("title", "Your user profile");
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("names", user.getNames());
         model.addAttribute("user", user);
+        model.addAttribute("refresh", refresher);
 
         return "user/profile";
     }

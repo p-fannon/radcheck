@@ -227,9 +227,9 @@ public class SearchController {
         Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
         if (!returnedLatLon.getUpdateTimestamp().after(twentyOneHoursAgo)) {
             returnedLatLon = refreshLocation(returnedLatLon);
+            returnedLatLon.setViewCount(returnedLatLon.getViewCount() + 1);
+            locationRepository.save(returnedLatLon);
         }
-        returnedLatLon.setViewCount(returnedLatLon.getViewCount() + 1);
-        locationRepository.save(returnedLatLon);
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
 
@@ -286,13 +286,11 @@ public class SearchController {
     public String serveTwoByTwoReport(@ModelAttribute @Valid BuildReportForm reportForm,
                                       Errors errors,
                                       @RequestParam List<Integer> locationIds,
-                                      @RequestParam String reportName,
-                                      Model model) {
+                                      Model model) throws IOException {
         Set<LatLon> reportLatLon = new HashSet<>();
         for (int index : locationIds) {
             if (reportLatLon.contains(locationRepository.findOne(index))) {
-                errors.rejectValue("locationIds", "error.buildreportform",
-                        "There are duplicate locations on this report. Please choose unique locations.");
+                errors.rejectValue("locationIds", "error.buildreportform");
             } else {
                 reportLatLon.add(locationRepository.findOne(index));
             }
@@ -318,31 +316,60 @@ public class SearchController {
                 Array.set(locationNames, 0, user.getNames().get(user.getLocations().indexOf(location)));
                 Array.set(locationClasses, 0, getRatingClass(location));
                 Array.set(locationInfo, 0, getRatingInfo(location));
+                Instant hereAndNow = Instant.now();
+                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
+                if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
+                    location = refreshLocation(location);
+                    location.setViewCount(location.getViewCount() + 1);
+                    locationRepository.save(location);
+                }
             }
             if (reportLocations[1].getId() == location.getId()) {
                 Array.set(locationNames, 1, user.getNames().get(user.getLocations().indexOf(location)));
                 Array.set(locationClasses, 1, getRatingClass(location));
                 Array.set(locationInfo, 1, getRatingInfo(location));
+                Instant hereAndNow = Instant.now();
+                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
+                if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
+                    location = refreshLocation(location);
+                    location.setViewCount(location.getViewCount() + 1);
+                    locationRepository.save(location);
+                }
             }
             if (reportLocations[2].getId() == location.getId()) {
                 Array.set(locationNames, 2, user.getNames().get(user.getLocations().indexOf(location)));
                 Array.set(locationClasses, 2, getRatingClass(location));
                 Array.set(locationInfo, 2, getRatingInfo(location));
+                Instant hereAndNow = Instant.now();
+                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
+                if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
+                    location = refreshLocation(location);
+                    location.setViewCount(location.getViewCount() + 1);
+                    locationRepository.save(location);
+                }
             }
             if (reportLocations[3].getId() == location.getId()) {
                 Array.set(locationNames, 3, user.getNames().get(user.getLocations().indexOf(location)));
                 Array.set(locationClasses, 3, getRatingClass(location));
                 Array.set(locationInfo, 3, getRatingInfo(location));
+                Instant hereAndNow = Instant.now();
+                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
+                if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
+                    location = refreshLocation(location);
+                    location.setViewCount(location.getViewCount() + 1);
+                    locationRepository.save(location);
+                }
             }
-            if (location.isCurrent() == false) {
+            if (!location.isCurrent()) {
                 isCurrent = false;
             }
         }
         String account = getUser();
+        Date todayDate = Date.from(Instant.now());
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("title", reportName);
-        model.addAttribute("message", "Your report for " + reportName + ":");
+        model.addAttribute("title", "2x2 Report");
+        model.addAttribute("message", "Your report generated on " + todayDate.toString() + ":");
         model.addAttribute("current", isCurrent);
         model.addAttribute("location01", reportLocations[0]);
         model.addAttribute("name01", locationNames[0]);

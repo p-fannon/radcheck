@@ -5,7 +5,6 @@ import net.radcheck.radcheck.models.User;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.*;
 
 public class BuildReportForm {
@@ -19,9 +18,6 @@ public class BuildReportForm {
     @NotNull
     @NotEmpty
     private List<Integer> locationIds;
-
-    @Size(min=3, max=30)
-    private String reportName;
 
     private HashMap<String, Integer> userDefinedLocations = new HashMap<>();
 
@@ -88,11 +84,4 @@ public class BuildReportForm {
         this.locationIds = locationIds;
     }
 
-    public String getReportName() {
-        return reportName;
-    }
-
-    public void setReportName(String reportName) {
-        this.reportName = reportName;
-    }
 }

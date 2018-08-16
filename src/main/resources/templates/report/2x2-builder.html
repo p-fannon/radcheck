@@ -7,32 +7,32 @@
 <nav th:replace="fragments :: navigation"></nav>
 
 <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
-    You entered duplicate locations, or your report name was the wrong size. Please try again.
+    You entered duplicate locations in your report. Please choose unique locations and try again.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 
 <div class="container">
-<h2 class="p-sm-3">Build your 2x2 report</h2>
+    <div class="row">
+        <div class="col"><h2 class="p-sm-3">Build your 2x2 report</h2></div>
+    </div>
 
 <form method="POST" th:action="@{/two-by-two}" th:object="${form}">
-    <div class="form-group">
-        <label th:for="reportName">Enter a name for your report:</label>
-        <input type="text" class="form-control" th:field="*{reportName}" placeholder="Please enter a name between 3 and 30 characters" />
-    </div>
     <div class="form-group">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 border border-top-0 border-left-0">
-                    <select class="form-control custom-select" th:field="*{locationIds}">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
                         <option th:each="location : *{reportOptions}"
                                 th:text="${location.getKey()}"
                                 th:value="${location.getValue()}"></option>
                     </select>
                 </div>
                 <div class="col-sm-6 border border-top-0 border-right-0">
-                    <select class="form-control custom-select" th:field="*{locationIds}">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
                         <option th:each="location : *{reportOptions}"
                                 th:text="${location.getKey()}"
                                 th:value="${location.getValue()}"></option>
@@ -41,14 +41,16 @@
             </div>
             <div class="row">
                 <div class="col-sm-6 border border-bottom-0 border-left-0">
-                    <select class="form-control custom-select" th:field="*{locationIds}">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
                         <option th:each="location : *{reportOptions}"
                                 th:text="${location.getKey()}"
                                 th:value="${location.getValue()}"></option>
                     </select>
                 </div>
                 <div class="col-sm-6 border border-bottom-0 border-right-0">
-                    <select class="form-control custom-select" th:field="*{locationIds}">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
                         <option th:each="location : *{reportOptions}"
                                 th:text="${location.getKey()}"
                                 th:value="${location.getValue()}"></option>

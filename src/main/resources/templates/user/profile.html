@@ -66,6 +66,7 @@ $(document).ready(function(){
                     <th>Location Name</th>
                     <th>Latitude</th>
                     <th>Longitude</th>
+                    <th>Refreshed?</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -75,6 +76,8 @@ $(document).ready(function(){
                     <td th:text="${names.get(user.getLocations().indexOf(location))}"></td>
                     <td th:text="${#numbers.formatDecimal(location.lat,1,6)}"></td>
                     <td th:text="${#numbers.formatDecimal(location.lon,1,6)}"></td>
+                    <td><span th:if="${location.updateTimestamp.after(refresh)}" class="badge badge-pill badge-success">Yes</span>
+                        <span th:if="${location.updateTimestamp.before(refresh)}" class="badge badge-pill badge-danger">No</span></td>
                     <td>
                         <a th:href="@{'/view/' + ${location.id}}" class="btn btn-primary">View</a>
                         <a th:href="@{'/edit/' + ${location.id}}" class="btn btn-info">Update</a>
