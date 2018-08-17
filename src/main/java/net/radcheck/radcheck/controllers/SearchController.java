@@ -317,6 +317,13 @@ public class SearchController {
         for (LatLon location : savedLocations) {
             for (int i = 0; i < 4; i++) {
                 if (reportLocations[i].getId() == location.getId()) {
+                    Instant hereAndNow = Instant.now();
+                    Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
+                    if (!location.getUpdateTimestamp().after(twentyOneHoursAgo)) {
+                        location = refreshLocation(location);
+                        location.setViewCount(location.getViewCount() + 1);
+                        locationRepository.save(location);
+                    }
                     Array.set(locationNames, i, user.getNames().get(user.getLocations().indexOf(location)));
                     Array.set(locationClasses, i, getRatingClass(location));
                     Array.set(locationInfo, i, getRatingInfo(location));
