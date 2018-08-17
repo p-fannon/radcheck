@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title th:text="${title}">Default Title</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -9,6 +10,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" />
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-confirmation2/dist/bootstrap-confirmation.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/brands.css" integrity="sha384-nT8r1Kzllf71iZl81CdFzObMsaLOhqBU1JD2+XoAALbdtWaXDOlWOZTR4v1ktjPE" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css" integrity="sha384-HbmWTHay9psM8qyzEKPc8odH4DsOuzdejtnr+OFtDmOcIVnhgReQ4GZBH7uwcjf6" crossorigin="anonymous">
     <style>
         html, body {
             margin: 0;
@@ -23,10 +26,13 @@
             padding: 4px;
         }
         a:link {
-            color: DarkBlue;
+            color: SteelBlue;
+        }
+        a:visited {
+            color: PaleGoldenRod;
         }
         a:hover {
-            color: DimGray;
+            color: SlateGray;
         }
         #map {
             position: absolute;
@@ -52,6 +58,15 @@
             line-height: normal;
             padding-left: 15px;
         }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .icon {
+            font-size: 1.5em;
+        }
         .error {
             color: red;
         }
@@ -73,6 +88,10 @@
         }
         .xsmall {
             font-size: 9px;
+        }
+        .report-footer {
+            line-height: 90%;
+            letter-spacing: -1px;
         }
     </style>
     <link id="favicon" rel="icon" type="image/png" sizes="64x64" th:href="@{/images/favicon.png}" />
@@ -105,6 +124,23 @@
                 <li class="nav-item"><a class="nav-link" th:href="@{/logout}">🔒&nbsp;Logout</a></li>
         </ul>
     </nav>
+
+    <footer th:fragment="foot" class="footer bg-dark text-white p-sm-2">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-9 mx-auto">
+                    <div class="footer-copyright text-center"><p class="small">© 2018 Copyright: <a href="#">RadCheck.net</a> is released under
+                        <a href="https://github.com/p-fannon/radcheck/blob/master/LICENSE.txt" target="_blank">GNU General Public License</a>&nbsp;&nbsp;</p></div>
+                </div>
+                <div class="col-sm-3 mx-auto">
+                    <a href="#" target="_blank"><span class="icon fab fa-facebook-square"></span></a>
+                    <a href="#" target="_blank"><span class="icon fab fa-twitter-square"></span></a>
+                    <a href="https://github.com/p-fannon/radcheck" target="_blank"><span class="icon fab fa-github-square"></span></a>
+                    <a href="https://www.linkedin.com/in/paulfannon/" target="_blank"><span class="icon fab fa-linkedin"></span></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
