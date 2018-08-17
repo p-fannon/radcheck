@@ -32,7 +32,7 @@
 </div>
 
 <div id="map_container"><div id="map"></div></div>
-<div class="container"><form class="form-inline" th:action="@{/}" method="POST" th:object="${gmap}">
+<div class="container-fluid"><form class="form-inline" th:action="@{/}" method="POST" th:object="${gmap}">
     <div id="floating-panel" class="form-group">
         <label for="address">Search the map:&nbsp;&nbsp;</label>
         <input id="address" type="search" class="form-control" th:value="*{address}" th:field="*{address}">
@@ -67,11 +67,13 @@
         }
     </script>
     <script th:attr="src=${key}" async defer></script>
-        <button type="submit" class="btn btn-primary btn-block">Find measurement here</button>
+        <button type="submit" class="btn btn-primary btn-block mt-sm-2">Find measurement here</button>
         <span th:errors="*{address}" class="error"></span>
     </form></div>
 <div class="container">
-    <p>You can also find a measurement by <a href="/manual">entering coordinates manually.</a></p>
+    <div class="row">
+        <div class="col p-sm-3"><p>You can also find a measurement by <a href="/manual">entering coordinates manually.</a></p></div>
+    </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
 </body>

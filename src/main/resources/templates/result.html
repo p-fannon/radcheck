@@ -56,7 +56,7 @@ $(document).ready(function(){
             <p>Air quality index is currently <strong th:text="${return.getAqiValue()}"></strong></p>
             <p th:text="'This AQI rating made on ' + ${return.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${return.getCity()} + ', ' + ${return.getCountry()}" class="small"></p>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">View details 👇</button>
-            <div id="details" class="collapse pt-sm-1">
+            <div id="details" class="collapse m-sm-1">
                 <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                 <h4><img th:attr="src='https://airvisual.com/images/' + ${return.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(return.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                 <p>Wind is blowing <span th:if="${return.getWindDirection() > 349 and return.getWindDirection() <= 11}">north</span>
@@ -94,7 +94,7 @@ $(document).ready(function(){
 <div th:if="${return.isCurrent()} == false" class="container">
     <div class="row">
         <div class="col">
-            <p class="pt-sm-2 small">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="m-sm-3 small">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>

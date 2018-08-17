@@ -56,7 +56,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details01">Details</button>
-                <div id="details01" class="collapse pt-sm-1">
+                <div id="details01" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location01.getLat()} + '&amp;x=' + ${location01.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location01.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location01.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location01.getWindDirection() > 349 and location01.getWindDirection() <= 11}">north</span>
@@ -126,7 +126,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details02">Details</button>
-                <div id="details02" class="collapse pt-sm-1">
+                <div id="details02" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location02.getLat()} + '&amp;x=' + ${location02.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location02.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location02.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location02.getWindDirection() > 349 and location02.getWindDirection() <= 11}">north</span>
@@ -196,7 +196,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details03">Details</button>
-                <div id="details03" class="collapse pt-sm-1">
+                <div id="details03" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location03.getLat()} + '&amp;x=' + ${location03.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location03.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location03.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location03.getWindDirection() > 349 and location03.getWindDirection() <= 11}">north</span>
@@ -266,7 +266,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details04">Details</button>
-                <div id="details04" class="collapse pt-sm-1">
+                <div id="details04" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location04.getLat()} + '&amp;x=' + ${location04.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location04.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location04.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location04.getWindDirection() > 349 and location04.getWindDirection() <= 11}">north</span>
@@ -338,7 +338,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details05">Details</button>
-                <div id="details05" class="collapse pt-sm-1">
+                <div id="details05" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location05.getLat()} + '&amp;x=' + ${location05.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location05.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location05.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location05.getWindDirection() > 349 and location05.getWindDirection() <= 11}">north</span>
@@ -408,7 +408,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details06">Details</button>
-                <div id="details06" class="collapse pt-sm-1">
+                <div id="details06" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location06.getLat()} + '&amp;x=' + ${location06.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location06.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location06.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location06.getWindDirection() > 349 and location06.getWindDirection() <= 11}">north</span>
@@ -478,7 +478,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details07">Details</button>
-                <div id="details07" class="collapse pt-sm-1">
+                <div id="details07" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location07.getLat()} + '&amp;x=' + ${location07.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location07.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location07.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location07.getWindDirection() > 349 and location07.getWindDirection() <= 11}">north</span>
@@ -548,7 +548,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details08">Details</button>
-                <div id="details08" class="collapse pt-sm-1">
+                <div id="details08" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location08.getLat()} + '&amp;x=' + ${location08.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location08.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location08.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location08.getWindDirection() > 349 and location08.getWindDirection() <= 11}">north</span>
@@ -620,7 +620,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details09">Details</button>
-                <div id="details09" class="collapse pt-sm-1">
+                <div id="details09" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location09.getLat()} + '&amp;x=' + ${location09.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location09.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location09.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location09.getWindDirection() > 349 and location09.getWindDirection() <= 11}">north</span>
@@ -690,7 +690,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details010">Details</button>
-                <div id="details010" class="collapse pt-sm-1">
+                <div id="details010" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location010.getLat()} + '&amp;x=' + ${location010.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location010.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location010.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location010.getWindDirection() > 349 and location010.getWindDirection() <= 11}">north</span>
@@ -760,7 +760,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details011">Details</button>
-                <div id="details011" class="collapse pt-sm-1">
+                <div id="details011" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location011.getLat()} + '&amp;x=' + ${location011.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location011.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location011.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location011.getWindDirection() > 349 and location011.getWindDirection() <= 11}">north</span>
@@ -830,7 +830,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details012">Details</button>
-                <div id="details012" class="collapse pt-sm-1">
+                <div id="details012" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location012.getLat()} + '&amp;x=' + ${location012.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location012.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location012.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location012.getWindDirection() > 349 and location012.getWindDirection() <= 11}">north</span>
@@ -902,7 +902,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details013">Details</button>
-                <div id="details013" class="collapse pt-sm-1">
+                <div id="details013" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location013.getLat()} + '&amp;x=' + ${location013.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location013.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location013.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location013.getWindDirection() > 349 and location013.getWindDirection() <= 11}">north</span>
@@ -972,7 +972,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details014">Details</button>
-                <div id="details014" class="collapse pt-sm-1">
+                <div id="details014" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location014.getLat()} + '&amp;x=' + ${location014.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location014.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location014.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location014.getWindDirection() > 349 and location014.getWindDirection() <= 11}">north</span>
@@ -1042,7 +1042,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details015">Details</button>
-                <div id="details015" class="collapse pt-sm-1">
+                <div id="details015" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location015.getLat()} + '&amp;x=' + ${location015.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location015.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location015.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location015.getWindDirection() > 349 and location015.getWindDirection() <= 11}">north</span>
@@ -1112,7 +1112,7 @@ $(document).ready(function(){
             </div>
             <div class="report-cell float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details016">Details</button>
-                <div id="details016" class="collapse pt-sm-1">
+                <div id="details016" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location016.getLat()} + '&amp;x=' + ${location016.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location016.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location016.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
                     <p class="small">Wind is blowing <span th:if="${location016.getWindDirection() > 349 and location016.getWindDirection() <= 11}">north</span>
@@ -1148,7 +1148,7 @@ $(document).ready(function(){
 <div th:if="${current == false}" class="container-fluid">
     <div class="row">
         <div class="col">
-            <p class="mt-sm-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="m-sm-3 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>
