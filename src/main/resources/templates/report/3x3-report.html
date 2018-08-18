@@ -18,15 +18,15 @@ $(document).ready(function(){
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-4 clearfix border border-top-0 border-left-0">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location01.getLat()} + '%2C' + ${location01.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating01}">
+            <div th:class="'report-cell-top float-right ' + ${rating01}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name01} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location01.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info01}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location01.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location01.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location01.getRadValue() < 0.44 and location01.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location01.getRadValue() < 0.64 and location01.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -54,7 +54,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location01.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location01.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location01.getCity()} + ', ' + ${location01.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details01">Details</button>
                 <div id="details01" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location01.getLat()} + '&amp;x=' + ${location01.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -88,15 +88,15 @@ $(document).ready(function(){
             </div>
         </div>
         <div class="col-sm-4 clearfix border border-top-0">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location02.getLat()} + '%2C' + ${location02.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating02}">
+            <div th:class="'report-cell-top float-right ' + ${rating02}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name02} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location02.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info02}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location02.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location02.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location02.getRadValue() < 0.44 and location02.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location02.getRadValue() < 0.64 and location02.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -124,7 +124,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location02.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location02.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location02.getCity()} + ', ' + ${location02.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details02">Details</button>
                 <div id="details02" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location02.getLat()} + '&amp;x=' + ${location02.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -158,15 +158,15 @@ $(document).ready(function(){
             </div>
         </div>
         <div class="col-sm-4 clearfix border border-top-0 border-right-0">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location03.getLat()} + '%2C' + ${location03.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating03}">
+            <div th:class="'report-cell-top float-right ' + ${rating03}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name03} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location03.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info03}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location03.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location03.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location03.getRadValue() < 0.44 and location03.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location03.getRadValue() < 0.64 and location03.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -194,7 +194,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location03.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location03.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location03.getCity()} + ', ' + ${location03.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details03">Details</button>
                 <div id="details03" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location03.getLat()} + '&amp;x=' + ${location03.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -230,15 +230,15 @@ $(document).ready(function(){
     </div>
     <div class="row">
         <div class="col-sm-4 clearfix border border-left-0">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location04.getLat()} + '%2C' + ${location04.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating04}">
+            <div th:class="'report-cell-top float-right ' + ${rating04}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name04} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location04.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info04}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location04.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location04.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location04.getRadValue() < 0.44 and location04.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location04.getRadValue() < 0.64 and location04.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -266,7 +266,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location04.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location04.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location04.getCity()} + ', ' + ${location04.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details04">Details</button>
                 <div id="details04" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location04.getLat()} + '&amp;x=' + ${location04.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -300,15 +300,15 @@ $(document).ready(function(){
             </div>
         </div>
         <div class="col-sm-4 clearfix border">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location05.getLat()} + '%2C' + ${location05.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating05}">
+            <div th:class="'report-cell-top float-right ' + ${rating05}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name05} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location05.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info05}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location05.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location05.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location05.getRadValue() < 0.44 and location05.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location05.getRadValue() < 0.64 and location05.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -336,7 +336,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location05.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location05.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location05.getCity()} + ', ' + ${location05.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details05">Details</button>
                 <div id="details05" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location05.getLat()} + '&amp;x=' + ${location05.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -370,15 +370,15 @@ $(document).ready(function(){
             </div>
         </div>
         <div class="col-sm-4 clearfix border border-right-0">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location06.getLat()} + '%2C' + ${location06.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating06}">
+            <div th:class="'report-cell-top float-right ' + ${rating06}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name06} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location06.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info06}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location06.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location06.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location06.getRadValue() < 0.44 and location06.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location06.getRadValue() < 0.64 and location06.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -406,7 +406,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location06.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location06.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location06.getCity()} + ', ' + ${location06.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details06">Details</button>
                 <div id="details06" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location06.getLat()} + '&amp;x=' + ${location06.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -442,15 +442,15 @@ $(document).ready(function(){
     </div>
     <div class="row">
         <div class="col-sm-4 clearfix border border-bottom-0 border-left-0">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location07.getLat()} + '%2C' + ${location07.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating07}">
+            <div th:class="'report-cell-top float-right ' + ${rating07}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name07} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location07.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info07}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location07.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location07.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location07.getRadValue() < 0.44 and location07.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location07.getRadValue() < 0.64 and location07.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -478,7 +478,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location07.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location07.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location07.getCity()} + ', ' + ${location07.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details07">Details</button>
                 <div id="details07" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location07.getLat()} + '&amp;x=' + ${location07.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -512,15 +512,15 @@ $(document).ready(function(){
             </div>
         </div>
         <div class="col-sm-4 clearfix border border-bottom-0">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location08.getLat()} + '%2C' + ${location08.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating08}">
+            <div th:class="'report-cell-top float-right ' + ${rating08}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name08} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location08.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info08}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location08.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location08.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location08.getRadValue() < 0.44 and location08.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location08.getRadValue() < 0.64 and location08.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -548,7 +548,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location08.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location08.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location08.getCity()} + ', ' + ${location08.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details08">Details</button>
                 <div id="details08" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location08.getLat()} + '&amp;x=' + ${location08.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -582,15 +582,15 @@ $(document).ready(function(){
             </div>
         </div>
         <div class="col-sm-4 clearfix border border-bottom-0 border-right-0">
-            <div class="report-cell float-left embed-responsive embed-responsive-1by1">
+            <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location09.getLat()} + '%2C' + ${location09.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div th:class="'report-cell float-right ' + ${rating09}">
+            <div th:class="'report-cell-top float-right ' + ${rating09}">
                 <h5 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name09} + ':'"></h5>
                 <h4 class="card-body card-text text-center pt-sm-1" th:text="${location09.getRating()}"></h4>
                 <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info09}"></p>
             </div>
-            <div class="report-cell float-left">
+            <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location09.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location09.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                     <span class="small" th:if="${location09.getRadValue() < 0.44 and location09.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                     <span class="small" th:if="${location09.getRadValue() < 0.64 and location09.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -618,7 +618,7 @@ $(document).ready(function(){
                 <p>AQI: <strong th:text="${location09.getAqiValue()}"></strong></p>
                 <p th:text="'This AQI rating made on ' + ${location09.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location09.getCity()} + ', ' + ${location09.getCountry()}" class="small"></p>
             </div>
-            <div class="report-cell float-right">
+            <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details09">Details</button>
                 <div id="details09" class="collapse m-sm-1">
                     <p class="pt-sm-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location09.getLat()} + '&amp;x=' + ${location09.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
@@ -656,10 +656,10 @@ $(document).ready(function(){
 <div th:if="${current == false}" class="container-fluid">
     <div class="row">
         <div class="col">
-            <p class="m-sm-3 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="m-sm-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>
-<footer th:replace="fragments :: foot"></footer>
+<nav th:replace="fragments :: foot"></nav>
 </body>
 </html>
