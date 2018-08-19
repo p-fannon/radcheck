@@ -5,17 +5,12 @@
 <body>
 
 <nav th:replace="fragments :: navigation"></nav>
-<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
-    Something went wrong while trying to log in. Please try again.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+
 <form th:action="@{/registration}" method="get">
     <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
 </form>
 
-<div class="container p-sm-3">
+<div class="container p-sm-3 mb-sm-3">
     <form th:action="@{/login}" method="POST" class="form-signin">
         <h3 class="form-signin-heading">Login to your account</h3>
         <br/>
@@ -31,6 +26,6 @@
         <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
     </form>
 </div>
-<nav th:replace="fragments :: foot"></nav>
+<footer th:replace="fragments :: foot"></footer>
 </body>
 </html>

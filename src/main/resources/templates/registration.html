@@ -6,6 +6,13 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
+<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
+    Your passwords did not match. Please try to register again.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <form th:action="@{/login}" method="get">
     <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
 </form>
@@ -43,17 +50,17 @@
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <button type="submit" class="btn btn-primary btn-block">Register User</button>
+                        <button type="submit" class="btn btn-primary btn-block mb-sm-5">Register User</button>
                     </div>
                 </div>
 
-                <span th:utext="${successMessage}"></span>
+                <span th:utext="${successMessage}" class="mb-sm-5"></span>
 
 
             </form>
         </div>
     </div>
 </div>
-<nav th:replace="fragments :: foot"></nav>
+<footer th:replace="fragments :: foot"></footer>
 </body>
 </html>

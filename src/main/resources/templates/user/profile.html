@@ -72,10 +72,10 @@ $(document).ready(function(){
         <div class="col p-sm-3" th:unless="${user.locations} and ${user.locations.size()}">
             <p>You don't have any locations saved to this account. Start searching! 🕵️</p>
         </div>
-        <div class="col p-sm-3" th:if="${user.locations} and ${user.locations.size()}">
-            <table class="table table-striped">
+        <div class="col pb-sm-5" th:if="${user.locations} and ${user.locations.size()}">
+            <table class="table table-striped m-sm-1">
                 <thead>
-                <tr>
+                <tr class="p-sm-2">
                     <th>Location No.</th>
                     <th>Location Name</th>
                     <th>Latitude</th>
@@ -85,7 +85,7 @@ $(document).ready(function(){
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="location : ${user.locations}">
+                <tr th:each="location : ${user.locations}" class="p-sm-2">
                     <td th:text="${#numbers.formatInteger(user.getLocations().indexOf(location) + 1,1)}"></td>
                     <td th:text="${names.get(user.getLocations().indexOf(location))}"></td>
                     <td th:text="${#numbers.formatDecimal(location.lat,1,6)}"></td>
@@ -108,6 +108,6 @@ $(document).ready(function(){
         </div>
     </div>
 </div>
-<nav th:replace="fragments :: foot"></nav>
+<footer th:replace="fragments :: foot"></footer>
 </body>
 </html>

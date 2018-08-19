@@ -13,7 +13,7 @@ $(document).ready(function(){
     <h3 class="py-sm-1" th:text="'Here are the current measurements at ' + ${session.locale} + ':'"></h3>
 </div>
 
-<div class="container">
+<div class="container mb-sm-3">
     <div class="row">
         <div class="col embed-responsive embed-responsive-21by9">
             <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${latitude} + '%2C' + ${longitude} + '&amp;key=' + ${key}"></iframe>
@@ -90,10 +90,10 @@ $(document).ready(function(){
 <div th:if="${return.isCurrent()} == false" class="container">
     <div class="row">
         <div class="col">
-            <p class="pt-sm-2 small">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="m-sm-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>
-<nav th:replace="fragments :: foot"></nav>
+<footer th:replace="fragments :: foot"></footer>
 </body>
 </html>

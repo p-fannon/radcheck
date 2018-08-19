@@ -18,18 +18,19 @@
             height: 100%;
             width: 100%;
         }
+        html {
+            min-height: 100%;
+            position: relative;
+        }
         body {
             background-color: DarkSeaGreen;
-            padding-bottom: 100px;
-        }
-        th, td {
-            padding: 4px;
+            margin-bottom: 40px;
         }
         a:link {
-            color: PaleTurquoise;
+            color: PaleGoldenRod;
         }
         a:visited {
-            color: PaleGoldenRod;
+            color: PaleTurquoise;
         }
         a:hover {
             color: SteelBlue;
@@ -62,9 +63,6 @@
         .icon {
             font-size: 1.5em;
         }
-        .fixed-bottom:
-            margin-top: -100px;
-        }
         .error {
             color: red;
         }
@@ -80,6 +78,14 @@
             width: 72px;
             height: 64px;
         }
+        .sm-weathericon {
+            width: 63px;
+            height: 56px;
+        }
+        .xsm-weathericon {
+            width: 55px;
+            height: 48px;
+        }
         .report-cell-top {
             width: 50%;
             height: 50%;
@@ -87,16 +93,38 @@
         .report-cell-bottom {
             width: 50%;
             height: 50%;
-            line-height: 95%;
+        }
+        .report-cell-top-3x3 {
+            width: 50%;
+            height: 45%;
+        }
+        .report-cell-bottom-3x3 {
+            width: 50%;
+            height: 55%;
+        }
+        .report-cell-top-4x4 {
+            width: 50%;
+            height: 40%;
             letter-spacing: -1px;
-            padding-bottom: 3em;
+        }
+        .report-cell-bottom-4x4 {
+            width: 50%;
+            height: 60%;
+            letter-spacing: -1px;
+        }
+        .vsmall {
+            font-size: 11px;
         }
         .xsmall {
             font-size: 9px;
         }
-        .report-footer {
-            line-height: 90%;
-            letter-spacing: -1px;
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
         }
     </style>
     <link id="favicon" rel="icon" type="image/png" sizes="64x64" th:href="@{/images/favicon.png}" />
@@ -130,20 +158,17 @@
         </ul>
     </nav>
 
-    <nav th:fragment="foot" class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item text-white small">© 2018 Copyright: <a th:href="@{/}">RadCheck.net</a> is released under
+    <footer th:fragment="foot" class="footer bg-dark">
+        <div class="container-fluid clearfix">
+            <span class="float-left text-white small">© 2018 Copyright: <a th:href="@{/}">RadCheck.net</a> is released under
                 <a href="https://github.com/p-fannon/radcheck/blob/master/LICENSE.txt" target="_blank">GNU General Public License</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
+            </span>
+            <span class="float-right pt-sm-1">
                 <a href="#" target="_blank"><span class="icon fab fa-facebook-square"></span></a>
                 <a href="#" target="_blank"><span class="icon fab fa-twitter-square"></span></a>
                 <a href="https://github.com/p-fannon/radcheck" target="_blank"><span class="icon fab fa-github-square"></span></a>
-            </li>
-        </ul>
-    </nav>
+            </span>
+    </footer>
 
 </body>
 </html>
