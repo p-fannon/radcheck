@@ -46,9 +46,66 @@ public class SearchController {
     private static String minScTs = "2011-03-10T00:00:00Z";
     private static long twentyOneHours = 75600000L;
     private static String[] list = {"The Gateway Arch, St. Louis, MO", "Apotheosis of Saint Louis, Fine Arts Drive, St. Louis, MO",
-            "Washington Monument, Washington, DC"};
-    private static double[] lat = {38.624696, 38.639861, 38.889517};
-    private static double[] lon = {-90.184778, -90.294099, -77.035290};
+            "Washington Monument, Washington, DC", "Empire State Building, 5th Avenue, New York, NY", "Big Ben, London, UK",
+            "Leaning Tower of Pisa, Pisa, Province of Pisa, Italy", "Colosseum, Piazza del Colosseo, Rome, Metropolitan City of Rome, Italy",
+            "Golden Gate Bridge, Golden Gate Bridge, San Francisco, CA", "Cathédrale Notre-Dame de Paris, Parvis Notre-Dame - place Jean-Paul-II, Paris, France",
+            "Eiffel Tower, Champ de Mars, Avenue Anatole France, Paris, France", "Tokyo Tower, 4 Chome-2-8 Shibakoen, Minato, Tokyo, Japan",
+            "St. Peter's Basilica, Piazza San Pietro, Vatican City", "Sagrada Familia, Carrer de Mallorca, Barcelona, Spain",
+            "The Little Mermaid, Langelinie, København Ø, Denmark", "Arc de Triomphe, Place Charles de Gaulle, Paris, France",
+            "Berlin Wall Memorial, Bernauer Straße, Berlin, Germany", "Stonehenge, Amesbury, Salisbury, UK", "Uluru, Petermann NT, Australia",
+            "Taj Mahal, Dharmapuri, Forest Colony, Tajganj, Agra, Uttar Pradesh, India", "Tower Bridge, United Kingdom",
+            "Willis Tower, Sears Tower Skydeck, South Wacker Drive, Chicago, IL", "Brooklyn Bridge, Brooklyn, NY",
+            "Burj Al Arab Jumeirah - Dubai - United Arab Emirates", "Acropolis of Athens, Athens, Greece",
+            "Trevi Fountain, Piazza di Trevi, Rome, Metropolitan City of Rome, Italy", "St. Mark's Basilica & Campanile",
+            "Times Square, Manhattan, New York, NY", "Louvre Museum, Rue de Rivoli, Paris, France", "Manneken Pis, Brussels",
+            "Buckingham Palace, London, UK", "Neuschwanstein Castle, Neuschwansteinstraße, Schwangau, Germany",
+            "Florence Cathedral, Piazza del Duomo, Florence, Metropolitan City of Florence, Italy",
+            "Castle Rock, Edinburgh, UK", "Machu Picchu, Peru", "CN Tower, Front Street West, Toronto, ON, Canada",
+            "Burj Khalifa", "Tower of London, London, UK", "Mont Saint-Michel, France", "Las Vegas Sign, South Las Vegas Boulevard, Las Vegas, NV",
+            "Sacré-Cœur, rue du Chevalier-de-La-Barre, Paris, France", "St. Paul's Cathedral, London, UK", "Bethesda Fountain Central Park, Manhattan, NY",
+            "Mount Fuji, Kitayama, Fujinomiya, Shizuoka Prefecture, Japan", "Old Faithful Geyser, Wyoming", "Rialto Bridge, Sestiere San Polo, Venice, Metropolitan City of Venice, Italy",
+            "Space Needle, Seattle, WA", "Westminster Abbey, London, UK", "The Shard, London, UK", "The Gherkin, St Mary Axe, London, UK",
+            "Luxor Temple, Luxor City, Luxor, Egypt", "Brandenburg Gate, Pariser Platz, Berlin, Germany", "Cologne Cathedral, Cologne, Germany",
+            "The Pentagon, Washington, DC", "Cloud Gate, Chicago, IL", "Petra, Jordan", "Cankurtaran Mahallesi, The Hagia Sophia Mosque, Soğuk Çeşme Sokak, Fatih/Istanbul, Turkey", //56
+            "Oriental Pearl Tower, Century Avenue, Lujiazui, Pudong, Shanghai, China", "Nyhavn, Copenhagen, Denmark", "Ponte Vecchio, Ponte Vecchio, Florence, Metropolitan City of Florence, Italy",
+            "Western Wall, Jerusalem", "Sistine Chapel, Vatican City", "Spanish Steps, Piazza di Spagna, Rome, Metropolitan City of Rome, Italy",
+            "Bridge of Sighs, Piazza San Marco, Venice, Metropolitan City of Venice, Italy", "Pompidou Center, Paris, France",
+            "Great Buddha of Kamakura, 4 Chome-2-28 Hase, Kamakura, Kanagawa Prefecture, Japan", "Freedom Tower, World Trade Center, New York, NY",
+            "Kronborg Castle, Kronborg, Helsingør, Denmark", "Shanghai World Financial Center, Lujiazui, Pudong, Shanghai, China",
+            "Moulin Rouge, Boulevard de Clichy, Paris, France", "UNESCO World Heritage Kinderdijk, Nederwaard, Kinderdijk, Netherlands",
+            "Monument Valley Navajo Tribal Park, Main Monument Valley Road, Oljato-Monument Valley, AZ", "Catherine Palace, Garden Street, Pushkin, Saint Petersburg, Russia", //72
+            "Berlin Cathedral Church, Am Lustgarten, Berlin, Germany", "Helsinki Cathedral, Unionsgatan, Helsinki, Finland", "Tivoli Gardens, Vesterbrogade, København V, Denmark",
+            "Bath, England, UK", "Brighton Pier, Madeira Drive, Brighton, UK", "Alhambra, Calle Real de la Alhambra, Granada, Spain",
+            "Palais des Papes, Place du Palais, Avignon, France", "Pont du Gard, Route du Pont du Gard, Vers-Pont-du-Gard, France",
+            "Fortress Hohensalzburg, Mönchsberg, Salzburg, Austria", "Prague Castle, Prague 1, Czechia", "Chapel Bridge, Kapellbrücke, Lucerne, Switzerland", //83
+            "Piazza del Campo, Siena, Province of Siena, Italy", "Atomium, Square de l'Atomium, Brussels, Belgium", "Hollywood Walk of Fame, Sunset Boulevard, Hollywood, CA",
+            "Winter Palace, Palace Embankment, Saint Petersburg, Russia", "Amalienborg Palace, Amalienborg Slotsplads, København K, Denmark",
+            "The British Museum, Great Russell Street, London, UK", "Oxford University, Oxford, UK", "Sultan Ahmet Mahallesi, Blue Mosque, Atmeydanı Caddesi, Fatih/Istanbul, Turkey",
+            "Piccadilly Circus, London, UK", "Trafalgar Square, Trafalgar Square, London, UK", "Millau Bridge, Millau Viaduct, Millau, France",
+            "Liberty Bell, Philadelphia, PA", "Disneyland Park, Disneyland Drive, Anaheim, CA", "Fisherman's Wharf, San Francisco, CA",
+            "Hoover Dam, Nevada", "Lincoln Memorial, Washington, DC", "Roswell & Area 51, New Mexico"};
+    private static double[] lat = {38.624696, 38.639861, 38.889517, 40.748448, 51.500731, 43.722955, 41.890213, 37.819962, 48.852975,
+            48.858373, 35.658585, 41.902171, 41.403637, 55.692891, 48.873796, 52.535052, 51.178929, -25.344363, 27.175023,
+            51.505461, 41.878878, 40.706096, 25.141319, 37.971546, 41.900929, 45.434037, 40.759016, 48.860639, 50.845027,
+            51.501391, 47.557580, 43.772861, 55.948625, -13.163132, 43.642574, 25.197205, 51.508122, 48.636066, 36.082068,
+            48.886706, 51.513855, 40.774321, 35.360834, 44.460497, 45.437986, 47.620550, 51.499429, 51.504631, 51.514502,
+            25.699550, 52.516307, 50.941262, 38.871890, 41.882662, 30.328482, 41.008699, 31.239703, 55.679961, 43.767956,
+            31.776725, 41.902952, 41.905993, 45.434061, 48.860649, 35.316842, 40.713037, 56.039038, 31.234735, 48.884129,
+            51.888373, 36.989576, 59.716134, 52.519080, 60.170435, 55.673696, 51.381069, 50.816863, 37.176093, 43.950864,
+            43.947605, 47.794960, 50.091131, 47.051655, 43.318402, 50.894968, 34.098561, 59.940412, 55.684089, 51.519447,
+            51.754962, 41.005416, 51.510096, 51.508043, 44.077507, 39.94964, 33.812145, 37.807979, 36.016118, 38.889302,
+            33.394963};
+    private static double[] lon = {-90.184778, -90.294099, -77.035290, -73.985665, -0.124626, 10.396596, 12.492230, -122.478277, 2.349900,
+            2.294480, 139.745432, 12.453936, 2.174355, 12.599275, 2.295024, 13.390168, -1.826215, 131.036863, 78.042155,
+            -0.075357, -87.635916, -73.996866, 55.185346, 23.725744, 12.483294, 12.339034, -73.984473, 2.337633, 4.349989,
+            -0.141901, 10.749797, 11.255691, -3.200839, -72.544966, -79.387057, 55.274373, -0.075953, -1.511120, -115.172789,
+            2.343104, -0.098356, -73.970849, 138.727853, -110.828135, 12.335895, -122.349277, -0.127572,  -0.086976, -0.080308,
+            32.639051, 13.377683, 6.958129, -77.056267, -87.623306, 35.444351, 28.980117, 121.499753, 12.590916, 11.253144,
+            35.234505, 12.454483, 12.482773, 12.340854, 2.352241, 139.535754, -74.013169, 12.621144, 121.507537, 2.332249,
+            4.636890, -110.131242, 30.395653, 13.401067, 24.952165, 12.568147, -2.359021, -0.136741, -3.588143, 4.807695,
+            4.534960, 13.047656, 14.401606, 8.307532, 11.332159, 4.341526, -118.325575, 30.313785, 12.592999, -0.126957,
+            -1.254442, 28.976812, -0.134568, -0.128070, 3.022811, -75.150282, -117.918974, -122.417732, -114.737765, -77.050187,
+            -104.523168};
 
     @Autowired
     private UserService userService;
