@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container">
+    <div class="error-graphic mt-sm-5">
+        <h2 class="p-sm-2 text-center">🚫 Something went terribly wrong!</h2>
+        <h4 class="p-sm-2 text-center">Perhaps you should start over.</h4>
+        <div class="p-sm-2 text-center">
+            <a th:href="@{/}"><button class="btn btn-md btn-default">🏠 Home</button></a>
+        </div>
+
+    </div>
+</div>
+
+<footer th:replace="fragments :: foot"></footer>
+</body>
+</html>
