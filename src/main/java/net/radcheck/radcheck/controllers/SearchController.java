@@ -45,6 +45,10 @@ public class SearchController {
     private static Gson gson = new Gson();
     private static String minScTs = "2011-03-10T00:00:00Z";
     private static long twentyOneHours = 75600000L;
+    private static String[] list = {"The Gateway Arch, St. Louis, MO", "Apotheosis of Saint Louis, Fine Arts Drive, St. Louis, MO",
+            "Washington Monument, Washington, DC"};
+    private static double[] lat = {38.624696, 38.639861, 38.889517};
+    private static double[] lon = {-90.184778, -90.294099, -77.035290};
 
     @Autowired
     private UserService userService;
@@ -54,26 +58,30 @@ public class SearchController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
-        String address = "The Gateway Arch, St. Louis, MO";
+        int address = pickRandomLandmark();
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Pick A Location To Measure");
         model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-        model.addAttribute("gmap", new GMap(address));
+        model.addAttribute("gmap", new GMap(list[address]));
+        model.addAttribute("latitude", lat[address]);
+        model.addAttribute("longitude", lon[address]);
 
         return "index";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(Model model) {
-        String address = "The Gateway Arch, St. Louis, MO";
+        int address = pickRandomLandmark();
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Pick A Location To Measure");
         model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-        model.addAttribute("gmap", new GMap(address));
+        model.addAttribute("gmap", new GMap(list[address]));
+        model.addAttribute("latitude", lat[address]);
+        model.addAttribute("longitude", lon[address]);
 
         return "search";
     }
@@ -512,6 +520,19 @@ public class SearchController {
         model.addAttribute("key", mapsKey);
 
         return "report/4x4-report";
+    }
+
+    public int pickRandomLandmark() {
+        int landmark = 0;
+        double rng = Math.random();
+        double range = 0.0;
+        for (int i = 0; i < 3; i++) {
+            if (rng >= range && rng < range + 0.333333333) {
+                landmark = i;
+            }
+            range += 0.333333333;
+        }
+        return landmark;
     }
 
     public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {

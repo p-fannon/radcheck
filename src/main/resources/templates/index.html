@@ -38,11 +38,11 @@
         <input id="address" type="search" class="form-control" th:value="*{address}" th:field="*{address}">
         <button id="locate" type="button" class="btn btn-light">🔍</button>
     </div>
-    <script>
+    <script th:inline="javascript">
         initMap();
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'),{
-            center: {lat: 38.624976, lng: -90.184776},
+            center: {lat: [[${latitude}]], lng: [[${longitude}]]},
             zoom: 17
             });
             var geocoder = new google.maps.Geocoder();
