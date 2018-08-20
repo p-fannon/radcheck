@@ -20,7 +20,7 @@
 </div>
 
 <div class="container">
-    <form class="form-control mb-sm-5" method="POST" th:action="@{/save}" th:object="${submitForm}">
+    <form class="form-control mb-sm-3" method="POST" th:action="@{/save}" th:object="${submitForm}">
         <div class="row p-sm-5">
             <div class="col-sm-6 embed-responsive embed-responsive-4by3">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid Black" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + *{location.getLat()} + '%2C' + *{location.getLon()} + '&amp;key=' + ${key}"></iframe>

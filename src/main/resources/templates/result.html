@@ -14,7 +14,7 @@ $(document).ready(function(){
     <div class="row"><h3 class="py-sm-1">Your search found the following measurement:</h3></div>
 </div>
 
-<div class="container">
+<div class="container mb-sm-5">
     <div class="row">
         <div class="col embed-responsive embed-responsive-21by9">
             <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${latitude} + '%2C' + ${longitude} + '&amp;key=' + ${key}"></iframe>

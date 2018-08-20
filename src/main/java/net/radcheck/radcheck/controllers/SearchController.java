@@ -65,6 +65,18 @@ public class SearchController {
         return "index";
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(Model model) {
+        String address = "The Gateway Arch, St. Louis, MO";
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Pick A Location To Measure");
+        model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
+        model.addAttribute("gmap", new GMap(address));
+
+        return "search";
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
@@ -249,8 +261,8 @@ public class SearchController {
         return "view-location";
     }
 
-    @RequestMapping(value = "/build-report", method = RequestMethod.GET)
-    public String chooseReport(Model model) {
+    @RequestMapping(value = "/two-by-two", method=RequestMethod.GET)
+    public String buildTwoByTwoReport(Model model) {
         User user = getAccount();
         if (user.getLocations().size() < 4) {
             String account = user.getEmail();
@@ -262,17 +274,6 @@ public class SearchController {
 
             return "redirect:/user/profile?toofew=true";
         }
-        String account = getUser();
-        model.addAttribute("account", account);
-        model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("title", "Choose which report you want to build");
-
-        return "report/choose-a-report";
-    }
-
-    @RequestMapping(value = "/two-by-two", method=RequestMethod.GET)
-    public String buildTwoByTwoReport(Model model) {
-        User user = getAccount();
         String account = getUser();
         Instant rightNow = Instant.now();
         Timestamp refresher = Timestamp.from(rightNow.minusMillis(twentyOneHours));

@@ -26,140 +26,142 @@ $(document).ready(function(){
 <div class="container-fluid">
 <form method="POST" th:action="@{/four-by-four}" th:object="${form}">
     <div class="form-group">
-        <div class="row">
-            <div class="col-sm-3 border border-top-0 border-left-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 border border-top-0 border-left-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border border-top-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border border-top-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border border-top-0 border-right-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
             </div>
-            <div class="col-sm-3 border border-top-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
+            <div class="row">
+                <div class="col-sm-3 border border-left-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border border-right-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
             </div>
-            <div class="col-sm-3 border border-top-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
+            <div class="row">
+                <div class="col-sm-3 border border-left-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border border-right-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
             </div>
-            <div class="col-sm-3 border border-top-0 border-right-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3 border border-left-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border border-right-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3 border border-left-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border border-right-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3 border border-bottom-0 border-left-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border border-bottom-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border border-bottom-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
-            </div>
-            <div class="col-sm-3 border border-bottom-0 border-right-0">
-                <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
-                    <option disabled th:value="null">Select a location for this grid position</option>
-                    <option th:each="location : *{reportOptions}"
-                            th:text="${location.getKey()}"
-                            th:value="${location.getValue()}"></option>
-                </select>
+            <div class="row">
+                <div class="col-sm-3 border border-bottom-0 border-left-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border border-bottom-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border border-bottom-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 border border-bottom-0 border-right-0">
+                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                        <option disabled th:value="null">Select a location for this grid position</option>
+                        <option th:each="location : *{reportOptions}"
+                                th:text="${location.getKey()}"
+                                th:value="${location.getValue()}"></option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>

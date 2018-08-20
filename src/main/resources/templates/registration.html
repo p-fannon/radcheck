@@ -17,7 +17,7 @@
     <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
 </form>
 
-<div class="container p-sm-3">
+<div class="container p-sm-3 mb-sm-5">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <form autocomplete="off" th:action="@{/registration}"
@@ -49,11 +49,11 @@
 
                 <div class="form-group">
                     <div class="col-sm-9">
-                        <button type="submit" class="btn btn-primary btn-block btn-md mb-sm-5">Register User</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-md">Register User</button>
                     </div>
                 </div>
 
-                <span th:utext="${successMessage}" class="mb-sm-5"></span>
+                <span th:utext="${successMessage}"></span>
 
 
             </form>

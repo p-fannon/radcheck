@@ -67,14 +67,17 @@
         }
     </script>
     <script th:attr="src=${key}" async defer></script>
-        <button type="submit" class="btn btn-primary btn-md btn-block mt-sm-2">Find measurement here</button>
-        <span th:errors="*{address}" class="error"></span>
-    </form></div>
-<div class="container mb-sm-5 pt-sm-3">
+    <button type="submit" class="btn btn-primary btn-md btn-block mt-sm-2">Find measurement here</button>
+    <span th:errors="*{address}" class="error"></span>
+</form></div>
+<div class="container-fluid my-sm-3">
     <div class="row">
-        <div class="col text-center">
-            <p class="display-2">Welcome to RadCheck</p>
-        </div>
+        <div class="col"><h5 class="text-center">or</h5></div>
+    </div>
+</div>
+<div class="container-fluid mb-sm-5">
+    <div class="row">
+        <div class="col"><a th:href="@{/manual}"><button class="btn btn-info btn-md btn-block">Find a measurement with manual coordinates</button></a></div>
     </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
