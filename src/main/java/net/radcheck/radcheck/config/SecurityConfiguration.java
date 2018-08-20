@@ -57,6 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/delete").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/build-report").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/two-by-two").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/three-by-three").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/four-by-four").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/profile").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
@@ -66,7 +68,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/?logout=true").and().exceptionHandling()
+                .logoutSuccessUrl("/?logout=true").and()
+                .logout().deleteCookies("JSESSIONID").and()
+                .rememberMe().key("uniqueAndSecret").and().exceptionHandling()
+
                 .accessDeniedPage("/?error=true");
     }
 
