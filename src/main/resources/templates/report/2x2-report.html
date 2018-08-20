@@ -23,8 +23,7 @@ $(document).ready(function(){
             </div>
             <div th:class="'report-cell-top float-right ' + ${rating01}">
                 <h4 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name01} + ':'"></h4>
-                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location01.getRating()}"></h3>
-                <p class="card-footer card-text p-sm-1 small" th:text="${info01}"></p>
+                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location01.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info01}"></h3>
             </div>
             <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location01.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location01.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -93,8 +92,7 @@ $(document).ready(function(){
             </div>
             <div th:class="'report-cell-top float-right ' + ${rating02}">
                 <h4 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name02} + ':'"></h4>
-                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location02.getRating()}"></h3>
-                <p class="card-footer card-text p-sm-1 small" th:text="${info02}"></p>
+                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location02.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info02}"></h3>
             </div>
             <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location02.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location02.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -165,8 +163,7 @@ $(document).ready(function(){
             </div>
             <div th:class="'report-cell-top float-right ' + ${rating03}">
                 <h4 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name03} + ':'"></h4>
-                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location03.getRating()}"></h3>
-                <p class="card-footer card-text p-sm-1 small" th:text="${info03}"></p>
+                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location03.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info03}"></h3>
             </div>
             <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location03.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location03.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -235,8 +232,7 @@ $(document).ready(function(){
             </div>
             <div th:class="'report-cell-top float-right ' + ${rating04}">
                 <h4 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name04} + ':'"></h4>
-                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location04.getRating()}"></h3>
-                <p class="card-footer card-text p-sm-1 small" th:text="${info04}"></p>
+                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location04.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info04}"></h3>
             </div>
             <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location04.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location04.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>

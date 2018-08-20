@@ -22,9 +22,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location01.getLat()} + '%2C' + ${location01.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating01}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name01} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location01.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info01}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name01} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location01.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info01}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location01.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location01.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -92,9 +91,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location02.getLat()} + '%2C' + ${location02.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating02}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name02} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location02.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info02}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name02} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location02.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info02}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location02.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location02.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -162,9 +160,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location03.getLat()} + '%2C' + ${location03.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating03}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name03} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location03.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info03}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name03} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location03.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info03}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location03.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location03.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -232,9 +229,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location04.getLat()} + '%2C' + ${location04.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating04}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name04} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location04.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info04}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name04} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location04.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info04}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location04.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location04.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -304,9 +300,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location05.getLat()} + '%2C' + ${location05.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating05}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name05} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location05.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info05}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name05} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location05.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info05}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location05.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location05.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -374,9 +369,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location06.getLat()} + '%2C' + ${location06.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating06}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name06} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location06.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info06}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name06} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location06.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info06}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location06.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location06.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -444,9 +438,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location07.getLat()} + '%2C' + ${location07.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating07}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name07} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location07.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info07}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name07} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location07.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info07}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location07.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location07.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -514,9 +507,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location08.getLat()} + '%2C' + ${location08.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating08}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name08} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location08.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info08}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name08} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location08.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info08}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location08.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location08.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -586,9 +578,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location09.getLat()} + '%2C' + ${location09.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating09}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name09} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location09.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info09}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name09} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location09.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info09}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location09.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location09.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -656,9 +647,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location010.getLat()} + '%2C' + ${location010.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating010}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name010} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location010.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info010}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name010} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location010.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info010}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location010.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location010.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -726,9 +716,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location011.getLat()} + '%2C' + ${location011.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating011}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name011} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location011.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info011}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name011} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location011.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info011}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location011.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location011.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -796,9 +785,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location012.getLat()} + '%2C' + ${location012.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating012}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name012} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location012.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info012}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name012} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location012.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info012}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location012.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location012.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -868,9 +856,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location013.getLat()} + '%2C' + ${location013.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating013}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name013} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location013.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info013}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name013} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location013.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info013}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location013.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location013.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -938,9 +925,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location014.getLat()} + '%2C' + ${location014.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating014}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name014} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location014.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info014}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name014} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location014.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info014}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location014.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location014.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -1008,9 +994,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location015.getLat()} + '%2C' + ${location015.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating015}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name015} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location015.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info015}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name015} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location015.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info015}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location015.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location015.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -1078,9 +1063,8 @@ $(document).ready(function(){
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location016.getLat()} + '%2C' + ${location016.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top-4x4 float-right ' + ${rating016}">
-                <h6 class="card-header card-title p-sm-2 vsmall" th:text="'Rating for ' + ${name016} + ':'"></h6>
-                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location016.getRating()}"></h5>
-                <p class="card-footer card-text p-sm-1 small xsmall" th:text="${info016}"></p>
+                <h6 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name016} + ':'"></h6>
+                <h5 class="card-body card-text text-center pt-sm-1" th:text="${location016.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info016}"></h5>
             </div>
             <div class="report-cell-bottom-4x4 float-left">
                 <p class="lead text-center"><strong th:text="${#numbers.formatDecimal(location016.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location016.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
