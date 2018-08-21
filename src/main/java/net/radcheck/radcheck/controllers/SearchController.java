@@ -73,7 +73,7 @@ public class SearchController {
             "Great Buddha of Kamakura, 4 Chome-2-28 Hase, Kamakura, Kanagawa Prefecture, Japan", "Freedom Tower, World Trade Center, New York, NY",
             "Kronborg Castle, Kronborg, Helsingør, Denmark", "Shanghai World Financial Center, Lujiazui, Pudong, Shanghai, China",
             "Moulin Rouge, Boulevard de Clichy, Paris, France", "UNESCO World Heritage Kinderdijk, Nederwaard, Kinderdijk, Netherlands",
-            "Monument Valley Navajo Tribal Park, Main Monument Valley Road, Oljato-Monument Valley, AZ", "Catherine Palace, Garden Street, Pushkin, Saint Petersburg, Russia", //72
+            "Hoover Dam, Nevada", "Catherine Palace, Garden Street, Pushkin, Saint Petersburg, Russia", //72
             "Berlin Cathedral Church, Am Lustgarten, Berlin, Germany", "Helsinki Cathedral, Unionsgatan, Helsinki, Finland", "Tivoli Gardens, Vesterbrogade, København V, Denmark",
             "Bath, England, UK", "Brighton Pier, Madeira Drive, Brighton, UK", "Alhambra, Calle Real de la Alhambra, Granada, Spain",
             "Palais des Papes, Place du Palais, Avignon, France", "Pont du Gard, Route du Pont du Gard, Vers-Pont-du-Gard, France",
@@ -91,7 +91,7 @@ public class SearchController {
             48.886706, 51.513855, 40.774321, 35.360834, 44.460497, 45.437986, 47.620550, 51.499429, 51.504631, 51.514502,
             25.699550, 52.516307, 50.941262, 38.871890, 41.882662, 30.328482, 41.008699, 31.239703, 55.679961, 43.767956,
             31.776725, 41.902952, 41.905993, 45.434061, 48.860649, 35.316842, 40.713037, 56.039038, 31.234735, 48.884129,
-            51.888373, 36.989576, 59.716134, 52.519080, 60.170435, 55.673696, 51.381069, 50.816863, 37.176093, 43.950864,
+            51.888373, 36.016100, 59.716134, 52.519080, 60.170435, 55.673696, 51.381069, 50.816863, 37.176093, 43.950864,
             43.947605, 47.794960, 50.091131, 47.051655, 43.318402, 50.894968, 34.098561, 59.940412, 55.684089, 51.519447,
             51.754962, 41.005416, 51.510096, 51.508043, 44.077507, 39.94964, 33.812145, 37.807979, 32.775418, 38.889302,
             33.394963};
@@ -102,7 +102,7 @@ public class SearchController {
             2.343104, -0.098356, -73.970849, 138.727853, -110.828135, 12.335895, -122.349277, -0.127572,  -0.086976, -0.080308,
             32.639051, 13.377683, 6.958129, -77.056267, -87.623306, 35.444351, 28.980117, 121.499753, 12.590916, 11.253144,
             35.234505, 12.454483, 12.482773, 12.340854, 2.352241, 139.535754, -74.013169, 12.621144, 121.507537, 2.332249,
-            4.636890, -110.131242, 30.395653, 13.401067, 24.952165, 12.568147, -2.359021, -0.136741, -3.588143, 4.807695,
+            4.636890, -114.737743, 30.395653, 13.401067, 24.952165, 12.568147, -2.359021, -0.136741, -3.588143, 4.807695,
             4.534960, 13.047656, 14.401606, 8.307532, 11.332159, 4.341526, -118.325575, 30.313785, 12.592999, -0.126957,
             -1.254442, 28.976812, -0.134568, -0.128070, 3.022811, -75.150282, -117.918974, -122.417732, -96.808961, -77.050187,
             -104.523168};
