@@ -49,6 +49,18 @@
 
                 <div class="form-group">
                     <div class="col-sm-9">
+                        <div class="custom-control custom-checkbox m-sm-1">
+                            <input type="checkbox" class="custom-control-input" name="agree" id="agree" value="true">
+                            <label class="custom-control-label" for="agree">I have read and agree to the
+                            <a th:href="@{privacy}" target="_blank" style="color: Blue;">Privacy Policy</a> and consent to the use
+                            of cookies.</label>
+                            <span th:utext="${consentMessage}" class="error"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
                         <button type="submit" class="btn btn-primary btn-block btn-md">Register User</button>
                     </div>
                 </div>

@@ -51,6 +51,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/search").permitAll()
                 .antMatchers("/manual").permitAll()
+                .antMatchers("/about").permitAll()
+                .antMatchers("/privacy").permitAll()
                 .antMatchers("/confirm").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/save").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/view").hasAnyAuthority("USER", "ADMIN")
@@ -63,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/?logon=true")
+                .defaultSuccessUrl("/search?logon=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
@@ -72,7 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout().deleteCookies("JSESSIONID").and()
                 .rememberMe().key("uniqueAndSecret").alwaysRemember(true)
                 .and().exceptionHandling()
-                .accessDeniedPage("/?error=true");
+                .accessDeniedPage("/?denied=true");
     }
 
     @Override

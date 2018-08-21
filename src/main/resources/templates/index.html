@@ -6,12 +6,6 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
-<div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.logon}">
-    The account at <strong th:text="${account}"></strong> is now logged in.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 <div class="alert alert-info alert-dismissible fade show" role="alert" th:if="${param.logout}">
     You have successfully logged out.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -24,7 +18,13 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
+<div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.error}">
+    Please add at least three characters to your search query and try again.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.denied}">
     You do not have access to that page because you lack account privileges.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -68,13 +68,23 @@
     </script>
     <script th:attr="src=${key}" async defer></script>
         <button type="submit" class="btn btn-primary btn-md btn-block mt-sm-2">Find measurement here</button>
-        <span th:errors="*{address}" class="error"></span>
     </form></div>
-<div class="container mb-sm-5 pt-sm-3">
+<div class="container pt-sm-3">
     <div class="row">
         <div class="col text-center">
             <p class="display-2">Welcome to RadCheck</p>
         </div>
+    </div>
+</div>
+<div class="container mb-sm-5 pt-sm-3">
+    <div class="row">
+        <div class="col"><p>RadCheck is a web application for looking up radiation readings in your local area and around
+        the world. Results will include ratings to help you make informed decisions regarding your environment. There are
+            also details about the weather and air quality with every result. You can quickly find measurements by
+            typing in an address in the map search bar. By registering for an account, you can save up to 20 locations,
+            so you can easily look up results for daily updates. An account also allows you to make reports on multiple
+        locations at once.</p>
+        <p>Thanks for visiting, and stay safe out there!</p></div>
     </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>

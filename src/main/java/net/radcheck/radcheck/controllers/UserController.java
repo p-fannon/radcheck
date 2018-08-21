@@ -12,10 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -64,7 +61,17 @@ public class UserController {
     }
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String createNewUser(Model model, @ModelAttribute @Valid User user, Errors errors,
+                                @RequestParam (defaultValue = "false") boolean agree,
                                 HttpServletRequest request) {
+        if (!agree) {
+            String account = getUser();
+            model.addAttribute("consentMessage", "You must consent to the Privacy Policy " +
+                    "and cookies to make an account");
+            model.addAttribute("title", "Register");
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            return "registration";
+        }
         String verify = request.getParameter("verify");
         if (!verify.equals(user.getPassword())) {
             String account = getUser();
@@ -99,6 +106,15 @@ public class UserController {
             model.addAttribute("isLoggedIn", checkAccount(account));
         }
         return "registration";
+    }
+    @RequestMapping(value = "/privacy", method = RequestMethod.GET)
+    public String privacy(Model model) {
+        String account = getUser();
+        model.addAttribute("title", "Privacy Policy");
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+
+        return "privacy";
     }
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
     public String home(Model model){

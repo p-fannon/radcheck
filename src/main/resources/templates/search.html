@@ -12,27 +12,23 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="alert alert-info alert-dismissible fade show" role="alert" th:if="${param.logout}">
-    You have successfully logged out.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+
 <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.retry}">
     Something went wrong when pulling data for this location. Please try again.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
-    You do not have access to that page because you lack account privileges.
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.error}">
+    Please add at least three characters to your search query and try again.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 
 <div id="map_container"><div id="map"></div></div>
-<div class="container-fluid"><form class="form-inline" th:action="@{/}" method="POST" th:object="${gmap}">
+<div class="container-fluid"><form class="form-inline" th:action="@{/search}" method="POST" th:object="${gmap}">
     <div id="floating-panel" class="form-group">
         <label for="address">Search the map:&nbsp;&nbsp;</label>
         <input id="address" type="search" class="form-control" th:value="*{address}" th:field="*{address}">
@@ -68,11 +64,10 @@
     </script>
     <script th:attr="src=${key}" async defer></script>
     <button type="submit" class="btn btn-primary btn-md btn-block mt-sm-2">Find measurement here</button>
-    <span th:errors="*{address}" class="error"></span>
 </form></div>
 <div class="container-fluid my-sm-3">
     <div class="row">
-        <div class="col"><h5 class="text-center">or</h5></div>
+        <div class="col"><h5 class="text-center">&mdash;&nbsp;or&nbsp;&mdash;</h5></div>
     </div>
 </div>
 <div class="container-fluid mb-sm-5">

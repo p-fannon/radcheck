@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col my-sm-2 display-4 text-center">RadCheck FAQ</div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col mb-sm-5">
+            <div id="accordion">
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                            What is the purpose of RadCheck?
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                        <div class="card-body text-white">
+                            RadCheck is designed to keep users safe from the harmful effects of prolonged exposure to
+                            ionizing background radiation. This data is intended to be free and accessible to anyone.
+                            Immediate results on a single location can be found with a <a th:href="@{/search}" target="_blank">map search</a>
+                            or <a th:href="@{/manual}" target="_blank">latitude/longitude coordinates</a>, and daily updates of saved
+                            locations are made available by
+                            <a th:href="@{/login}" target="_blank">signing in with an account.</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                            Where does RadCheck's data come from?
+                        </a>
+                    </div>
+                    <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-white">
+                            Radiation data comes from the <a href="https://blog.safecast.org/" target="_blank">Safecast database,</a>
+                            which is made up of volunteer efforts to measure radioactivity all around the world. Air
+                            quality index and weather information comes from <a href="https://www.airvisual.com/" target="_blank">AirVisual.</a>
+                            Map searches are done via Google Maps.
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                            How are radiation doses measured?
+                        </a>
+                    </div>
+                    <div id="collapseThree" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-white">
+                            Human doses of ionizing radiation are measured with the microsievert per hour unit, or
+                            µSv/h.  It is the international standard for measuring the health effects of low levels of
+                            background radiation. There are sources of ionizing radiation everywhere, from the food you
+                            eat to cosmic rays from outer space. This unit does not discern between different types of
+                            ionizing radiation like alpha, beta and gamma particles.<br /><br />The Environmental
+                            Protection Agency recommends to the general public to not exceed 1000 µSv per year, which
+                            translates into about 2.74 µSv per day or 0.1141 µSv/h. This is the threshold of what
+                            RadCheck considers to be a safe dose. However, your definition of safe might be completely
+                            different. It is up to you to make informed choices with the data presented by each
+                            result. <a href="https://en.wikipedia.org/wiki/Sievert" target="_blank">Read more about Sievert units
+                            here.</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseFour">
+                            How do I look up a location?
+                        </a>
+                    </div>
+                    <div id="collapseFour" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-white">
+                            Locations can be looked up either with a <a th:href="@{/search}" target="_blank">map search</a>
+                            , or by <a th:href="@{/manual}" target="_blank">manually entering latitude and
+                            longitude coordinates.</a> When viewing a result while logged in, you can save it to your
+                            account. Afterwards, you can see this location's result again by clicking on the "View"
+                            button next to it.
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseFive">
+                            How are locations and measurements saved?
+                        </a>
+                    </div>
+                    <div id="collapseFive" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-white">
+                            Every location has data about the coordinates and its environmental conditions. A search will
+                            try to find measurements within a one kilometer radius from the coordinates, which encompasses about
+                            1.2 square miles. RadCheck will attempt to find the latest measurements available within the
+                            given area. When a location is saved, it is assigned a 500 meter by 500 meter bounding box,
+                            which is an area roughly the size of 3 city blocks. When a user attempts to save a location
+                            within this bounding box, they are instead directed to save the location already in the
+                            database. Users will also be prevented from saving the same location twice.<br /><br />
+                            Results from a location are saved within the database for twenty-one
+                            hours, after which they are eligible to be refreshed again. Every location you save to your
+                            account will say whether or not the results are refreshed. Since saved locations are shared
+                            among all users, it only takes one search for the refreshed results to be made available
+                            to everyone.
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseSix">
+                            Why are you telling me how many bananas I would have eaten in three hours?
+                        </a>
+                    </div>
+                    <div id="collapseSix" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-white">
+                            The potassium in bananas contain trace amounts of naturally occurring ionizing radiation.
+                            Eating one banana is an equivalent radiation dose of one-tenth of one microsievert, known as a
+                            <a href="https://en.wikipedia.org/wiki/Banana_equivalent_dose" target="_blank">BED.</a> This is not meant
+                            to be used as a formal measurement of radioactivity, but rather as a quick shorthand for
+                            how much low-level radiation is in an area.
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseSeven">
+                            Does RadCheck cost money?
+                        </a>
+                    </div>
+                    <div id="collapseSeven" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-white">
+                            Nope, it's free! RadCheck will never require payment or sell your information. However,
+                            hosting RadCheck does cost money, so if you would like to help pay for server costs,
+                            consider donating.<br /><br />
+                            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                <input type="hidden" name="cmd" value="_s-xclick">
+                                <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIHLwYJKoZIhvcNAQcEoIIHIDCCBxwCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYAwtq1IhmmfAilaVRnTGn5BQ2SpsdAuuDQ9L8BKM8Z4Y8vitteOHiSyedRIVelosuqF8IRbH3lxE0HR5xpnUEK7SCn+cykBdqEqlsxEtCPtfZRVRmc1PPgqoYvEhiIvwbSjFe2Owib8ZtW9wKReUtwAE+uIOC71fbJAc0Q3C4NO2zELMAkGBSsOAwIaBQAwgawGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQIl6hOnms7Af2AgYgNnItFRDWHbbJkbjHP0YQyl6o3W0WOyqAOntMwHhvvAMm0sj9JKwR7CPq74ZPYVUyzQcywcC1vsq52e+YI6UMWIhuEB5WCNAEKuFoFe871I/EQx0kNKMhR8EHIp0/gDftQKu08h2ZGXeil4UrKsWzxC2tarRGWRXZ993m65NaIYmyIC25lTiozoIIDhzCCA4MwggLsoAMCAQICAQAwDQYJKoZIhvcNAQEFBQAwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tMB4XDTA0MDIxMzEwMTMxNVoXDTM1MDIxMzEwMTMxNVowgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBR07d/ETMS1ycjtkpkvjXZe9k+6CieLuLsPumsJ7QC1odNz3sJiCbs2wC0nLE0uLGaEtXynIgRqIddYCHx88pb5HTXv4SZeuv0Rqq4+axW9PLAAATU8w04qqjaSXgbGLP3NmohqM6bV9kZZwZLR/klDaQGo1u9uDb9lr4Yn+rBQIDAQABo4HuMIHrMB0GA1UdDgQWBBSWn3y7xm8XvVk/UtcKG+wQ1mSUazCBuwYDVR0jBIGzMIGwgBSWn3y7xm8XvVk/UtcKG+wQ1mSUa6GBlKSBkTCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb22CAQAwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOBgQCBXzpWmoBa5e9fo6ujionW1hUhPkOBakTr3YCDjbYfvJEiv/2P+IobhOGJr85+XHhN0v4gUkEDI8r2/rNk1m0GA8HKddvTjyGw/XqXa+LSTlDYkqI8OwR8GEYj4efEtcRpRYBxV8KxAW93YDWzFGvruKnnLbDAF6VR5w/cCMn5hzGCAZowggGWAgEBMIGUMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTgwODIxMTcyMTAwWjAjBgkqhkiG9w0BCQQxFgQU36y8dAEAwGrN+KAE3537yei7LmowDQYJKoZIhvcNAQEBBQAEgYBsmtQWYB/IAMrQ0RNIy7Lexp0Nm07Wf/gs9s6pG1MdGOc1wUD/DPC7xJZwjWOLCd0zgx8oOAEFZpkwtdfZrd9t1/WntAejz0S3E10RmpcCoLdhugaM4SuVp+r1UUR5LwAZz7EotyAH1bdy5ImStuS/aQS1P5y7qhiNs+4c8CV2Qg==-----END PKCS7-----">
+                                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseEight">
+                            How does RadCheck use my information?
+                        </a>
+                    </div>
+                    <div id="collapseEight" class="collapse" data-parent="#accordion">
+                        <div class="card-body text-white">
+                            RadCheck only requires your email address in order to make an account. Cookies used on this
+                            site include a Remember Me cookie for easy login access (which can be opted out of at any
+                            time), and Google Analytics cookies to track user behavior. As of now, there are no mailing
+                            lists associated with RadCheck, and your email address will not be sold to third parties.
+                            Please refer to the <a th:href="@{/privacy}" target="_blank">privacy policy</a> for details.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments :: foot"></footer>
+</body>
+</html>

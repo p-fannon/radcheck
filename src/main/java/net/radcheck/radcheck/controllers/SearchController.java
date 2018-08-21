@@ -119,7 +119,7 @@ public class SearchController {
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("title", "Pick A Location To Measure");
+        model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
         model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
         model.addAttribute("gmap", new GMap(list[address]));
         model.addAttribute("latitude", lat[address]);
@@ -143,16 +143,28 @@ public class SearchController {
         return "search";
     }
 
+    @RequestMapping(value = "/about", method=RequestMethod.GET)
+    public String about(Model model) {
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Information About RadCheck");
+
+        return "about";
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
+    public String indexSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
                              errors, HttpSession session) throws IOException {
         if (errors.hasErrors()) {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location To Measure");
+            model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
+
+            return "redirect:/?error=true";
         }
 
         Geo geoReturn = getGeo(newMap.getAddress());
@@ -161,7 +173,7 @@ public class SearchController {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location To Measure");
+            model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
             return "redirect:/?retry=true";
@@ -186,10 +198,82 @@ public class SearchController {
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location To Measure");
+            model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
             model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
             return "redirect:/?retry=true";
+        }
+
+        LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
+
+        String ratingClass = getRatingClass(returnedLatLon);
+        String ratingInfo = getRatingInfo(returnedLatLon);
+
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "Current readings at this location");
+        model.addAttribute("return", returnedLatLon);
+        model.addAttribute("rating_class", ratingClass);
+        model.addAttribute("rating_info", ratingInfo);
+        model.addAttribute("latitude", aLatitude);
+        model.addAttribute("longitude", aLongitude);
+        if (checkAccount(account)) {
+            session.setAttribute("candidateLocation", returnedLatLon);
+        }
+        model.addAttribute("key", mapsKey);
+        return "result";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
+            errors, HttpSession session) throws IOException {
+        if (errors.hasErrors()) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Pick A Location To Measure");
+            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
+            model.addAttribute("gmap", newMap);
+
+            return "redirect:/search?error=true";
+        }
+
+        Geo geoReturn = getGeo(newMap.getAddress());
+
+        if (geoReturn.getResults().size() == 0) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Pick A Location To Measure");
+            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
+            model.addAttribute("gmap", newMap);
+            return "redirect:/search?retry=true";
+        }
+
+        double aLatitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLatitude();
+        double aLongitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLongitude();
+
+        Collection<Measurements> safeCastReturns = getMeasurements(aLatitude, aLongitude);
+
+        if (safeCastReturns.size() == 0) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "No results to display :(");
+            return "null-result";
+        }
+
+        AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
+
+        if (!airVisualReturn.getAqiStatus().equals("success")) {
+            String account = getUser();
+            model.addAttribute("account", account);
+            model.addAttribute("isLoggedIn", checkAccount(account));
+            model.addAttribute("title", "Pick A Location To Measure");
+            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
+            model.addAttribute("gmap", newMap);
+            return "redirect:/search?retry=true";
         }
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
