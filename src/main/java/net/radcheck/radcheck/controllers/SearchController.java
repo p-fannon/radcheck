@@ -6,6 +6,8 @@ import net.radcheck.radcheck.models.*;
 import net.radcheck.radcheck.models.data.LatLonDao;
 import net.radcheck.radcheck.models.forms.BuildReportForm;
 import net.radcheck.radcheck.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,6 +47,7 @@ public class SearchController {
     private static Gson gson = new Gson();
     private static String minScTs = "2011-03-10T00:00:00Z";
     private static long twentyOneHours = 75600000L;
+    private static final Logger searchLogger = LoggerFactory.getLogger(SearchController.class);
     private static String[] list = {"The Gateway Arch, St. Louis, MO", "Apotheosis of Saint Louis, Fine Arts Drive, St. Louis, MO",
             "Washington Monument, Washington, DC", "Empire State Building, 5th Avenue, New York, NY", "Big Ben, London, UK",
             "Leaning Tower of Pisa, Pisa, Province of Pisa, Italy", "Colosseum, Piazza del Colosseo, Rome, Metropolitan City of Rome, Italy",
@@ -157,6 +160,7 @@ public class SearchController {
     public String indexSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
                              errors, HttpSession session) throws IOException {
         if (errors.hasErrors()) {
+            searchLogger.info("Error during index page result serving: " + errors.getAllErrors().toString());
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -170,6 +174,7 @@ public class SearchController {
         Geo geoReturn = getGeo(newMap.getAddress());
 
         if (geoReturn.getResults().size() == 0) {
+            searchLogger.info("Google failed to return because of: " + geoReturn.getStatus());
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -195,6 +200,7 @@ public class SearchController {
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
         if (!airVisualReturn.getAqiStatus().equals("success")) {
+            searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -229,6 +235,7 @@ public class SearchController {
     public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
             errors, HttpSession session) throws IOException {
         if (errors.hasErrors()) {
+            searchLogger.info("Error during search page result serving: " + errors.getAllErrors().toString());
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -242,6 +249,7 @@ public class SearchController {
         Geo geoReturn = getGeo(newMap.getAddress());
 
         if (geoReturn.getResults().size() == 0) {
+            searchLogger.info("Google failed to return because of: " + geoReturn.getStatus());
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -267,6 +275,7 @@ public class SearchController {
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
         if (!airVisualReturn.getAqiStatus().equals("success")) {
+            searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -314,6 +323,7 @@ public class SearchController {
                          Errors errors, HttpSession session) throws IOException {
 
         if (errors.hasErrors()) {
+            searchLogger.info("Error during manual page result serving: " + errors.getAllErrors().toString());
             model.addAttribute("title", "Pick A Location To Measure");
             model.addAttribute("measurements", newMeasurement);
             String account = getUser();
@@ -351,6 +361,7 @@ public class SearchController {
         AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
 
         if (!airVisualReturn.getAqiStatus().equals("success")) {
+            searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
             String account = getUser();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));;
@@ -449,6 +460,7 @@ public class SearchController {
             }
         }
         if (errors.hasErrors()) {
+            searchLogger.info("Error during 2x2 report serving: " + errors.getAllErrors().toString());
             User user = getAccount();
             String account = getUser();
             model.addAttribute("account", account);
@@ -537,6 +549,7 @@ public class SearchController {
             }
         }
         if (errors.hasErrors()) {
+            searchLogger.info("Error during 3x3 report serving: " + errors.getAllErrors().toString());
             User user = getAccount();
             String account = getUser();
             model.addAttribute("account", account);
@@ -618,6 +631,7 @@ public class SearchController {
             }
         }
         if (errors.hasErrors()) {
+            searchLogger.info("Error during 4x4 report serving: " + errors.getAllErrors().toString());
             User user = getAccount();
             String account = getUser();
             model.addAttribute("account", account);
@@ -843,6 +857,8 @@ public class SearchController {
         AirQuality refreshedAqi = getAQI(refresh.getLat(), refresh.getLon());
         if (refreshedAqi.getAqiStatus().equals("success")) {
             refresh = updateAqi(refresh, refreshedAqi);
+        } else {
+            searchLogger.info("AirVisual failed to return because of: " + refreshedAqi.getAqiStatus());
         }
         refresh.setRating(getNewRating(refresh.getRadValue(), refresh.getAqiValue()));
 

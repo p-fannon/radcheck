@@ -25,7 +25,7 @@
                 <h4 class="p-sm-2" th:text="'Latitude: ' + *{#numbers.formatDecimal(location.getLat().toString(),1,6)}"></h4>
                 <h4 class="p-sm-2" th:text="'Longitude: ' + *{#numbers.formatDecimal(location.getLon().toString(),1,6)}"></h4>
                 <label th:for="locationName">Enter a new name for this location:</label>
-                <input th:field="*{locationName}" type="text" th:placeholder="*{city} + ', ' + *{country}" />
+                <input th:field="*{locationName}" type="text" th:placeholder="*{city} + ', ' + *{country}" class="py-sm-2" />
                 <div class="p-sm-2">
                     <button type="submit" class="btn btn-primary form-control">Confirm location</button>
                 </div>

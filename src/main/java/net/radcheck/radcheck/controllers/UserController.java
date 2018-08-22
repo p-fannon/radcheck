@@ -1,11 +1,15 @@
 package net.radcheck.radcheck.controllers;
 
 import net.radcheck.radcheck.models.LatLon;
+import net.radcheck.radcheck.models.Role;
 import net.radcheck.radcheck.models.User;
 import net.radcheck.radcheck.models.data.LatLonDao;
+import net.radcheck.radcheck.models.data.RoleDao;
 import net.radcheck.radcheck.models.data.UserDao;
 import net.radcheck.radcheck.models.forms.AddLocationItemForm;
 import net.radcheck.radcheck.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +23,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +34,7 @@ public class UserController {
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    private static final Logger userLogger = LoggerFactory.getLogger(UserController.class);
     private static String mapsKey = "AIzaSyAqvB0THWS44yHV3OOBzQQ0znAst9V6uQA";
     private static double angularDistance = 250 / 6371e3;
     private static long twentyOneHours = 75600000L;
@@ -40,6 +47,9 @@ public class UserController {
 
     @Autowired
     private UserDao userRepository;
+
+    @Autowired
+    private RoleDao roleRepository;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model){
@@ -92,6 +102,7 @@ public class UserController {
         }
         if (errors.hasErrors()) {
             String account = getUser();
+            userLogger.info("Error during user registration: " + errors.getAllErrors().toString());
             model.addAttribute("title", "Register");
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -145,7 +156,7 @@ public class UserController {
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
     public String confirmLocation(Model model, HttpSession session) {
         User user = getAccount();
-        if (user.getLocations().size() > 19) {
+        if (user.getLocations().size() > 19 && user.getRoles().equals(new HashSet<Role>(Arrays.asList(roleRepository.findByRole("USER"))))) {
             String account = user.getEmail();
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
@@ -226,6 +237,7 @@ public class UserController {
             LatLon aLocation = (LatLon) session.getAttribute("candidateLocation");
             User user = getAccount();
             String account = user.getEmail();
+            userLogger.info("Error during location saving: " + errors.getAllErrors().toString());
             model.addAttribute("account", account);
             model.addAttribute("isLoggedIn", checkAccount(account));
             model.addAttribute("title", "Name and confirm this location");
@@ -283,6 +295,7 @@ public class UserController {
     public String confirmEditLocation(Model model, @ModelAttribute @Valid AddLocationItemForm editForm,
                                       Errors errors, HttpSession session) {
         if (errors.hasErrors()) {
+            userLogger.info("Error during location editing: " + errors.getAllErrors().toString());
             LatLon aLocation = (LatLon) session.getAttribute("candidateLocation");
             User user = getAccount();
             String account = user.getEmail();
