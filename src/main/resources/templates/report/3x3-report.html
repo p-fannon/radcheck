@@ -18,7 +18,7 @@ $(document).ready(function(){
 <div class="container-fluid mb-5">
     <div class="row">
         <div class="col-4 border border-top-0 border-left-0">
-            <div class="row no-gutter">
+            <div class="row no-gutters">
                 <div class="col-6">
                     <div class="embed-responsive embed-responsive-1by1">
                         <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location01.getLat()} + '%2C' + ${location01.getLon()} + '&amp;key=' + ${key}"></iframe>
@@ -31,7 +31,7 @@ $(document).ready(function(){
                     </div>
                 </div>
             </div>
-            <div class="row no-gutter">
+            <div class="row no-gutters">
                 <div class="col-6">
                     <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location01.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location01.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                         <span class="small" th:if="${location01.getRadValue() < 0.44 and location01.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
@@ -56,7 +56,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location01.getRadValue() < 19.63 and location01.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location01.getRadValue() < 29.88 and location01.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location01.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location01.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location01.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location01.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location01.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location01.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location01.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location01.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location01.getCity()} + ', ' + ${location01.getCountry()}" class="small"></p>
                 </div>
@@ -133,7 +133,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location02.getRadValue() < 19.63 and location02.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location02.getRadValue() < 29.88 and location02.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location02.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location02.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location02.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location02.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location02.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location02.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location02.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location02.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location02.getCity()} + ', ' + ${location02.getCountry()}" class="small"></p>
                 </div>
@@ -210,7 +210,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location03.getRadValue() < 19.63 and location03.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location03.getRadValue() < 29.88 and location03.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location03.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location03.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location03.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location03.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location03.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location03.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location03.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location03.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location03.getCity()} + ', ' + ${location03.getCountry()}" class="small"></p>
                 </div>
@@ -290,7 +290,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location04.getRadValue() < 19.63 and location04.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location04.getRadValue() < 29.88 and location04.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location04.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location04.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location04.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location04.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location04.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location04.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location04.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location04.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location04.getCity()} + ', ' + ${location04.getCountry()}" class="small"></p>
                 </div>
@@ -367,7 +367,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location05.getRadValue() < 19.63 and location05.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location05.getRadValue() < 29.88 and location05.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location05.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location05.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location05.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location05.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location05.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location05.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location05.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location05.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location05.getCity()} + ', ' + ${location05.getCountry()}" class="small"></p>
                 </div>
@@ -444,7 +444,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location06.getRadValue() < 19.63 and location06.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location06.getRadValue() < 29.88 and location06.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location06.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location06.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location06.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location06.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location06.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location06.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location06.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location06.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location06.getCity()} + ', ' + ${location06.getCountry()}" class="small"></p>
                 </div>
@@ -523,7 +523,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location07.getRadValue() < 19.63 and location07.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location07.getRadValue() < 29.88 and location07.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location07.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location07.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location07.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location07.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location07.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location07.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location07.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location07.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location07.getCity()} + ', ' + ${location07.getCountry()}" class="small"></p>
                 </div>
@@ -600,7 +600,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location08.getRadValue() < 19.63 and location08.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location08.getRadValue() < 29.88 and location08.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location08.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location08.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location08.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location08.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location08.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location08.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location08.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location08.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location08.getCity()} + ', ' + ${location08.getCountry()}" class="small"></p>
                 </div>
@@ -677,7 +677,7 @@ $(document).ready(function(){
                         <span class="small" th:if="${location09.getRadValue() < 19.63 and location09.getRadValue() >= 13.92}">&plusmn;3.58 µSv/h</span>
                         <span class="small" th:if="${location09.getRadValue() < 29.88 and location09.getRadValue() >= 19.63}">&plusmn;6.68 µSv/h</span>
                         <span class="small" th:if="${location09.getRadValue() >= 29.88}">&plusmn;MAX µSv/h</span><span th:if="${location09.isCurrent()} == false">*</span></p>
-                    <p class="small">Latest measurement: <span th:text="${location09.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location09.getTotalMeasurements()}"></span> total measurements.</p>
+                    <p class="small">Latest meas: <span th:text="${location09.getMaxMeasurementTimestamp().toString()}"></span> UTC from <span th:text="${location09.getTotalMeasurements()}"></span> total meas.</p>
                     <p>AQI: <strong th:text="${location09.getAqiValue()}"></strong></p>
                     <p th:text="'This AQI rating made on ' + ${location09.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${location09.getCity()} + ', ' + ${location09.getCountry()}" class="small"></p>
                 </div>
