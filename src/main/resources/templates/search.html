@@ -28,11 +28,13 @@
 </div>
 
 <div id="map_container"><div id="map"></div></div>
-<div class="container-fluid"><form class="form-inline" th:action="@{/search}" method="POST" th:object="${gmap}">
-    <div id="floating-panel" class="form-group">
-        <label for="address">Search the map:&nbsp;&nbsp;</label>
-        <input id="address" type="search" class="form-control" th:value="*{address}" th:field="*{address}">
-        <button id="locate" type="button" class="btn btn-light">🔍</button>
+<div class="container"><form th:action="@{/}" method="POST" th:object="${gmap}">
+    <div class="form-group py-2">
+        <div class="mx-auto text-center">
+            <label for="address">Search map:</label>
+            <input id="address" type="search" th:value="*{address}" th:field="*{address}">
+            <button id="locate" type="button" class="btn btn-light">🔍</button>
+        </div>
     </div>
     <script th:inline="javascript">
         initMap();
@@ -63,14 +65,17 @@
         }
     </script>
     <script th:attr="src=${key}" async defer></script>
-    <button type="submit" class="btn btn-primary btn-md btn-block mt-sm-2">Find measurement here</button>
-</form></div>
-<div class="container-fluid my-sm-3">
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-md btn-block pt-2">Find measurement here</button>
+    </div>
+</form>
+</div>
+<div class="container my-sm-3">
     <div class="row">
         <div class="col"><h5 class="text-center">&mdash;&nbsp;or&nbsp;&mdash;</h5></div>
     </div>
 </div>
-<div class="container-fluid mb-sm-5">
+<div class="container mb-sm-5">
     <div class="row">
         <div class="col"><a th:href="@{/manual}"><button class="btn btn-info btn-md btn-block">Find a measurement with manual coordinates</button></a></div>
     </div>
