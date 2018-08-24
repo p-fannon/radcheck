@@ -993,6 +993,7 @@ $(document).ready(function(){
                     <p th:text="'AQI Timestamp: ' + ${location013.getAqiTimestamp().toString()} + ' UTC in ' + ${location013.getCity()} + ', ' + ${location013.getCountry()}" class="small"></p>
                 </div>
                 <div class="col-6">
+                    <button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#details013">Details</button>
                     <div id="details013" class="collapse m-1">
                         <p class="pt-1 small"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location013.getLat()} + '&amp;x=' + ${location013.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View on Safecast.</a></p>
                         <h5><img th:attr="src='https://airvisual.com/images/' + ${location013.getWeatherIcon()} + '.png'" class="xsm-weathericon"><span th:text="${#numbers.formatInteger(location013.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h5>
