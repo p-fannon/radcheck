@@ -12,18 +12,18 @@ $(document).ready(function(){
 </script>
 <div class="container">
     <div class="row">
-        <div class="col"><h2 class="p-sm-3 text-center" th:text="${message}"></h2></div>
+        <div class="col"><h2 class="p-3 text-center" th:text="${message}"></h2></div>
     </div>
 </div>
-<div class="container mb-sm-5">
+<div class="container mb-5">
     <div class="row">
-        <div class="col-sm-6 clearfix border border-top-0 border-left-0">
+        <div class="col-6 clearfix border border-top-0 border-left-0">
             <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location01.getLat()} + '%2C' + ${location01.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top float-right ' + ${rating01}">
-                <h4 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name01} + ':'"></h4>
-                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location01.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info01}"></h3>
+                <h4 class="card-header card-title p-2" th:text="'Rating for ' + ${name01} + ':'"></h4>
+                <h3 class="card-body card-text text-center pt-1" th:text="${location01.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info01}"></h3>
             </div>
             <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location01.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location01.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -55,9 +55,9 @@ $(document).ready(function(){
             </div>
             <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details01">Details</button>
-                <div id="details01" class="collapse m-sm-1">
-                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location01.getLat()} + '&amp;x=' + ${location01.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
-                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location01.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location01.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                <div id="details01" class="collapse m-1">
+                    <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location01.getLat()} + '&amp;x=' + ${location01.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location01.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(location01.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
                     <p>Wind is blowing <span th:if="${location01.getWindDirection() > 349 and location01.getWindDirection() <= 11}">north</span>
                         <span th:if="${location01.getWindDirection() > 11 and location01.getWindDirection() <= 33}">north-by-northeast</span>
                         <span th:if="${location01.getWindDirection() > 33 and location01.getWindDirection() <= 56}">northeast</span>
@@ -86,13 +86,13 @@ $(document).ready(function(){
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 clearfix border border-top-0 border-right-0">
+        <div class="col-6 clearfix border border-top-0 border-right-0">
             <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location02.getLat()} + '%2C' + ${location02.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top float-right ' + ${rating02}">
-                <h4 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name02} + ':'"></h4>
-                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location02.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info02}"></h3>
+                <h4 class="card-header card-title p-2" th:text="'Rating for ' + ${name02} + ':'"></h4>
+                <h3 class="card-body card-text text-center pt-1" th:text="${location02.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info02}"></h3>
             </div>
             <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location02.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location02.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -124,9 +124,9 @@ $(document).ready(function(){
             </div>
             <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details02">Details</button>
-                <div id="details02" class="collapse m-sm-1">
-                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location02.getLat()} + '&amp;x=' + ${location02.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
-                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location02.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location02.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                <div id="details02" class="collapse m-1">
+                    <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location02.getLat()} + '&amp;x=' + ${location02.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location02.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(location02.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
                     <p>Wind is blowing <span th:if="${location02.getWindDirection() > 349 and location02.getWindDirection() <= 11}">north</span>
                         <span th:if="${location02.getWindDirection() > 11 and location02.getWindDirection() <= 33}">north-by-northeast</span>
                         <span th:if="${location02.getWindDirection() > 33 and location02.getWindDirection() <= 56}">northeast</span>
@@ -157,13 +157,13 @@ $(document).ready(function(){
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6 clearfix border border-bottom-0 border-left-0">
+        <div class="col-6 clearfix border border-bottom-0 border-left-0">
             <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location03.getLat()} + '%2C' + ${location03.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top float-right ' + ${rating03}">
-                <h4 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name03} + ':'"></h4>
-                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location03.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info03}"></h3>
+                <h4 class="card-header card-title p-2" th:text="'Rating for ' + ${name03} + ':'"></h4>
+                <h3 class="card-body card-text text-center pt-1" th:text="${location03.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info03}"></h3>
             </div>
             <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location03.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location03.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -195,9 +195,9 @@ $(document).ready(function(){
             </div>
             <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details03">Details</button>
-                <div id="details03" class="collapse m-sm-1">
-                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location03.getLat()} + '&amp;x=' + ${location03.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
-                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location03.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location03.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                <div id="details03" class="collapse m-1">
+                    <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location03.getLat()} + '&amp;x=' + ${location03.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location03.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(location03.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
                     <p>Wind is blowing <span th:if="${location03.getWindDirection() > 349 and location03.getWindDirection() <= 11}">north</span>
                         <span th:if="${location03.getWindDirection() > 11 and location03.getWindDirection() <= 33}">north-by-northeast</span>
                         <span th:if="${location03.getWindDirection() > 33 and location03.getWindDirection() <= 56}">northeast</span>
@@ -226,13 +226,13 @@ $(document).ready(function(){
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 clearfix border border-bottom-0 border-right-0">
+        <div class="col-6 clearfix border border-bottom-0 border-right-0">
             <div class="report-cell-top float-left embed-responsive embed-responsive-1by1">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location04.getLat()} + '%2C' + ${location04.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
             <div th:class="'report-cell-top float-right ' + ${rating04}">
-                <h4 class="card-header card-title p-sm-2" th:text="'Rating for ' + ${name04} + ':'"></h4>
-                <h3 class="card-body card-text text-center pt-sm-1" th:text="${location04.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info04}"></h3>
+                <h4 class="card-header card-title p-2" th:text="'Rating for ' + ${name04} + ':'"></h4>
+                <h3 class="card-body card-text text-center pt-1" th:text="${location04.getRating()}" data-toggle="tooltip" data-placement="bottom" th:title="${info04}"></h3>
             </div>
             <div class="report-cell-bottom float-left">
                 <p class="lead">Aggregate radiation reading: <strong th:text="${#numbers.formatDecimal(location04.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${location04.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
@@ -264,9 +264,9 @@ $(document).ready(function(){
             </div>
             <div class="report-cell-bottom float-right">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details04">Details</button>
-                <div id="details04" class="collapse m-sm-1">
-                    <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location04.getLat()} + '&amp;x=' + ${location04.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
-                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location04.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(location04.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+                <div id="details04" class="collapse m-1">
+                    <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location04.getLat()} + '&amp;x=' + ${location04.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                    <h4><img th:attr="src='https://airvisual.com/images/' + ${location04.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(location04.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
                     <p>Wind is blowing <span th:if="${location04.getWindDirection() > 349 and location04.getWindDirection() <= 11}">north</span>
                         <span th:if="${location04.getWindDirection() > 11 and location04.getWindDirection() <= 33}">north-by-northeast</span>
                         <span th:if="${location04.getWindDirection() > 33 and location04.getWindDirection() <= 56}">northeast</span>
@@ -300,7 +300,7 @@ $(document).ready(function(){
 <div th:if="${current == false}" class="container">
     <div class="row">
         <div class="col">
-            <p class="mb-sm-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="mb-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>

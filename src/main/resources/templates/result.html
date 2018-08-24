@@ -11,24 +11,24 @@ $(document).ready(function(){
 });
 </script>
 <div class="container">
-    <div class="row"><h3 class="p-sm-3">Your search found the following measurement:</h3></div>
+    <div class="row"><h3 class="p-3">Your search found the following measurement:</h3></div>
 </div>
 
-<div class="container mb-sm-5">
+<div class="container mb-5">
     <div class="row">
         <div class="col embed-responsive embed-responsive-21by9">
             <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${latitude} + '%2C' + ${longitude} + '&amp;key=' + ${key}"></iframe>
         </div>
     </div>
-    <div class="row py-sm-2">
-        <div class="col-sm-4">
+    <div class="row py-2">
+        <div class="col-4">
             <div th:class="${rating_class}">
-                <h4 class="card-header card-title p-sm-2">Rating for this location:</h4>
-                <h2 class="card-body card-text text-center p-sm-1" th:text="${return.getRating()}"></h2>
-                <p class="card-footer card-text p-sm-1 small" th:text="${rating_info}"></p>
+                <h4 class="card-header card-title p-2">Rating for this location:</h4>
+                <h2 class="card-body card-text text-center p-1" th:text="${return.getRating()}"></h2>
+                <p class="card-footer card-text p-1 small" th:text="${rating_info}"></p>
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-8">
             <p class="lead">The aggregate radiation reading here is <strong th:text="${#numbers.formatDecimal(return.getRadValue(),1,2)}"></strong> <strong>µSv/h</strong> <span class="small" th:if="${return.getRadValue() < 0.14}">&plusmn;0.00 µSv/h</span>
                 <span class="small" th:if="${return.getRadValue() < 0.44 and return.getRadValue() >= 0.14}">&plusmn;0.01 µSv/h</span>
                 <span class="small" th:if="${return.getRadValue() < 0.64 and return.getRadValue() >= 0.44}">&plusmn;0.02 µSv/h</span>
@@ -55,10 +55,10 @@ $(document).ready(function(){
             <p class="small">The latest measurement from this reading taken on <span th:text="${return.getMaxMeasurementTimestamp().toString()}"></span> UTC and made from <span th:text="${return.getTotalMeasurements()}"></span> collected measurements.</p>
             <p>Air quality index is currently <strong th:text="${return.getAqiValue()}"></strong></p>
             <p th:text="'This AQI rating made on ' + ${return.getAqiTimestamp().toString()} + ' UTC and taken in ' + ${return.getCity()} + ', ' + ${return.getCountry()}" class="small"></p>
-            <button type="button" class="btn btn-info py-sm-1" data-toggle="collapse" data-target="#details">View details 👇</button>
-            <div id="details" class="collapse m-sm-1">
-                <p class="pt-sm-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
-                <h4><img th:attr="src='https://airvisual.com/images/' + ${return.getWeatherIcon()} + '.png'" class="weathericon px-sm-2"><span th:text="${#numbers.formatInteger(return.getTemp() * 1.8 + 32,1)}" class="px-sm-1"></span>&deg;F</h4>
+            <button type="button" class="btn btn-info py-1" data-toggle="collapse" data-target="#details">View details 👇</button>
+            <div id="details" class="collapse m-1">
+                <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
+                <h4><img th:attr="src='https://airvisual.com/images/' + ${return.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(return.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
                 <p>Wind is blowing <span th:if="${return.getWindDirection() > 349 and return.getWindDirection() <= 11}">north</span>
                     <span th:if="${return.getWindDirection() > 11 and return.getWindDirection() <= 33}">north-by-northeast</span>
                     <span th:if="${return.getWindDirection() > 33 and return.getWindDirection() <= 56}">northeast</span>
@@ -85,8 +85,8 @@ $(document).ready(function(){
                 </span></p>
                 <p>After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((return.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
             </div>
-            <form th:action="@{/confirm}" method="GET" class="py-sm-1" th:if="${isLoggedIn} == true">
-                <button class="btn btn-primary form-control mb-sm-5" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button>
+            <form th:action="@{/confirm}" method="GET" class="py-1" th:if="${isLoggedIn} == true">
+                <button class="btn btn-primary form-control mb-5" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button>
             </form>
         </div>
     </div>
@@ -94,7 +94,7 @@ $(document).ready(function(){
 <div th:if="${return.isCurrent()} == false" class="container">
     <div class="row">
         <div class="col">
-            <p class="mb-sm-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="mb-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>

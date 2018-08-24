@@ -6,11 +6,11 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
-<div class="container p-sm-3">
+<div class="container p-3">
     <h2>Manually enter your coordinates:</h2>
 </div>
 
-<div class="container mb-sm-5"><form method="POST" class="form-control" th:action="@{/manual}" th:object="${measurements}">
+<div class="container mb-5"><form method="POST" class="form-control" th:action="@{/manual}" th:object="${measurements}">
 
     <div class="form-group">
         <label th:for="radLat">Enter latitude of measurement</label>

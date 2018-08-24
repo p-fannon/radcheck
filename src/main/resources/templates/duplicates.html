@@ -10,17 +10,17 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
-<div class="container mb-sm-5">
+<div class="container mb-5">
     <div class="row">
-        <div class="col p-sm-3">
+        <div class="col p-3">
             <h2>Your saved search appears to be similar to the following location(s) already in the database:</h2>
         </div>
     </div>
-    <div class="row p-sm-1" th:each="location : ${locations}">
-        <div class="col-sm-4 offset-sm-1 embed-responsive embed-responsive-4by3">
+    <div class="row p-1" th:each="location : ${locations}">
+        <div class="col-4 offset-1 embed-responsive embed-responsive-4by3">
             <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MidnightBlue" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${location.lat} + '%2C' + ${location.lon} + '&amp;key=' + ${key}"></iframe>
         </div>
-        <div class="col-sm-6 offset-sm-1 mx-auto pt-5">
+        <div class="col-6 offset-1 mx-auto pt-5">
             <p th:text="'Use this location near ' + ${location.city} + ', ' + ${location.country}"></p>
             <a th:href="@{'/confirm/' + ${location.id}}"><button class="btn btn-primary btn-block" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button></a>
         </div>

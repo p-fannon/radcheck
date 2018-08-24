@@ -19,23 +19,23 @@ $(document).ready(function(){
 
 <div class="container">
     <div class="row">
-        <div class="col"><h2 class="p-sm-3 text-center">Build your two-by-two report</h2></div>
+        <div class="col"><h2 class="p-3 text-center">Build your two-by-two report</h2></div>
     </div>
 
 <form method="POST" th:action="@{/two-by-two}" th:object="${form}">
     <div class="form-group">
         <div class="container">
             <div class="row">
-                <div class="col-sm-6 border border-top-0 border-left-0">
-                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                <div class="col-6 border border-top-0 border-left-0">
+                    <select class="form-control custom-select m-2" th:field="*{locationIds}">
                         <option disabled th:value="null">Select a location for this grid position</option>
                         <option th:each="location : *{reportOptions}"
                                 th:text="${location.getKey()}"
                                 th:value="${location.getValue()}"></option>
                     </select>
                 </div>
-                <div class="col-sm-6 border border-top-0 border-right-0">
-                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                <div class="col-6 border border-top-0 border-right-0">
+                    <select class="form-control custom-select m-2" th:field="*{locationIds}">
                         <option disabled th:value="null">Select a location for this grid position</option>
                         <option th:each="location : *{reportOptions}"
                                 th:text="${location.getKey()}"
@@ -44,16 +44,16 @@ $(document).ready(function(){
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6 border border-bottom-0 border-left-0">
-                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                <div class="col-6 border border-bottom-0 border-left-0">
+                    <select class="form-control custom-select m-2" th:field="*{locationIds}">
                         <option disabled th:value="null">Select a location for this grid position</option>
                         <option th:each="location : *{reportOptions}"
                                 th:text="${location.getKey()}"
                                 th:value="${location.getValue()}"></option>
                     </select>
                 </div>
-                <div class="col-sm-6 border border-bottom-0 border-right-0">
-                    <select class="form-control custom-select m-sm-2" th:field="*{locationIds}">
+                <div class="col-6 border border-bottom-0 border-right-0">
+                    <select class="form-control custom-select m-2" th:field="*{locationIds}">
                         <option disabled th:value="null">Select a location for this grid position</option>
                         <option th:each="location : *{reportOptions}"
                                 th:text="${location.getKey()}"
@@ -64,7 +64,7 @@ $(document).ready(function(){
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" class="btn btn-md btn-block btn-primary mb-sm-5" value="Build the report" data-toggle="tooltip" data-placement="bottom" title="Results will be refreshed when using this report builder." />
+        <input type="submit" class="btn btn-md btn-block btn-primary mb-5" value="Build the report" data-toggle="tooltip" data-placement="bottom" title="Results will be refreshed when using this report builder." />
     </div>
 </form>
 </div>

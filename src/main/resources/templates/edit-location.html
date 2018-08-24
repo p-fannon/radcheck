@@ -13,20 +13,20 @@
     </button>
 </div>
 
-<h3 class="text-center p-sm-3">You are about to update the name of the following location:</h3>
+<h3 class="text-center p-3">You are about to update the name of the following location:</h3>
 
-<div class="container mb-sm-5">
+<div class="container mb-5">
     <form class="form-control" method="POST" th:action="@{/edit}" th:object="${submitForm}">
-        <div class="row p-sm-5">
-            <div class="col-sm-6 embed-responsive embed-responsive-4by3">
+        <div class="row p-5">
+            <div class="col-6 embed-responsive embed-responsive-4by3">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid Black" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + *{location.getLat()} + '%2C' + *{location.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
-            <div class="col-sm-4 offset-sm-1 form-group">
-                <h4 class="p-sm-2" th:text="'Latitude: ' + *{#numbers.formatDecimal(location.getLat().toString(),1,6)}"></h4>
-                <h4 class="p-sm-2" th:text="'Longitude: ' + *{#numbers.formatDecimal(location.getLon().toString(),1,6)}"></h4>
+            <div class="col-4 offset-1 form-group">
+                <h4 class="p-2" th:text="'Latitude: ' + *{#numbers.formatDecimal(location.getLat().toString(),1,6)}"></h4>
+                <h4 class="p-2" th:text="'Longitude: ' + *{#numbers.formatDecimal(location.getLon().toString(),1,6)}"></h4>
                 <label th:for="locationName">Enter a new name for this location:</label>
-                <input th:field="*{locationName}" type="text" th:placeholder="*{city} + ', ' + *{country}" class="py-sm-2" />
-                <div class="p-sm-2">
+                <input th:field="*{locationName}" type="text" th:placeholder="*{city} + ', ' + *{country}" class="py-2" />
+                <div class="p-2">
                     <button type="submit" class="btn btn-primary form-control">Confirm location</button>
                 </div>
             </div>

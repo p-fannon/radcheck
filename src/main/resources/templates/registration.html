@@ -17,14 +17,14 @@
     <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
 </form>
 
-<div class="container p-sm-3 mb-sm-5">
+<div class="container p-3 mb-5">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <form autocomplete="off" th:action="@{/registration}"
                   th:object="${user}" method="post" class="form-control">
                 <h2>Register a new user</h2>
                 <div class="form-group">
-                    <div class="col-sm-9">
+                    <div class="col-9">
                         <input type="email" th:field="*{email}" placeholder="Email"
                                class="form-control" /> <label
                             th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-9">
+                    <div class="col-9">
                         <input type="password" th:field="*{password}"
                                placeholder="Password" class="form-control" /> <label
                             th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-9">
+                    <div class="col-9">
                         <input type="password" name="verify"
                                placeholder="Verify password" class="form-control" /> <label
                             th:if="${param.error}" class="error">Please verify your password</label>
@@ -48,8 +48,8 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-9">
-                        <div class="custom-control custom-checkbox m-sm-1">
+                    <div class="col-9">
+                        <div class="custom-control custom-checkbox m-1">
                             <input type="checkbox" class="custom-control-input" name="agree" id="agree" value="true">
                             <label class="custom-control-label" for="agree">I have read and agree to the
                             <a th:href="@{privacy}" target="_blank" style="color: Blue;">Privacy Policy</a> and consent to the use
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-9">
+                    <div class="col-9">
                         <button type="submit" class="btn btn-primary btn-block btn-md">Register User</button>
                     </div>
                 </div>
