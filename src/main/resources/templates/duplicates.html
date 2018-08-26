@@ -22,7 +22,7 @@ $(document).ready(function(){
         </div>
         <div class="col-6 offset-1 mx-auto pt-5">
             <p th:text="'Use this location near ' + ${location.city} + ', ' + ${location.country}"></p>
-            <a th:href="@{'/confirm/' + ${location.id}}"><button class="btn btn-primary btn-block" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button></a>
+            <a th:href="@{'/confirm/' + ${location.id}}"><button class="btn btn-primary btn-block" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location</button></a>
         </div>
     </div>
 </div>

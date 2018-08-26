@@ -86,7 +86,7 @@ $(document).ready(function(){
                 <p>After three hours, being outside in this location is an equivalent radiation dose from eating <span th:text="${#numbers.formatInteger((return.getRadValue() * 3) / 0.1,1)}"></span> bananas.</p>
             </div>
             <form th:action="@{/confirm}" method="GET" class="py-1" th:if="${isLoggedIn} == true">
-                <button class="btn btn-primary form-control mb-5" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location to your account.</button>
+                <button class="btn btn-primary form-control mb-5" data-toggle="tooltip" data-placement="bottom" title="Confirm on the next page">Save this location</button>
             </form>
         </div>
     </div>
