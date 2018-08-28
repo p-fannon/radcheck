@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
@@ -31,7 +32,15 @@
     </button>
 </div>
 
-<div id="map_container"><div id="map"></div></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div id="map_container"><div id="map"></div></div>
+            </div>
+        </div>
+    </div>
+
+
 <div class="container"><form th:action="@{/}" method="POST" th:object="${gmap}">
     <div class="form-group py-2">
         <div class="mx-auto text-center">
@@ -81,7 +90,7 @@
         </div>
     </div>
 </div>
-<div class="container mb-5 pt-3">
+<div class="container push p-3">
     <div class="row">
         <div class="col"><p>RadCheck is a web application for looking up radiation readings in your local area and around
         the world. Results will include ratings to help you make informed decisions regarding your environment. There are
@@ -92,6 +101,10 @@
         <p>Thanks for visiting, and stay safe out there!</p></div>
     </div>
 </div>
-<footer th:replace="fragments :: foot"></footer>
+
+    <footer th:replace="fragments :: foot"></footer>
+</div>
+
+
 </body>
 </html>

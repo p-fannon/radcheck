@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
@@ -10,32 +11,37 @@
     <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
 </form>
 
-<div class="container p-3 mb-5">
-    <form th:action="@{/login}" method="POST" class="form-control">
-        <div class="form-group">
-            <h3>Login to your account</h3>
-        </div>
-        <div class="form-group">
-        <input type="email" id="email" name="email" placeholder="Email"
-               class="form-control" /> <br/>
-        <input type="password" placeholder="Password"
-               id="password" name="password" class="form-control" /> <br />
-        </div>
-        <div align="center" class="form-group" th:if="${param.error}">
-            <p class="error">Email or Password invalid, please verify</p>
-        </div>
-        <div class="form-group">
-            <div class="custom-control custom-checkbox m-1">
-                <input type="checkbox" class="custom-control-input" name="remember-me" id="remember-me">
-                <label class="custom-control-label" for="remember-me">Remember me</label>
-            </div>
-        </div>
+<div class="container p-3 push">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form th:action="@{/login}" method="POST" class="form-control">
+                <div class="form-group">
+                    <h3>Login to your account</h3>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email"
+                           class="form-control" /> <br/>
+                    <input type="password" placeholder="Password"
+                           id="password" name="password" class="form-control" /> <br />
+                </div>
+                <div align="center" class="form-group" th:if="${param.error}">
+                    <p class="error">Email or Password invalid, please verify</p>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox m-1">
+                        <input type="checkbox" class="custom-control-input" name="remember-me" id="remember-me">
+                        <label class="custom-control-label" for="remember-me">Remember me</label>
+                    </div>
+                </div>
 
-        <div class="form-group">
-        <button class="btn btn-md btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
+                <div class="form-group">
+                    <button class="btn btn-md btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

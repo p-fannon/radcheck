@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 <script>
@@ -23,7 +24,7 @@ $(document).ready(function(){
     </div>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid push">
 <form method="POST" th:action="@{/four-by-four}" th:object="${form}">
     <div class="form-group">
         <div class="container">
@@ -171,5 +172,6 @@ $(document).ready(function(){
 </form>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

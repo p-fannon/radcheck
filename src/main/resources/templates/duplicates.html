@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 <script>
@@ -10,7 +11,7 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
-<div class="container mb-5">
+<div class="container push">
     <div class="row">
         <div class="col p-3">
             <h2>Your saved search appears to be similar to the following location(s) already in the database:</h2>
@@ -27,5 +28,6 @@ $(document).ready(function(){
     </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

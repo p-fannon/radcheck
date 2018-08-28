@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
@@ -21,13 +22,13 @@
         <div class="col"><span class="badge badge-pill badge-info" th:text="${adminMessage}"></span></div>
     </div>
 </div>
-<div class="container mb-3">
+<div class="container push">
     <div class="row">
         <div class="col"><img th:src="@{/images/radiation.png}" class="rounded"></div>
     </div>
 </div>
 
 <footer th:replace="fragments :: foot"></footer>
-
+</div>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
@@ -10,7 +11,7 @@
     <h2>Manually enter your coordinates:</h2>
 </div>
 
-<div class="container mb-5"><form method="POST" class="form-control" th:action="@{/manual}" th:object="${measurements}">
+<div class="container push"><form method="POST" class="form-control" th:action="@{/manual}" th:object="${measurements}">
 
     <div class="form-group">
         <label th:for="radLat">Enter latitude of measurement</label>
@@ -26,5 +27,6 @@
     <button type="submit" class="btn btn-primary btn-md">Find measurement</button>
 </form></div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

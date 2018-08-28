@@ -3,19 +3,25 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
-<div class="container mb-5">
-    <div class="error-graphic mt-5">
-        <h2 class="p-2 text-center">🚫 Something went terribly wrong!</h2>
-        <h4 class="p-2 text-center">Perhaps you should start over.</h4>
-        <div class="p-2 mb-1 text-center">
-            <a th:href="@{/}"><button class="btn btn-md btn-default">🏠 Home</button></a>
+<div class="container mt-5 push">
+    <div class="row">
+        <div class="col">
+            <div class="error-graphic">
+                <h2 class="p-2 text-center">🚫 Something went terribly wrong!</h2>
+                <h4 class="p-2 text-center">Perhaps you should start over.</h4>
+                <div class="p-2 mb-1 text-center">
+                    <a th:href="@{/}"><button class="btn btn-md btn-default">🏠 Home</button></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

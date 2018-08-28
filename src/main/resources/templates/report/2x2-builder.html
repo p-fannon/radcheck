@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 <script>
@@ -17,7 +18,7 @@ $(document).ready(function(){
     </button>
 </div>
 
-<div class="container">
+<div class="container push">
     <div class="row">
         <div class="col"><h2 class="p-3 text-center">Build your two-by-two report</h2></div>
     </div>
@@ -70,6 +71,6 @@ $(document).ready(function(){
 </div>
 
 <footer th:replace="fragments :: foot"></footer>
-
+</div>
 </body>
 </html>

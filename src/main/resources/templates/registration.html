@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
@@ -17,12 +18,12 @@
     <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
 </form>
 
-<div class="container p-3 mb-5">
+<div class="container p-3 push">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <form autocomplete="off" th:action="@{/registration}"
                   th:object="${user}" method="post" class="form-control">
-                <h2>Register a new user</h2>
+                <h3>Register a new user</h3>
                 <div class="form-group">
                     <div class="col-9">
                         <input type="email" th:field="*{email}" placeholder="Email"
@@ -73,5 +74,6 @@
     </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

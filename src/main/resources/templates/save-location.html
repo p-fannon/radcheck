@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
@@ -19,15 +20,15 @@
     </div>
 </div>
 
-<div class="container mb-5">
+<div class="container push">
     <form class="form-control" method="POST" th:action="@{/save}" th:object="${submitForm}">
-        <div class="row">
+        <div class="row m-3">
             <div class="col form-group embed-responsive embed-responsive-4by3">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid Black" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + *{location.getLat()} + '%2C' + *{location.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
         </div>
         <div class="row">
-            <div class="col form-group">
+            <div class="col form-group text-center">
                 <h4 class="p-2" th:text="'Latitude: ' + *{#numbers.formatDecimal(location.getLat().toString(),1,6)}"></h4>
                 <h4 class="p-2" th:text="'Longitude: ' + *{#numbers.formatDecimal(location.getLon().toString(),1,6)}"></h4>
                 <label th:for="locationName" class="p-1">Enter a name for this location:</label>
@@ -40,5 +41,6 @@
     </form>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

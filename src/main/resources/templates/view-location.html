@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 <nav th:replace="fragments :: navigation"></nav>
 <script>
 $(document).ready(function(){
@@ -13,7 +14,7 @@ $(document).ready(function(){
     <h3 class="p-3" th:text="'Here are the current measurements at ' + ${session.locale} + ':'"></h3>
 </div>
 
-<div class="container mb-5">
+<div class="container push">
     <div class="row">
         <div class="col embed-responsive embed-responsive-21by9">
             <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid MediumSeaGreen" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + ${latitude} + '%2C' + ${longitude} + '&amp;key=' + ${key}"></iframe>
@@ -87,13 +88,14 @@ $(document).ready(function(){
         </div>
     </div>
 </div>
-<div th:if="${return.isCurrent()} == false" class="container">
+<div th:if="${return.isCurrent()} == false" class="container push">
     <div class="row">
         <div class="col">
-            <p class="mb-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="my-3 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

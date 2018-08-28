@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
@@ -12,14 +13,12 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-
 <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.retry}">
     Something went wrong when pulling data for this location. Please try again.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-
 <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.error}">
     Please add at least three characters to your search query and try again.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -27,7 +26,13 @@
     </button>
 </div>
 
-<div id="map_container"><div id="map"></div></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div id="map_container"><div id="map"></div></div>
+            </div>
+        </div>
+    </div>
 <div class="container"><form th:action="@{/search}" method="POST" th:object="${gmap}">
     <div class="form-group py-2">
         <div class="mx-auto text-center">
@@ -75,11 +80,12 @@
         <div class="col"><h5 class="text-center">&mdash;&nbsp;or&nbsp;&mdash;</h5></div>
     </div>
 </div>
-<div class="container mb-5">
+<div class="container push">
     <div class="row">
         <div class="col"><a th:href="@{/manual}"><button class="btn btn-info btn-md btn-block">Use manual coordinates</button></a></div>
     </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 
@@ -24,7 +25,7 @@
         </div>
     </div>
 </div>
-<div class="container pt-1 mb-5">
+<div class="container pt-1 push">
     <div class="row">
         <div class="col">
             <a th:href="@{/search}"><button class="btn btn-md btn-block btn-primary">Make a new search 🌐</button></a>
@@ -32,5 +33,6 @@
     </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>

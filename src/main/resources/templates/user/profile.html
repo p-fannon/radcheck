@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 <script>
@@ -62,7 +63,7 @@ $(document).ready(function(){
     </button>
 </div>
 
-<div class="container mb-3">
+<div class="container push">
     <div class="row">
         <div class="col p-3">
             <p>Your account at <strong th:text="${user.getEmail()}"></strong> registered to RadCheck on <span th:text="${user.getJoinedOn().toString()}"></span></p>
@@ -72,10 +73,10 @@ $(document).ready(function(){
         <div class="col p-3" th:unless="${user.locations} and ${user.locations.size()}">
             <p>You don't have any locations saved to this account. Start searching! 🕵️</p>
         </div>
-        <div class="col pb-5" th:if="${user.locations} and ${user.locations.size()}">
+        <div class="col wrapper" th:if="${user.locations} and ${user.locations.size()}">
             <table class="table table-striped m-1">
                 <thead>
-                <tr class="p-2">
+                <tr class="p-1">
                     <th>Location No.</th>
                     <th>Location Name</th>
                     <th>Latitude</th>
@@ -85,7 +86,7 @@ $(document).ready(function(){
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="location : ${user.locations}" class="p-2">
+                <tr th:each="location : ${user.locations}" class="p-1">
                     <td th:text="${#numbers.formatInteger(user.getLocations().indexOf(location) + 1,1)}"></td>
                     <td th:text="${names.get(user.getLocations().indexOf(location))}"></td>
                     <td th:text="${#numbers.formatDecimal(location.lat,1,6)}"></td>
@@ -108,6 +109,10 @@ $(document).ready(function(){
         </div>
     </div>
 </div>
-<footer th:replace="fragments :: foot"></footer>
+
+    <footer th:replace="fragments :: foot"></footer>
+</div>
+
+
 </body>
 </html>

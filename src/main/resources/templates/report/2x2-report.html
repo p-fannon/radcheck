@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
+<div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
 <script>
@@ -15,7 +16,7 @@ $(document).ready(function(){
         <div class="col"><h2 class="p-3 text-center" th:text="${message}"></h2></div>
     </div>
 </div>
-<div class="container mb-5">
+<div class="container push">
     <div class="row">
         <div class="col-6 border border-top-0 border-left-0">
             <div class="row no-gutters">
@@ -329,13 +330,14 @@ $(document).ready(function(){
         </div>
     </div>
 </div>
-<div th:if="${current == false}" class="container">
+<div th:if="${current == false}" class="container push">
     <div class="row">
         <div class="col">
-            <p class="mb-5 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
+            <p class="my-3 small text-right">* This rating contains measurements that are over a year old, so their accuracy may be diminished.</p>
         </div>
     </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
+</div>
 </body>
 </html>
