@@ -60,7 +60,7 @@ $(document).ready(function(){
             <div id="details" class="collapse m-1">
                 <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${latitude} + '&amp;x=' + ${longitude} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                 <h4><img th:attr="src='https://airvisual.com/images/' + ${return.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(return.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
-                <p>Wind is blowing <span th:if="${return.getWindDirection() > 349 and return.getWindDirection() <= 11}">north</span>
+                <p>Wind is blowing <span th:if="${return.getWindDirection() > 349 or return.getWindDirection() <= 11}">north</span>
                     <span th:if="${return.getWindDirection() > 11 and return.getWindDirection() <= 33}">north-by-northeast</span>
                     <span th:if="${return.getWindDirection() > 33 and return.getWindDirection() <= 56}">northeast</span>
                     <span th:if="${return.getWindDirection() > 56 and return.getWindDirection() <= 78}">east-by-northeast</span>

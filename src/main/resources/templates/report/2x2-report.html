@@ -66,7 +66,7 @@ $(document).ready(function(){
                         <div id="details01" class="collapse m-1">
                             <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location01.getLat()} + '&amp;x=' + ${location01.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                             <h4><img th:attr="src='https://airvisual.com/images/' + ${location01.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(location01.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
-                            <p>Wind is blowing <span th:if="${location01.getWindDirection() > 349 and location01.getWindDirection() <= 11}">north</span>
+                            <p>Wind is blowing <span th:if="${location01.getWindDirection() > 349 or location01.getWindDirection() <= 11}">north</span>
                                 <span th:if="${location01.getWindDirection() > 11 and location01.getWindDirection() <= 33}">north-by-northeast</span>
                                 <span th:if="${location01.getWindDirection() > 33 and location01.getWindDirection() <= 56}">northeast</span>
                                 <span th:if="${location01.getWindDirection() > 56 and location01.getWindDirection() <= 78}">east-by-northeast</span>
@@ -143,7 +143,7 @@ $(document).ready(function(){
                 <div id="details02" class="collapse m-1">
                     <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location02.getLat()} + '&amp;x=' + ${location02.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                     <h4><img th:attr="src='https://airvisual.com/images/' + ${location02.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(location02.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
-                    <p>Wind is blowing <span th:if="${location02.getWindDirection() > 349 and location02.getWindDirection() <= 11}">north</span>
+                    <p>Wind is blowing <span th:if="${location02.getWindDirection() > 349 or location02.getWindDirection() <= 11}">north</span>
                         <span th:if="${location02.getWindDirection() > 11 and location02.getWindDirection() <= 33}">north-by-northeast</span>
                         <span th:if="${location02.getWindDirection() > 33 and location02.getWindDirection() <= 56}">northeast</span>
                         <span th:if="${location02.getWindDirection() > 56 and location02.getWindDirection() <= 78}">east-by-northeast</span>
@@ -222,7 +222,7 @@ $(document).ready(function(){
                         <div id="details03" class="collapse m-1">
                             <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location03.getLat()} + '&amp;x=' + ${location03.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                             <h4><img th:attr="src='https://airvisual.com/images/' + ${location03.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(location03.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
-                            <p>Wind is blowing <span th:if="${location03.getWindDirection() > 349 and location03.getWindDirection() <= 11}">north</span>
+                            <p>Wind is blowing <span th:if="${location03.getWindDirection() > 349 or location03.getWindDirection() <= 11}">north</span>
                                 <span th:if="${location03.getWindDirection() > 11 and location03.getWindDirection() <= 33}">north-by-northeast</span>
                                 <span th:if="${location03.getWindDirection() > 33 and location03.getWindDirection() <= 56}">northeast</span>
                                 <span th:if="${location03.getWindDirection() > 56 and location03.getWindDirection() <= 78}">east-by-northeast</span>
@@ -299,7 +299,7 @@ $(document).ready(function(){
                     <div id="details04" class="collapse m-1">
                         <p class="pt-1"><a th:attr="href='https://safecast.org/tilemap/?y=' + ${location04.getLat()} + '&amp;x=' + ${location04.getLon()} + '&amp;z=15&amp;l=1&amp;m=0'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Tile map">View this measurement result on Safecast.</a></p>
                         <h4><img th:attr="src='https://airvisual.com/images/' + ${location04.getWeatherIcon()} + '.png'" class="weathericon px-2"><span th:text="${#numbers.formatInteger(location04.getTemp() * 1.8 + 32,1)}" class="px-1"></span>&deg;F</h4>
-                        <p>Wind is blowing <span th:if="${location04.getWindDirection() > 349 and location04.getWindDirection() <= 11}">north</span>
+                        <p>Wind is blowing <span th:if="${location04.getWindDirection() > 349 or location04.getWindDirection() <= 11}">north</span>
                             <span th:if="${location04.getWindDirection() > 11 and location04.getWindDirection() <= 33}">north-by-northeast</span>
                             <span th:if="${location04.getWindDirection() > 33 and location04.getWindDirection() <= 56}">northeast</span>
                             <span th:if="${location04.getWindDirection() > 56 and location04.getWindDirection() <= 78}">east-by-northeast</span>
