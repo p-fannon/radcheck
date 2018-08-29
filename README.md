@@ -1,5 +1,5 @@
 # radcheck
-A web application that checks radiation readings in your local area and around the world.
+A web application that checks radiation readings in your local area and around the world. This app is live on the Internet right now at the following URL: [https://www.radcheck.app/](https://www.radcheck.app/)
 
 ## Description
 This web application gives detailed reports of background radiation readings and pollution data. Users can define up to 20 locations to view daily updates of radiation measurements and air quality indexes.
