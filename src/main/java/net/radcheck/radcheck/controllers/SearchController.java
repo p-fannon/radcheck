@@ -24,7 +24,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
@@ -34,16 +33,12 @@ public class SearchController {
 
     private static String BaseURL = "https://api.safecast.org/measurements.json";
     private static String AqiURL = "https://api.airvisual.com/v2/nearest_city";
-    private static String geoURL = "https://maps.googleapis.com/maps/api/geocode/json";
     private String decodedString;
     private String json;
     private String aqiDecodedString;
     private String aqiJson;
-    private String geoDecodedString;
-    private String geoJson;
     private static String mapsKey = "AIzaSyAqvB0THWS44yHV3OOBzQQ0znAst9V6uQA"; // AIzaSyDen0WZLZt-OQ68yU5D5uoNb7sr34mdycQ
     private static String aqiKey = "3RDkWgP8CSpxMTGFM";
-    private String geocode;
     private static Gson gson = new Gson();
     private static String minScTs = "2011-03-10T00:00:00Z";
     private static long twentyOneHours = 75600000L;
@@ -117,31 +112,41 @@ public class SearchController {
     private LatLonDao locationRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model) {
-        int address = pickRandomLandmark();
+    public String index(Model model, HttpSession session) {
+        if (session.getAttribute("mapSearch") == null) {
+            int address = pickRandomLandmark();
+            GMap sessionMap = new GMap(list[address], lat[address], lon[address]);
+            model.addAttribute("gmap", sessionMap);
+            session.setAttribute("mapSearch", sessionMap);
+        } else {
+            GMap sessionMap = (GMap) session.getAttribute("mapSearch");
+            model.addAttribute("gmap", sessionMap);
+        }
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
         model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-        model.addAttribute("gmap", new GMap(list[address]));
-        model.addAttribute("latitude", lat[address]);
-        model.addAttribute("longitude", lon[address]);
 
         return "index";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(Model model) {
-        int address = pickRandomLandmark();
+    public String search(Model model, HttpSession session) {
+        if (session.getAttribute("mapSearch") == null) {
+            int address = pickRandomLandmark();
+            GMap sessionMap = new GMap(list[address], lat[address], lon[address]);
+            model.addAttribute("gmap", sessionMap);
+            session.setAttribute("mapSearch", sessionMap);
+        } else {
+            GMap sessionMap = (GMap) session.getAttribute("mapSearch");
+            model.addAttribute("gmap", sessionMap);
+        }
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Pick A Location To Measure");
         model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-        model.addAttribute("gmap", new GMap(list[address]));
-        model.addAttribute("latitude", lat[address]);
-        model.addAttribute("longitude", lon[address]);
 
         return "search";
     }
@@ -161,31 +166,13 @@ public class SearchController {
                              errors, HttpSession session) throws IOException {
         if (errors.hasErrors()) {
             searchLogger.info("Error during index page result serving: " + errors.getAllErrors().toString());
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
-            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-            model.addAttribute("gmap", newMap);
-
+            session.setAttribute("mapSearch", newMap);
             return "redirect:/?error=true";
         }
+        session.setAttribute("mapSearch", newMap);
 
-        Geo geoReturn = getGeo(newMap.getAddress());
-
-        if (geoReturn.getResults().size() == 0) {
-            searchLogger.info("Google failed to return because of: " + geoReturn.getStatus());
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
-            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-            model.addAttribute("gmap", newMap);
-            return "redirect:/?retry=true";
-        }
-
-        double aLatitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLatitude();
-        double aLongitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLongitude();
+        double aLatitude = newMap.getLat();
+        double aLongitude = newMap.getLon();
 
         Collection<Measurements> safeCastReturns = getMeasurements(aLatitude, aLongitude);
 
@@ -201,12 +188,7 @@ public class SearchController {
 
         if (!airVisualReturn.getAqiStatus().equals("success")) {
             searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
-            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-            model.addAttribute("gmap", newMap);
+
             return "redirect:/?retry=true";
         }
 
@@ -227,6 +209,7 @@ public class SearchController {
         if (checkAccount(account)) {
             session.setAttribute("candidateLocation", returnedLatLon);
         }
+        session.removeAttribute("mapSearch");
         model.addAttribute("key", mapsKey);
         return "result";
     }
@@ -236,31 +219,13 @@ public class SearchController {
             errors, HttpSession session) throws IOException {
         if (errors.hasErrors()) {
             searchLogger.info("Error during search page result serving: " + errors.getAllErrors().toString());
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location To Measure");
-            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-            model.addAttribute("gmap", newMap);
-
+            session.setAttribute("mapSearch", newMap);
             return "redirect:/search?error=true";
         }
+        session.setAttribute("mapSearch", newMap);
 
-        Geo geoReturn = getGeo(newMap.getAddress());
-
-        if (geoReturn.getResults().size() == 0) {
-            searchLogger.info("Google failed to return because of: " + geoReturn.getStatus());
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location To Measure");
-            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
-            model.addAttribute("gmap", newMap);
-            return "redirect:/search?retry=true";
-        }
-
-        double aLatitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLatitude();
-        double aLongitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLongitude();
+        double aLatitude = newMap.getLat();
+        double aLongitude = newMap.getLon();
 
         Collection<Measurements> safeCastReturns = getMeasurements(aLatitude, aLongitude);
 
@@ -276,11 +241,6 @@ public class SearchController {
 
         if (!airVisualReturn.getAqiStatus().equals("success")) {
             searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Pick A Location To Measure");
-            model.addAttribute("key", "https://maps.googleapis.com/maps/api/js?key=" + mapsKey + "&callback=initMap");
             model.addAttribute("gmap", newMap);
             return "redirect:/search?retry=true";
         }
@@ -302,6 +262,7 @@ public class SearchController {
         if (checkAccount(account)) {
             session.setAttribute("candidateLocation", returnedLatLon);
         }
+        session.removeAttribute("mapSearch");
         model.addAttribute("key", mapsKey);
         return "result";
     }
@@ -362,11 +323,7 @@ public class SearchController {
 
         if (!airVisualReturn.getAqiStatus().equals("success")) {
             searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));;
-            model.addAttribute("title", "Pick A Location To Measure");
-            return "redirect:/?retry=true";
+            return "redirect:/search?retry=true";
         }
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
@@ -425,29 +382,21 @@ public class SearchController {
     public String buildTwoByTwoReport(Model model) {
         User user = getAccount();
         if (user.getLocations().size() < 4) {
-            String account = user.getEmail();
-            model.addAttribute("account", account);
-            model.addAttribute("title", "Your user profile");
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("names", user.getNames());
-            model.addAttribute("user", user);
 
             return "redirect:/user/profile?toofew=true";
         }
         String account = getUser();
-        Instant rightNow = Instant.now();
-        Timestamp refresher = Timestamp.from(rightNow.minusMillis(twentyOneHours));
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Build a 2x2 report");
-        model.addAttribute("refresh", refresher);
-        model.addAttribute("form", new BuildReportForm(user));
+        BuildReportForm aForm = new BuildReportForm(user);
+        model.addAttribute("form", aForm);
 
         return "report/2x2-builder";
     }
 
     @RequestMapping(value = "/two-by-two", method=RequestMethod.POST)
-    public String serveTwoByTwoReport(@ModelAttribute @Valid BuildReportForm reportForm,
+    public String serveTwoByTwoReport(@ModelAttribute @Valid BuildReportForm theForm,
                                       Errors errors,
                                       @RequestParam List<Integer> locationIds,
                                       Model model) throws IOException {
@@ -461,12 +410,6 @@ public class SearchController {
         }
         if (errors.hasErrors()) {
             searchLogger.info("Error during 2x2 report serving: " + errors.getAllErrors().toString());
-            User user = getAccount();
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Build a 2x2 report");
-            model.addAttribute("form", reportForm);
             return "redirect:/two-by-two?error=true";
         }
         LatLon[] reportLocations = orderedLatLon.toArray(new LatLon[0]);
@@ -517,13 +460,6 @@ public class SearchController {
     public String buildThreeByThreeReport(Model model){
         User user = getAccount();
         if (user.getLocations().size() < 9) {
-            String account = user.getEmail();
-            model.addAttribute("account", account);
-            model.addAttribute("title", "Your user profile");
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("names", user.getNames());
-            model.addAttribute("user", user);
-
             return "redirect:/user/profile?toofewthree=true";
         }
         String account = getUser();
@@ -536,7 +472,7 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/three-by-three", method=RequestMethod.POST)
-    public String serveThreeByThreeReport(@ModelAttribute @Valid BuildReportForm reportForm,
+    public String serveThreeByThreeReport(@ModelAttribute @Valid BuildReportForm theForm,
                                           Errors errors,
                                           @RequestParam List<Integer> locationIds,
                                           Model model) {
@@ -550,12 +486,6 @@ public class SearchController {
         }
         if (errors.hasErrors()) {
             searchLogger.info("Error during 3x3 report serving: " + errors.getAllErrors().toString());
-            User user = getAccount();
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Build a 3x3 report");
-            model.addAttribute("form", reportForm);
             return "redirect:/three-by-three?error=true";
         }
         LatLon[] reportLocations = orderedLatLon.toArray(new LatLon[0]);
@@ -599,13 +529,6 @@ public class SearchController {
     public String buildFourByFourReport(Model model) {
         User user = getAccount();
         if (user.getLocations().size() < 16) {
-            String account = user.getEmail();
-            model.addAttribute("account", account);
-            model.addAttribute("title", "Your user profile");
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("names", user.getNames());
-            model.addAttribute("user", user);
-
             return "redirect:/user/profile?toofewfour=true";
         }
         String account = getUser();
@@ -618,7 +541,7 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/four-by-four", method=RequestMethod.POST)
-    public String serveFourByFourReport(@ModelAttribute @Valid BuildReportForm reportForm,
+    public String serveFourByFourReport(@ModelAttribute @Valid BuildReportForm theForm,
                                         Errors errors,
                                         @RequestParam List<Integer> locationIds,
                                         Model model) {
@@ -632,12 +555,6 @@ public class SearchController {
         }
         if (errors.hasErrors()) {
             searchLogger.info("Error during 4x4 report serving: " + errors.getAllErrors().toString());
-            User user = getAccount();
-            String account = getUser();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Build a 4x4 report");
-            model.addAttribute("form", reportForm);
             return "redirect:/four-by-four?error=true";
         }
         LatLon[] reportLocations = orderedLatLon.toArray(new LatLon[0]);
@@ -749,33 +666,6 @@ public class SearchController {
             badResults.setAqiStatus("failure");
             return badResults;
         }
-        return results;
-    }
-    public Geo getGeo(String query) throws IOException {
-        geoJson = "";
-        geoDecodedString = "";
-
-        geocode = URLEncoder.encode(query, "UTF-8");
-
-        HttpsURLConnection geoCall = (HttpsURLConnection) (new URL(geoURL + "?address=" + geocode).openConnection());
-        geoCall.setRequestProperty("Content-Type", "application/json");
-        geoCall.setRequestProperty("Accept", "application/json");
-        geoCall.setRequestMethod("GET");
-        geoCall.connect();
-
-        try {
-            BufferedReader geoReader = new BufferedReader(new InputStreamReader(geoCall.getInputStream()));
-            while ((geoDecodedString=geoReader.readLine()) != null) {
-                geoJson+=geoDecodedString;
-            }
-            geoReader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        geoCall.disconnect();
-
-        Geo results = gson.fromJson(geoJson, Geo.class);
         return results;
     }
     public String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng) throws IOException {

@@ -27,6 +27,8 @@ public class User {
     @NotEmpty(message = "Please provide your password")
     @org.springframework.data.annotation.Transient
     private String password;
+    @org.springframework.data.annotation.Transient
+    private String verify;
     @Column(name = "active")
     private int active;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -87,6 +89,14 @@ public class User {
 
     public Date getJoinedOn() {
         return joinedOn;
+    }
+
+    public String getVerify() {
+        return verify;
+    }
+
+    public void setVerify(String verify) {
+        this.verify=verify;
     }
 
     public void addLocation(LatLon newLocation, String locationName) {

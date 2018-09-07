@@ -21,9 +21,9 @@
 </div>
 
 <div class="container push">
-    <form class="form-control" method="POST" th:action="@{/save}" th:object="${submitForm}">
+    <form class="form-control mb-3" method="POST" th:action="@{/save}" th:object="${submitForm}">
         <div class="row m-3">
-            <div class="col form-group embed-responsive embed-responsive-4by3">
+            <div class="col form-group embed-responsive embed-responsive-21by9">
                 <iframe class="embed-responsive-item" frameborder="0" style="border: 3px solid Black" th:attr="src='https://www.google.com/maps/embed/v1/view?zoom=14&amp;center=' + *{location.getLat()} + '%2C' + *{location.getLon()} + '&amp;key=' + ${key}"></iframe>
             </div>
         </div>

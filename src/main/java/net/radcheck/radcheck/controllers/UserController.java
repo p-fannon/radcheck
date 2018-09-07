@@ -18,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
@@ -71,8 +70,7 @@ public class UserController {
     }
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String createNewUser(Model model, @ModelAttribute @Valid User user, Errors errors,
-                                @RequestParam (defaultValue = "false") boolean agree,
-                                HttpServletRequest request) {
+                                @RequestParam (defaultValue = "false") boolean agree) {
         if (!agree) {
             String account = getUser();
             model.addAttribute("consentMessage", "You must consent to the Privacy Policy " +
@@ -82,13 +80,10 @@ public class UserController {
             model.addAttribute("isLoggedIn", checkAccount(account));
             return "registration";
         }
-        String verify = request.getParameter("verify");
+        String verify = user.getVerify();
         if (!verify.equals(user.getPassword())) {
-            String account = getUser();
-            model.addAttribute("title", "Register");
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            return "redirect:registration?error=true";
+            errors.rejectValue("verify", "error.user",
+                    "Your passwords did not match. Please verify your password.");
         }
         User userExists = userService.findUserByEmail(user.getEmail());
         if (userExists != null) {
@@ -157,11 +152,6 @@ public class UserController {
     public String confirmLocation(Model model, HttpSession session) {
         User user = getAccount();
         if (user.getLocations().size() > 19 && user.getRoles().equals(new HashSet<Role>(Arrays.asList(roleRepository.findByRole("USER"))))) {
-            String account = user.getEmail();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Your user profile");
-            model.addAttribute("user", user);
             session.removeAttribute("candidateLocation");
             return "redirect:/user/profile?max=true";
         }
@@ -192,11 +182,6 @@ public class UserController {
                                             HttpSession session) {
         User user = getAccount();
         if (user.getLocations().size() > 19) {
-            String account = user.getEmail();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Your user profile");
-            model.addAttribute("user", user);
             return "redirect:/user/profile?max=true";
         }
         LatLon confirmLocation = locationRepository.findOne(locationId);
@@ -211,11 +196,6 @@ public class UserController {
                 }
             }
             if (isInAccount) {
-                String account = user.getEmail();
-                model.addAttribute("account", account);
-                model.addAttribute("isLoggedIn", checkAccount(account));
-                model.addAttribute("title", "Your user profile");
-                model.addAttribute("user", user);
                 session.setAttribute("locale", user.getNames().get(duplicateIndex));
 
                 return "redirect:/user/profile?duplicate=true";
@@ -231,18 +211,10 @@ public class UserController {
         return "save-location";
     }
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String postConfirmation(Model model, @ModelAttribute @Valid AddLocationItemForm newForm,
+    public String postConfirmation(@ModelAttribute @Valid AddLocationItemForm newForm,
                                    Errors errors, HttpSession session) {
         if (errors.hasErrors()) {
-            LatLon aLocation = (LatLon) session.getAttribute("candidateLocation");
-            User user = getAccount();
-            String account = user.getEmail();
             userLogger.info("Error during location saving: " + errors.getAllErrors().toString());
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Name and confirm this location");
-            model.addAttribute("key", mapsKey);
-            model.addAttribute("submitForm", new AddLocationItemForm(aLocation));
             return "redirect:/confirm?error=true";
         }
         User user = getAccount();
@@ -253,12 +225,6 @@ public class UserController {
             session.setAttribute("locale", locationName);
             user.addLocation(confirmLocation, locationName);
             userRepository.save(user);
-
-            String account = user.getEmail();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Your user profile");
-            model.addAttribute("user", user);
             session.removeAttribute("candidateLocation");
 
             return "redirect:/user/profile?success=true";
@@ -267,12 +233,6 @@ public class UserController {
         session.setAttribute("locale", locationName);
         user.addLocation(newLocation, locationName);
         userRepository.save(user);
-
-        String account = user.getEmail();
-        model.addAttribute("account", account);
-        model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("title", "Your user profile");
-        model.addAttribute("user", user);
         session.removeAttribute("candidateLocation");
 
         return "redirect:/user/profile?success=true";
@@ -292,19 +252,12 @@ public class UserController {
         return "edit-location";
     }
     @RequestMapping(value = "/edit", method=RequestMethod.POST)
-    public String confirmEditLocation(Model model, @ModelAttribute @Valid AddLocationItemForm editForm,
+    public String confirmEditLocation(@ModelAttribute @Valid AddLocationItemForm editForm,
                                       Errors errors, HttpSession session) {
         if (errors.hasErrors()) {
             userLogger.info("Error during location editing: " + errors.getAllErrors().toString());
-            LatLon aLocation = (LatLon) session.getAttribute("candidateLocation");
-            User user = getAccount();
-            String account = user.getEmail();
-            model.addAttribute("account", account);
-            model.addAttribute("isLoggedIn", checkAccount(account));
-            model.addAttribute("title", "Rename this location");
-            model.addAttribute("key", mapsKey);
-            model.addAttribute("submitForm", new AddLocationItemForm(aLocation));
-            return "redirect:/edit" + aLocation.getId() + "?error=true";
+            LatLon aLocation = (LatLon) session.getAttribute("editLocation");
+            return "redirect:/edit/" + aLocation.getId() + "?error=true";
         }
         User user = getAccount();
         LatLon updatedLocation = (LatLon) session.getAttribute("editLocation");
@@ -312,25 +265,14 @@ public class UserController {
         session.setAttribute("locale", locationName);
         user.editLocation(updatedLocation, locationName);
         userRepository.save(user);
-
-        String account = user.getEmail();
-        model.addAttribute("account", account);
-        model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("title", "Your user profile");
-        model.addAttribute("user", user);
         session.removeAttribute("editLocation");
 
         return "redirect:/user/profile?success=true";
     }
     @RequestMapping(value = "/delete/{locationId}", method=RequestMethod.GET)
-    public String removeLocation(Model model, @PathVariable int locationId, HttpSession session) {
+    public String removeLocation(@PathVariable int locationId, HttpSession session) {
         User user = getAccount();
         LatLon deleteLocation = locationRepository.findOne(locationId);
-        String account = user.getEmail();
-        model.addAttribute("account", account);
-        model.addAttribute("isLoggedIn", checkAccount(account));
-        model.addAttribute("title", "Your user profile");
-        model.addAttribute("user", user);
         session.setAttribute("locale", user.getNames().get(user.getLocations().indexOf(deleteLocation)));
         user.removeLocation(deleteLocation);
         userRepository.save(user);

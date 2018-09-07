@@ -71,9 +71,9 @@ $(document).ready(function(){
     </div>
     <div class="row">
         <div class="col p-3" th:unless="${user.locations} and ${user.locations.size()}">
-            <p>You don't have any locations saved to this account. Start searching! 🕵️</p>
+            <p>You don't have any locations saved to this account. <a th:href="@{/search}">Start searching! 🕵️</a></p>
         </div>
-        <div class="col wrapper" th:if="${user.locations} and ${user.locations.size()}">
+        <div class="col" th:if="${user.locations} and ${user.locations.size()}">
             <table class="table table-striped m-1">
                 <thead>
                 <tr class="p-1">

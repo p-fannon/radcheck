@@ -14,13 +14,13 @@
     </button>
 </div>
 <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.retry}">
-    Something went wrong when pulling data for this location. Please try again.
+    AQI information for this location could not be pulled. Please choose a different location.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.error}">
-    Please add at least three characters to your search query and try again.
+    Please add a non-empty input to your search query and try again.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -53,7 +53,7 @@
         initMap();
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'),{
-            center: {lat: [[${latitude}]], lng: [[${longitude}]]},
+            center: {lat: [[*{lat}]], lng: [[*{lon}]]},
             zoom: 17
             });
             var geocoder = new google.maps.Geocoder();
@@ -71,6 +71,8 @@
                         map: resultsMap,
                         position: results[0].geometry.location
                     });
+                    document.getElementById('latitude').value = marker.position.lat();
+                    document.getElementById('longitude').value = marker.position.lng();
                 } else {
                     alert('Geocode was not successful for the following reason: ' + status);
                 }
@@ -78,6 +80,8 @@
         }
     </script>
     <script th:attr="src=${key}" async defer></script>
+    <input type="hidden" id="latitude" value="" th:field="*{lat}">
+    <input type="hidden" id="longitude" value="" th:field="*{lon}">
     <div class="form-group">
         <button type="submit" class="btn btn-primary btn-md btn-block pt-2">Find measurement here</button>
     </div>
@@ -90,9 +94,9 @@
         </div>
     </div>
 </div>
-<div class="container push p-3">
+<div class="container push">
     <div class="row">
-        <div class="col"><p>RadCheck is a web application for looking up radiation readings in your local area and around
+        <div class="col m-3"><p>RadCheck is a web application for looking up radiation readings in your local area and around
         the world. Results will include ratings to help you make informed decisions regarding your environment. There are
             also details about the weather and air quality with every result. You can quickly find measurements by
             typing in an address in the map search bar. By registering for an account, you can save up to 20 locations,
