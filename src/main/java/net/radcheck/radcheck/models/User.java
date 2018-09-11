@@ -27,7 +27,7 @@ public class User {
     @NotEmpty(message = "Please provide your password")
     @org.springframework.data.annotation.Transient
     private String password;
-    @org.springframework.data.annotation.Transient
+    @Transient
     private String verify;
     @Column(name = "active")
     private int active;
