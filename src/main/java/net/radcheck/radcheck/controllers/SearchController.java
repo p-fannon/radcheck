@@ -9,6 +9,7 @@ import net.radcheck.radcheck.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.BufferedReader;
@@ -24,6 +26,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
@@ -33,15 +36,19 @@ public class SearchController {
 
     private static String BaseURL = "https://api.safecast.org/measurements.json";
     private static String AqiURL = "https://api.airvisual.com/v2/nearest_city";
+    private static String geoURL = "https://maps.googleapis.com/maps/api/geocode/json";
     private String decodedString;
     private String json;
     private String aqiDecodedString;
     private String aqiJson;
+    private String geoDecodedString;
+    private String geoJson;
     private static String mapsKey = "AIzaSyAqvB0THWS44yHV3OOBzQQ0znAst9V6uQA"; // AIzaSyDen0WZLZt-OQ68yU5D5uoNb7sr34mdycQ
     private static String aqiKey = "3RDkWgP8CSpxMTGFM";
     private static Gson gson = new Gson();
     private static String minScTs = "2011-03-10T00:00:00Z";
     private static long twentyOneHours = 75600000L;
+    private static double angularDistance = 250 / 6371e3;
     private static final Logger searchLogger = LoggerFactory.getLogger(SearchController.class);
     private static String[] list = {"The Gateway Arch, St. Louis, MO", "Apotheosis of Saint Louis, Fine Arts Drive, St. Louis, MO",
             "Washington Monument, Washington, DC", "Empire State Building, 5th Avenue, New York, NY", "Big Ben, London, UK",
@@ -400,7 +407,7 @@ public class SearchController {
                                       Errors errors,
                                       @RequestParam List<Integer> locationIds,
                                       Model model) throws IOException {
-        ArrayList<LatLon> orderedLatLon = new ArrayList<>();
+        List<LatLon> orderedLatLon = new ArrayList<>();
         for (int index : locationIds) {
             if (orderedLatLon.contains(locationRepository.findOne(index))) {
                 errors.rejectValue("locationIds", "error.buildreportform");
@@ -476,7 +483,7 @@ public class SearchController {
                                           Errors errors,
                                           @RequestParam List<Integer> locationIds,
                                           Model model) {
-        ArrayList<LatLon> orderedLatLon = new ArrayList<>();
+        List<LatLon> orderedLatLon = new ArrayList<>();
         for (int index : locationIds) {
             if (orderedLatLon.contains(locationRepository.findOne(index))) {
                 errors.rejectValue("locationIds", "error.buildreportform");
@@ -545,7 +552,7 @@ public class SearchController {
                                         Errors errors,
                                         @RequestParam List<Integer> locationIds,
                                         Model model) {
-        ArrayList<LatLon> orderedLatLon = new ArrayList<>();
+        List<LatLon> orderedLatLon = new ArrayList<>();
         for (int index : locationIds) {
             if (orderedLatLon.contains(locationRepository.findOne(index))) {
                 errors.rejectValue("locationIds", "error.buildreportform");
@@ -594,6 +601,121 @@ public class SearchController {
         return "report/4x4-report";
     }
 
+    @RequestMapping(value = "/api", method = RequestMethod.GET)
+    public String apiDescription(Model model) {
+        String account = getUser();
+        model.addAttribute("account", account);
+        model.addAttribute("isLoggedIn", checkAccount(account));
+        model.addAttribute("title", "RadCheck REST API");
+
+        return "rest-api";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/api/query", method = RequestMethod.GET)
+    public String apiQuery(@RequestParam(defaultValue = "0") int id,
+                           @RequestParam(defaultValue = "1000") int distance,
+                           @RequestParam(defaultValue = "91") double lat,
+                           @RequestParam(defaultValue = "181") double lon,
+                           @RequestParam(defaultValue = "") String address,
+                           @RequestParam(required = false) boolean refresh,
+                           HttpSession session)
+                            throws IOException, IllegalArgumentException {
+        if (id != 0) {
+            LatLon response = locationRepository.findOne(id);
+            if (response == null) {
+                session.setAttribute("apierror", new ApiError(400, "Bad Request",
+                        "ID queried does not exist within the database."));
+                throw new IllegalArgumentException();
+            }
+            if (refresh) {
+                Instant hereAndNow = Instant.now();
+                Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
+                if (!response.getUpdateTimestamp().after(twentyOneHoursAgo)) {
+                    response = refreshLocation(response);
+                    response.setViewCount(response.getViewCount() + 1);
+                    locationRepository.save(response);
+                }
+            }
+            String api = gson.toJson(response);
+            return api;
+        }
+        if ((lat <= 90.0 && lat >= -90.0) || (lon <= 180.0 && lon >= -180.0)) {
+            Collection<Measurements> safeCastReturns = getMeasurements(lat, lon, distance);
+
+            if (safeCastReturns.size() == 0) {
+                session.setAttribute("apierror", new ApiError(400, "Bad Request",
+                        "Safecast did not find any results with the " +
+                        "parameters you entered."));
+                throw new IllegalArgumentException();
+            }
+
+            AirQuality airVisualReturn = getAQI(lat, lon);
+
+            if (!airVisualReturn.getAqiStatus().equals("success")) {
+                searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
+                session.setAttribute("apierror", new ApiError(400, "Bad Request",
+                        "AirVisual failed to return results due to " +
+                        airVisualReturn.getAqiStatus()));
+                throw new IllegalArgumentException();
+            }
+
+            LatLon response = makeQuery(safeCastReturns, airVisualReturn, lat, lon);
+            String api = gson.toJson(response);
+            return api;
+        }
+
+        if (!address.equals("")) {
+            Geo geoReturn = getGeo(address);
+
+            if (geoReturn.getResults().size() == 0) {
+                searchLogger.info("Geocoding failed to return because of: " + geoReturn.getStatus());
+                session.setAttribute("apierror", new ApiError(400, "Bad Request",
+                        "Geocoding failed to return due to " + geoReturn.getStatus()));
+                throw new IllegalArgumentException();
+            }
+
+            double aLatitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLatitude();
+            double aLongitude = geoReturn.getResults().get(0).getGeometry().getMarker().getGeoLongitude();
+
+            Collection<Measurements> safeCastReturns = getMeasurements(aLatitude, aLongitude, distance);
+
+            if (safeCastReturns.size() == 0) {
+                session.setAttribute("apierror", new ApiError(400, "Bad Request",
+                        "Safecast did not find any results with the " +
+                                "parameters you entered."));
+                throw new IllegalArgumentException();
+            }
+
+            AirQuality airVisualReturn = getAQI(aLatitude, aLongitude);
+
+            if (!airVisualReturn.getAqiStatus().equals("success")) {
+                searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
+                session.setAttribute("apierror", new ApiError(400, "Bad Request",
+                        "AirVisual failed to return results due to " +
+                                airVisualReturn.getAqiStatus()));
+                throw new IllegalArgumentException();
+            }
+
+            LatLon response = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
+            String api = gson.toJson(response);
+            return api;
+        }
+        session.setAttribute("apierror", new ApiError(400, "Bad Request",
+                "Your query did not have the " +
+                "correct parameters. The API needs an ID, latitude and longitude (within bounds), or an address."));
+        throw new IllegalArgumentException();
+    }
+
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String badParametersExceptionHandler(HttpSession session) {
+        ApiError error = (ApiError) session.getAttribute("apierror");
+        String response = gson.toJson(error);
+        return response;
+    }
+
     public int pickRandomLandmark() {
         int landmark = 0;
         double rng = Math.random();
@@ -636,6 +758,36 @@ public class SearchController {
             }
         }
     }
+    // Overloaded method for REST API
+    public Collection<Measurements> getMeasurements(double lat, double lng, int distance) throws IOException {
+        json = "";
+        Instant newInstant = Instant.now();
+        String capturedBefore = newInstant.toString();
+        Instant oneMonthAgo = newInstant.minusSeconds(2592000);
+        String capturedAfter = oneMonthAgo.toString();
+        json = callSafecast(capturedBefore, capturedAfter, lat, lng, distance);
+        if (!json.equals("[]")) {
+            Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
+            Collection<Measurements> results = gson.fromJson(json, collectionType);
+            return results;
+        } else {
+            json = "";
+            Instant oneYearAgo = newInstant.minusSeconds(31557600);
+            String newCapturedAfter = oneYearAgo.toString();
+            json = callSafecast(capturedBefore, newCapturedAfter, lat, lng, distance);
+            if (!json.equals("[]")) {
+                Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
+                Collection<Measurements> results = gson.fromJson(json, collectionType);
+                return results;
+            } else {
+                json = "";
+                json = callSafecast(capturedBefore, minScTs, lat, lng, distance);
+                Type collectionType = new TypeToken<Collection<Measurements>>(){}.getType();
+                Collection<Measurements> results = gson.fromJson(json, collectionType);
+                return results;
+            }
+        }
+    }
 
     public AirQuality getAQI(double lat, double lng) throws IOException {
         aqiDecodedString = "";
@@ -668,6 +820,33 @@ public class SearchController {
         }
         return results;
     }
+    public Geo getGeo(String query) throws IOException {
+        geoJson = "";
+        geoDecodedString = "";
+
+        String geocode = URLEncoder.encode(query, "UTF-8");
+
+        HttpsURLConnection geoCall = (HttpsURLConnection) (new URL(geoURL + "?address=" + geocode).openConnection());
+        geoCall.setRequestProperty("Content-Type", "application/json");
+        geoCall.setRequestProperty("Accept", "application/json");
+        geoCall.setRequestMethod("GET");
+        geoCall.connect();
+
+        try {
+            BufferedReader geoReader = new BufferedReader(new InputStreamReader(geoCall.getInputStream()));
+            while ((geoDecodedString=geoReader.readLine()) != null) {
+                geoJson+=geoDecodedString;
+            }
+            geoReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        geoCall.disconnect();
+
+        Geo results = gson.fromJson(geoJson, Geo.class);
+        return results;
+    }
     public String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng) throws IOException {
         int distance = 1000;
         decodedString = "";
@@ -692,11 +871,35 @@ public class SearchController {
         scCall.disconnect();
         return result;
     }
+    //Overloaded method for REST API
+    public String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng, int distance) throws IOException {
+        decodedString = "";
+        String result = "";
+        HttpsURLConnection scCall = (HttpsURLConnection) (new URL(BaseURL + "?distance=" + distance
+                + "&latitude=" + lat + "&longitude=" + lng + "&captured_before=" +
+                capturedBefore + "&captured_after=" + capturedAfter).openConnection());
+        scCall.setRequestProperty("Content-Type", "application/json");
+        scCall.setRequestProperty("Accept", "application/json");
+        scCall.setRequestMethod("GET");
+        scCall.connect();
+
+        try {
+            BufferedReader inreader = new BufferedReader(new InputStreamReader(scCall.getInputStream()));
+            while ((decodedString=inreader.readLine()) != null) {
+                result+=decodedString;
+            }
+            inreader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        scCall.disconnect();
+        return result;
+    }
     public LatLon makeQuery(Collection<Measurements> sc, AirQuality av, double lat, double lon) {
         LatLon newLatLon = new LatLon(lat, lon);
         double rad = 0.0;
         int measurementCount = 0;
-        ArrayList<Timestamp> ts = new ArrayList<>();
+        List<Timestamp> ts = new ArrayList<>();
         for (Measurements entry : sc) {
             if (entry.getRadUnit().equals("cpm")) {
                 rad += entry.getRadValue() / 345;
@@ -811,7 +1014,7 @@ public class SearchController {
     public LatLon updateMeasurements(LatLon updateLocation, Collection<Measurements> measurements) {
         double rad = 0.0;
         int measurementCount = 0;
-        ArrayList<Timestamp> ts = new ArrayList<>();
+        List<Timestamp> ts = new ArrayList<>();
         for (Measurements entry : measurements) {
             if (entry.getRadUnit().equals("cpm")) {
                 rad += entry.getRadValue() / 345;
@@ -859,6 +1062,7 @@ public class SearchController {
 
         return updateLocation;
     }
+
     public User getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());

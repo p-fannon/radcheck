@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head">
+</head>
+<body>
+<div class="wrapper">
+
+    <nav th:replace="fragments :: navigation"></nav>
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <h1 class="display-4 text-center">RadCheck has its own REST API!</h1>
+                <p>You can use RadCheck to search locations with an address, latitude/longitude coordinates,
+                or find and refresh results within the database as a JSON reply. The following is the basic anatomy of a
+                API query:</p>
+                <h2 class="text-center"><code>https://www.radcheck.app/api/query</code></h2>
+                <p><br />However, the API needs parameters to know what to search for! If you know the ID of the location
+                    you want to find, use the query parameter <strong>id</strong>:</p>
+                <h2 class="text-center"><code><a th:href="@{/api/query?id=1}" target="_blank">
+                    https://www.radcheck.app/api/query?id=1</a></code></h2>
+                <p><br />A database location's results can be refreshed within the API by using the boolean query parameter
+                    <strong>refresh</strong>, and it accepts values of "1", "on", "true" and "yes" to initiate a refresh:</p>
+                <h2 class="text-center"><code><a th:href="@{/api/query?id=2&refresh=1}" target="_blank">
+                    https://www.radcheck.app/api/query?id=2&refresh=1</a></code></h2>
+                <p><br />Searches can be made with addresses using the parameter <strong>address</strong>. No special encoding is required,
+                    the API will handle the request.</p>
+                <h2 class="text-center"><code><a th:href="@{/api/query?address=Big Ben, London, UK}" target=_blank>
+                    https://www.radcheck.app/api/query?address=Big Ben, London, UK</a></code></h2>
+                <p><br />Searches can also be made with coordinates using <strong>lat</strong> for latitude and
+                    <strong>lon</strong> for longitude:</p>
+                <h2 class="text-center"><code><a th:href="@{/api/query?lat=38.624796&lon=-90.184779}" target="_blank">
+                    https://www.radcheck.app/api/query?lat=38.624796&lon=-90.184779
+                </a></code></h2>
+                <p><br />One very big difference between the visual interface of RadCheck and its API is that
+                search distance in meters can be defined as a query parameter. Just add <strong>distance</strong> to
+                a search using an address or coordinates to change it from the default of 1000 meter radius to
+                whatever you want!</p>
+                <h2 class="text-center"><code><a th:href="@{/api/query?distance=30&address=Times Square, Manhattan, New York, NY}" target="_blank">
+                    https://www.radcheck.app/api/query?distance=30&address=Times Square, Manhattan, New York, NY
+                </a></code></h2>
+                <p><br />If the API is given parameters that are incompatible or missing, it will return a HTTP 400 status
+                along with a reason why it happened. Now you can use RadCheck with your own website or application!</p>
+            </div>
+        </div>
+    </div>
+    <div class="container push">
+        <p>&nbsp;</p>
+    </div>
+
+<footer th:replace="fragments :: foot"></footer>
+</div>
+</body>
+</html>

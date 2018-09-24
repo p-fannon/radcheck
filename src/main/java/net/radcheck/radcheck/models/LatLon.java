@@ -1,5 +1,6 @@
 package net.radcheck.radcheck.models;
 
+import com.google.gson.annotations.SerializedName;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,30 +17,51 @@ public class LatLon {
     @Id
     @GeneratedValue
     @Column(name = "location_id")
+    @SerializedName("id")
     private int id;
     @NotNull
+    @SerializedName("lat")
     private double lat;
     @NotNull
+    @SerializedName("lon")
     private double lon;
+    @SerializedName("rating")
     private String rating;
+    @SerializedName("rad_value")
     private double radValue;
+    @SerializedName("total_meas")
     private int totalMeasurements;
+    @SerializedName("aqi_value")
     private int aqiValue;
+    @SerializedName("wind_speed")
     private double windSpeed;
+    @SerializedName("wind_dir")
     private int windDirection;
+    @SerializedName("temp")
     private int temp;
+    @SerializedName("main_pollutant")
     private String mainPollutant;
+    @SerializedName("weather_icon")
     private String weatherIcon;
+    @SerializedName("city")
     private String city;
+    @SerializedName("country")
     private String country;
+    @SerializedName("view_count")
     private int viewCount;
+    @SerializedName("current")
     private boolean isCurrent;
     @CreationTimestamp
+    @SerializedName("create_ts")
     private Timestamp creationTimestamp;
     @UpdateTimestamp
+    @SerializedName("update_ts")
     private Timestamp updateTimestamp;
+    @SerializedName("min_meas_ts")
     private Timestamp minMeasurementTimestamp;
+    @SerializedName("max_meas_ts")
     private Timestamp maxMeasurementTimestamp;
+    @SerializedName("aqi_ts")
     private Timestamp aqiTimestamp;
 
     public LatLon() {
@@ -213,4 +235,5 @@ public class LatLon {
     public void setAqiTimestamp(Timestamp aqiTimestamp) {
         this.aqiTimestamp = aqiTimestamp;
     }
+
 }
