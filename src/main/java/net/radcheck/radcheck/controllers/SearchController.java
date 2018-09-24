@@ -826,7 +826,8 @@ public class SearchController {
 
         String geocode = URLEncoder.encode(query, "UTF-8");
 
-        HttpsURLConnection geoCall = (HttpsURLConnection) (new URL(geoURL + "?address=" + geocode).openConnection());
+        HttpsURLConnection geoCall = (HttpsURLConnection) (new URL(geoURL + "?address=" +
+                geocode + "&key=" + mapsKey).openConnection());
         geoCall.setRequestProperty("Content-Type", "application/json");
         geoCall.setRequestProperty("Accept", "application/json");
         geoCall.setRequestMethod("GET");
