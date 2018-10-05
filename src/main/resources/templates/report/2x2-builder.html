@@ -21,6 +21,7 @@ $(document).ready(function(){
 <div class="container push">
     <div class="row">
         <div class="col"><h2 class="p-3 text-center">Build your two-by-two report</h2></div>
+        <div th:replace="fragments :: donation"></div>
     </div>
 
 <form method="POST" th:action="@{/two-by-two}" th:object="${form}">

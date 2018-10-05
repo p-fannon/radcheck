@@ -68,6 +68,7 @@ $(document).ready(function(){
         <div class="col p-3">
             <p>Your account at <strong th:text="${user.getEmail()}"></strong> registered to RadCheck on <span th:text="${user.getJoinedOn().toString()}"></span></p>
         </div>
+        <div th:replace="fragments :: donation"></div>
     </div>
     <div class="row">
         <div class="col p-3" th:unless="${user.locations} and ${user.locations.size()}">

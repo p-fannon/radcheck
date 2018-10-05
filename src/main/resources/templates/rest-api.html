@@ -6,8 +6,17 @@
 <div class="wrapper">
 
     <nav th:replace="fragments :: navigation"></nav>
+    <div class="alert alert-info alert-dismissible fade show" role="alert" th:if="${consent} == true">
+        This application uses cookies. By continuing to use this application you are agreeing to
+        our use of cookies as described in our <a th:href="@{/privacy}" target="_blank"
+                                                  style="color: black;">Privacy Policy.</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">OK</span>
+        </button>
+    </div>
 
     <div class="container mt-3">
+        <div th:replace="fragments :: donation"></div>
         <div class="row">
             <div class="col">
                 <h1 class="display-4 text-center">RadCheck has its own REST API!</h1>

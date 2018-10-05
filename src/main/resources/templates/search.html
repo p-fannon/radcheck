@@ -6,6 +6,14 @@
 <div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
+    <div class="alert alert-info alert-dismissible fade show" role="alert" th:if="${consent} == true">
+        This application uses cookies. By continuing to use this application you are agreeing to
+        our use of cookies as described in our <a th:href="@{/privacy}" target="_blank"
+                                                  style="color: black;">Privacy Policy.</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">OK</span>
+        </button>
+    </div>
 
 <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.logon}">
     The account at <strong th:text="${account}"></strong> is now logged in.
@@ -32,6 +40,7 @@
                 <div id="map_container"><div id="map"></div></div>
             </div>
         </div>
+        <div th:replace="fragments :: donation"></div>
     </div>
 <div class="container"><form th:action="@{/search}" method="POST" th:object="${gmap}">
     <div class="form-group py-2">

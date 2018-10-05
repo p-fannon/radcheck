@@ -18,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
@@ -51,7 +54,14 @@ public class UserController {
     private RoleDao roleRepository;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model){
+    public String login(Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                        HttpServletResponse response, HttpServletRequest request){
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -59,8 +69,29 @@ public class UserController {
         return "login";
     }
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String registration(Model model){
+    public String registration(Model model,
+                               @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                               HttpServletResponse response, HttpServletRequest request,
+                               @CookieValue(value="consent", defaultValue="0") String consentCookie){
+        boolean needToAsk;
+        if (Integer.parseInt(consentCookie) == 0) {
+            needToAsk = true;
+            Cookie consent = new Cookie("consent", "1");
+            consent.setMaxAge(60 * 60 * 24 * 365 * 10);
+            consent.setHttpOnly(true);
+            consent.setPath("/");
+            response.addCookie(consent);
+        } else {
+            needToAsk = false;
+        }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         User user = new User();
+        model.addAttribute("consent", needToAsk);
         model.addAttribute("user", user);
         String account = getUser();
         model.addAttribute("account", account);
@@ -70,7 +101,9 @@ public class UserController {
     }
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String createNewUser(Model model, @ModelAttribute @Valid User user, Errors errors,
-                                @RequestParam (defaultValue = "false") boolean agree) {
+                                @RequestParam (defaultValue = "false") boolean agree,
+                                @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                HttpServletResponse response, HttpServletRequest request) {
         if (!agree) {
             String account = getUser();
             model.addAttribute("consentMessage", "You must consent to the Privacy Policy " +
@@ -104,6 +137,12 @@ public class UserController {
             return "registration";
         } else {
             userService.saveUser(user);
+            int donateCount = Integer.parseInt(donateCookie);
+            boolean askDonate = checkDonate(donateCount);
+            if (donateCount < 11) {
+                response.addCookie(updateDonation(donateCount, request.getCookies()));
+            }
+            model.addAttribute("donate", askDonate);
             model.addAttribute("successMessage", "User has been registered successfully");
             model.addAttribute("user", new User());
             model.addAttribute("title", "Success");
@@ -114,7 +153,14 @@ public class UserController {
         return "registration";
     }
     @RequestMapping(value = "/privacy", method = RequestMethod.GET)
-    public String privacy(Model model) {
+    public String privacy(Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                          HttpServletResponse response, HttpServletRequest request) {
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = getUser();
         model.addAttribute("title", "Privacy Policy");
         model.addAttribute("account", account);
@@ -134,7 +180,14 @@ public class UserController {
         return "admin/home";
     }
     @RequestMapping(value = "/user/profile", method = RequestMethod.GET)
-    public String userProfile(Model model) {
+    public String userProfile(Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                              HttpServletResponse response, HttpServletRequest request) {
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         User user = getAccount();
         String account = user.getEmail();
         Instant rightNow = Instant.now();
@@ -149,7 +202,9 @@ public class UserController {
         return "user/profile";
     }
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
-    public String confirmLocation(Model model, HttpSession session) {
+    public String confirmLocation(Model model, HttpSession session,
+                                  @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                  HttpServletResponse response, HttpServletRequest request) {
         User user = getAccount();
         if (user.getLocations().size() > 19 && user.getRoles().equals(new HashSet<Role>(Arrays.asList(roleRepository.findByRole("USER"))))) {
             session.removeAttribute("candidateLocation");
@@ -159,6 +214,12 @@ public class UserController {
         if (user.getLocations().size() > 0) {
             List<LatLon> possibleDuplicates = checkDuplicates(location);
             if (possibleDuplicates.size() > 0) {
+                int donateCount = Integer.parseInt(donateCookie);
+                boolean askDonate = checkDonate(donateCount);
+                if (donateCount < 11) {
+                    response.addCookie(updateDonation(donateCount, request.getCookies()));
+                }
+                model.addAttribute("donate", askDonate);
                 String account = user.getEmail();
                 model.addAttribute("account", account);
                 model.addAttribute("isLoggedIn", checkAccount(account));
@@ -169,6 +230,12 @@ public class UserController {
                 return "duplicates";
             }
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = user.getEmail();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -179,7 +246,8 @@ public class UserController {
     }
     @RequestMapping(value = "/confirm/{locationId}", method = RequestMethod.GET)
     public String confirmPersistentLocation(Model model, @PathVariable int locationId,
-                                            HttpSession session) {
+                                            HttpSession session, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                            HttpServletResponse response, HttpServletRequest request) {
         User user = getAccount();
         if (user.getLocations().size() > 19) {
             return "redirect:/user/profile?max=true";
@@ -202,6 +270,12 @@ public class UserController {
             }
         }
         session.setAttribute("candidateLocation", confirmLocation);
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = user.getEmail();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -239,9 +313,16 @@ public class UserController {
     }
     @RequestMapping(value = "/edit/{locationId}", method=RequestMethod.GET)
     public String editLocationName(Model model, @PathVariable int locationId,
-                                   HttpSession session) {
+                                   HttpSession session, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                   HttpServletResponse response, HttpServletRequest request) {
         User user = getAccount();
         LatLon editLocation = locationRepository.findOne(locationId);
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = user.getEmail();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -280,7 +361,7 @@ public class UserController {
         return "redirect:/user/profile?remove=true";
     }
 
-    public List<LatLon> checkDuplicates(LatLon userLocation) {
+    private List<LatLon> checkDuplicates(LatLon userLocation) {
         double lat = Math.toRadians(userLocation.getLat());
         double lon = Math.toRadians(userLocation.getLon());
         double northLat = findBoundaryLat(lat, Math.toRadians(0.0));
@@ -290,13 +371,13 @@ public class UserController {
         return locationRepository.findDuplicates(northLat, southLat, eastLon, westLon);
     }
 
-    public double findBoundaryLat(double lat, double brng) {
+    private double findBoundaryLat(double lat, double brng) {
         double diffLat = angularDistance * Math.cos( brng );
         double lat2 = lat + diffLat;
         return Math.toDegrees(lat2);
     }
 
-    public double findBoundaryLon(double lat1, double lon, double brng) {
+    private double findBoundaryLon(double lat1, double lon, double brng) {
         double latDiff = angularDistance * Math.cos( brng );
         double lat2 = lat1 + latDiff;
         double pLatDiff = Math.log( Math.tan( lat2 / 2 + Math.PI / 4 ) / Math.tan( lat1 / 2 + Math.PI / 4 ));
@@ -306,16 +387,54 @@ public class UserController {
         return Math.toDegrees(lon2);
     }
 
-    public static boolean validate(String emailStr) {
+    private static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
         return matcher.find();
     }
-    public User getAccount() {
+    private boolean checkDonate(int cookie) {
+        boolean needToAsk;
+        if (cookie < 10) {
+            needToAsk = false;
+        } else if (cookie == 10) {
+            needToAsk = true;
+        } else {
+            needToAsk = false;
+        }
+        return needToAsk;
+    }
+    private Cookie updateDonation(int count, Cookie[] cookies) {
+        if (count == 0) {
+            Cookie donate = new Cookie("donate", Integer.toString(count + 1));
+            donate.setMaxAge(60 * 60 * 24 * 180);
+            donate.setHttpOnly(true);
+            donate.setPath("/");
+            return donate;
+        } else {
+            for (Cookie entry : cookies) {
+                if (entry.getName().equals("donate")) {
+                    if (Integer.parseInt(entry.getValue()) < 11) {
+                        entry.setValue(Integer.toString(count + 1));
+                        entry.setMaxAge(60 * 60 * 24 * 180);
+                        entry.setHttpOnly(true);
+                        entry.setPath("/");
+                        return entry;
+                    } else {
+                        entry.setMaxAge(60 * 60 * 24 * 180);
+                        entry.setHttpOnly(true);
+                        entry.setPath("/");
+                        return entry;
+                    }
+                }
+            }
+        }
+        return new Cookie("donate", "1");
+    }
+    private User getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         return user;
     }
-    public String getUser() {
+    private String getUser() {
         String account = "";
         User theUser = getAccount();
         if (theUser != null) {
@@ -323,7 +442,7 @@ public class UserController {
         }
         return account;
     }
-    public boolean checkAccount(String account) {
+    private boolean checkAccount(String account) {
         boolean isLoggedIn = false;
         if (!account.equals("")) {
             isLoggedIn = true;

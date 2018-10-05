@@ -12,7 +12,12 @@ $(document).ready(function(){
 });
 </script>
 <div class="container">
-    <div class="row"><h3 class="p-3">Your search found the following measurement:</h3></div>
+    <div class="row">
+        <div class="col">
+            <h3 class="p-3">Your search found the following measurement:</h3>
+        </div>
+    </div>
+    <div th:replace="fragments :: donation"></div>
 </div>
 
 <div class="container push">

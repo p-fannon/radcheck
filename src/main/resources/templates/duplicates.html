@@ -16,6 +16,7 @@ $(document).ready(function(){
         <div class="col p-3">
             <h2>Your saved search appears to be similar to the following location(s) already in the database:</h2>
         </div>
+        <div th:replace="fragments :: donation"></div>
     </div>
     <div class="row m-3" th:each="location : ${locations}">
         <div class="col-6 embed-responsive embed-responsive-4by3">

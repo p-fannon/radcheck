@@ -11,7 +11,12 @@ $(document).ready(function(){
 });
 </script>
 <div class="container">
-    <h3 class="p-3" th:text="'Here are the current measurements at ' + ${session.locale} + ':'"></h3>
+    <div class="row">
+        <div class="col">
+            <h3 class="p-3" th:text="'Here are the current measurements at ' + ${session.locale} + ':'"></h3>
+        </div>
+    </div>
+    <div th:replace="fragments :: donation"></div>
 </div>
 
 <div class="container push">

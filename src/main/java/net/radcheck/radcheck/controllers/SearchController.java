@@ -17,7 +17,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.BufferedReader;
@@ -48,7 +50,6 @@ public class SearchController {
     private static Gson gson = new Gson();
     private static String minScTs = "2011-03-10T00:00:00Z";
     private static long twentyOneHours = 75600000L;
-    private static double angularDistance = 250 / 6371e3;
     private static final Logger searchLogger = LoggerFactory.getLogger(SearchController.class);
     private static String[] list = {"The Gateway Arch, St. Louis, MO", "Apotheosis of Saint Louis, Fine Arts Drive, St. Louis, MO",
             "Washington Monument, Washington, DC", "Empire State Building, 5th Avenue, New York, NY", "Big Ben, London, UK",
@@ -119,7 +120,20 @@ public class SearchController {
     private LatLonDao locationRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model, HttpSession session) {
+    public String index(Model model, HttpSession session,
+                        @CookieValue(value="donate", defaultValue="0") String donateCookie,
+						HttpServletResponse response, HttpServletRequest request,
+                        @CookieValue(value="consent", defaultValue="0") String consentCookie) {
+		boolean needConsent = checkConsent(Integer.parseInt(consentCookie));
+        if (needConsent) {
+            response.addCookie(bakeConsent());
+        }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         if (session.getAttribute("mapSearch") == null) {
             int address = pickRandomLandmark();
             GMap sessionMap = new GMap(list[address], lat[address], lon[address]);
@@ -130,6 +144,7 @@ public class SearchController {
             model.addAttribute("gmap", sessionMap);
         }
         String account = getUser();
+		model.addAttribute("consent", needConsent);
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "RadCheck: Find radiation measurements in your area");
@@ -139,7 +154,20 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(Model model, HttpSession session) {
+    public String search(Model model, HttpSession session,
+                         @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                         HttpServletResponse response, HttpServletRequest request,
+                         @CookieValue(value="consent", defaultValue="0") String consentCookie) {
+        boolean needConsent = checkConsent(Integer.parseInt(consentCookie));
+        if (needConsent) {
+            response.addCookie(bakeConsent());
+        }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         if (session.getAttribute("mapSearch") == null) {
             int address = pickRandomLandmark();
             GMap sessionMap = new GMap(list[address], lat[address], lon[address]);
@@ -150,6 +178,7 @@ public class SearchController {
             model.addAttribute("gmap", sessionMap);
         }
         String account = getUser();
+        model.addAttribute("consent", needConsent);
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Pick A Location To Measure");
@@ -159,8 +188,22 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/about", method=RequestMethod.GET)
-    public String about(Model model) {
+    public String about(Model model,
+                        @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                        HttpServletResponse response, HttpServletRequest request,
+                        @CookieValue(value="consent", defaultValue="0") String consentCookie) {
+        boolean needConsent = checkConsent(Integer.parseInt(consentCookie));
+        if (needConsent) {
+            response.addCookie(bakeConsent());
+        }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = getUser();
+        model.addAttribute("consent", needConsent);
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "Information About RadCheck");
@@ -170,7 +213,8 @@ public class SearchController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String indexSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
-                             errors, HttpSession session) throws IOException {
+                             errors, HttpSession session, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                              HttpServletResponse response, HttpServletRequest request) throws IOException {
         if (errors.hasErrors()) {
             searchLogger.info("Error during index page result serving: " + errors.getAllErrors().toString());
             session.setAttribute("mapSearch", newMap);
@@ -198,6 +242,12 @@ public class SearchController {
 
             return "redirect:/?retry=true";
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
 
@@ -223,7 +273,8 @@ public class SearchController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String mapsSearch(Model model, @ModelAttribute @Valid GMap newMap, Errors
-            errors, HttpSession session) throws IOException {
+            errors, HttpSession session, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                             HttpServletResponse response, HttpServletRequest request) throws IOException {
         if (errors.hasErrors()) {
             searchLogger.info("Error during search page result serving: " + errors.getAllErrors().toString());
             session.setAttribute("mapSearch", newMap);
@@ -251,6 +302,12 @@ public class SearchController {
             model.addAttribute("gmap", newMap);
             return "redirect:/search?retry=true";
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
 
@@ -275,10 +332,24 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/manual", method=RequestMethod.GET)
-    public String manualSearch(Model model) {
+    public String manualSearch(Model model,
+                               @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                               HttpServletResponse response, HttpServletRequest request,
+                               @CookieValue(value="consent", defaultValue="0") String consentCookie) {
+        boolean needConsent = checkConsent(Integer.parseInt(consentCookie));
+        if (needConsent) {
+            response.addCookie(bakeConsent());
+        }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         model.addAttribute("title", "Pick A Location To Measure");
         model.addAttribute("measurements", new Measurements());
         String account = getUser();
+        model.addAttribute("consent", needConsent);
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
 
@@ -288,7 +359,9 @@ public class SearchController {
     @RequestMapping(value = "/manual", method = RequestMethod.POST)
     public String manualResult(Model model,
                          @ModelAttribute @Valid Measurements newMeasurement,
-                         Errors errors, HttpSession session) throws IOException {
+                         Errors errors, HttpSession session,
+                               @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                               HttpServletResponse response, HttpServletRequest request) throws IOException {
 
         if (errors.hasErrors()) {
             searchLogger.info("Error during manual page result serving: " + errors.getAllErrors().toString());
@@ -332,6 +405,12 @@ public class SearchController {
             searchLogger.info("AirVisual failed to return because of: " + airVisualReturn.getAqiStatus());
             return "redirect:/search?retry=true";
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
 
         LatLon returnedLatLon = makeQuery(safeCastReturns, airVisualReturn, aLatitude, aLongitude);
 
@@ -357,7 +436,8 @@ public class SearchController {
 
     @RequestMapping(value = "/view/{locationId}", method=RequestMethod.GET)
     public String viewSavedResult(Model model, @PathVariable int locationId,
-                                  HttpSession session) throws IOException {
+                                  HttpSession session, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                  HttpServletResponse response, HttpServletRequest request) throws IOException {
         LatLon returnedLatLon = locationRepository.findOne(locationId);
         Instant hereAndNow = Instant.now();
         Timestamp twentyOneHoursAgo = Timestamp.from(hereAndNow.minusMillis(twentyOneHours));
@@ -366,6 +446,12 @@ public class SearchController {
             returnedLatLon.setViewCount(returnedLatLon.getViewCount() + 1);
             locationRepository.save(returnedLatLon);
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String ratingClass = getRatingClass(returnedLatLon);
         String ratingInfo = getRatingInfo(returnedLatLon);
 
@@ -386,12 +472,19 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/two-by-two", method=RequestMethod.GET)
-    public String buildTwoByTwoReport(Model model) {
+    public String buildTwoByTwoReport(Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                      HttpServletResponse response, HttpServletRequest request) {
         User user = getAccount();
         if (user.getLocations().size() < 4) {
 
             return "redirect:/user/profile?toofew=true";
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -406,7 +499,8 @@ public class SearchController {
     public String serveTwoByTwoReport(@ModelAttribute @Valid BuildReportForm theForm,
                                       Errors errors,
                                       @RequestParam List<Integer> locationIds,
-                                      Model model) throws IOException {
+                                      Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                      HttpServletResponse response, HttpServletRequest request) throws IOException {
         List<LatLon> orderedLatLon = new ArrayList<>();
         for (int index : locationIds) {
             if (orderedLatLon.contains(locationRepository.findOne(index))) {
@@ -445,6 +539,12 @@ public class SearchController {
                 }
             }
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = getUser();
         Date todayDate = Date.from(Instant.now());
         model.addAttribute("account", account);
@@ -464,11 +564,18 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/three-by-three", method=RequestMethod.GET)
-    public String buildThreeByThreeReport(Model model){
+    public String buildThreeByThreeReport(Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                          HttpServletResponse response, HttpServletRequest request){
         User user = getAccount();
         if (user.getLocations().size() < 9) {
             return "redirect:/user/profile?toofewthree=true";
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -482,7 +589,8 @@ public class SearchController {
     public String serveThreeByThreeReport(@ModelAttribute @Valid BuildReportForm theForm,
                                           Errors errors,
                                           @RequestParam List<Integer> locationIds,
-                                          Model model) {
+                                          Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                          HttpServletResponse response, HttpServletRequest request) {
         List<LatLon> orderedLatLon = new ArrayList<>();
         for (int index : locationIds) {
             if (orderedLatLon.contains(locationRepository.findOne(index))) {
@@ -495,6 +603,12 @@ public class SearchController {
             searchLogger.info("Error during 3x3 report serving: " + errors.getAllErrors().toString());
             return "redirect:/three-by-three?error=true";
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         LatLon[] reportLocations = orderedLatLon.toArray(new LatLon[0]);
         String[] locationNames = {"", "", "", "", "", "", "", "", ""};
         String[] locationClasses = {"", "", "", "", "", "", "", "", ""};
@@ -533,11 +647,18 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/four-by-four", method=RequestMethod.GET)
-    public String buildFourByFourReport(Model model) {
+    public String buildFourByFourReport(Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                        HttpServletResponse response, HttpServletRequest request) {
         User user = getAccount();
         if (user.getLocations().size() < 16) {
             return "redirect:/user/profile?toofewfour=true";
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = getUser();
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
@@ -551,7 +672,8 @@ public class SearchController {
     public String serveFourByFourReport(@ModelAttribute @Valid BuildReportForm theForm,
                                         Errors errors,
                                         @RequestParam List<Integer> locationIds,
-                                        Model model) {
+                                        Model model, @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                        HttpServletResponse response, HttpServletRequest request) {
         List<LatLon> orderedLatLon = new ArrayList<>();
         for (int index : locationIds) {
             if (orderedLatLon.contains(locationRepository.findOne(index))) {
@@ -564,6 +686,12 @@ public class SearchController {
             searchLogger.info("Error during 4x4 report serving: " + errors.getAllErrors().toString());
             return "redirect:/four-by-four?error=true";
         }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         LatLon[] reportLocations = orderedLatLon.toArray(new LatLon[0]);
         String[] locationNames = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
         String[] locationClasses = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
@@ -602,8 +730,22 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/api", method = RequestMethod.GET)
-    public String apiDescription(Model model) {
+    public String apiDescription(Model model,
+                                 @CookieValue(value="donate", defaultValue="0") String donateCookie,
+                                 HttpServletResponse response, HttpServletRequest request,
+                                 @CookieValue(value="consent", defaultValue="0") String consentCookie) {
+        boolean needConsent = checkConsent(Integer.parseInt(consentCookie));
+        if (needConsent) {
+            response.addCookie(bakeConsent());
+        }
+        int donateCount = Integer.parseInt(donateCookie);
+        boolean askDonate = checkDonate(donateCount);
+        if (donateCount < 11) {
+            response.addCookie(updateDonation(donateCount, request.getCookies()));
+        }
+        model.addAttribute("donate", askDonate);
         String account = getUser();
+        model.addAttribute("consent", needConsent);
         model.addAttribute("account", account);
         model.addAttribute("isLoggedIn", checkAccount(account));
         model.addAttribute("title", "RadCheck REST API");
@@ -716,7 +858,7 @@ public class SearchController {
         return response;
     }
 
-    public int pickRandomLandmark() {
+    private int pickRandomLandmark() {
         int landmark = 0;
         double rng = Math.random();
         double range = 0.0;
@@ -729,7 +871,7 @@ public class SearchController {
         return landmark;
     }
 
-    public Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {
+    private Collection<Measurements> getMeasurements(double lat, double lng) throws IOException {
         json = "";
         Instant newInstant = Instant.now();
         String capturedBefore = newInstant.toString();
@@ -759,7 +901,7 @@ public class SearchController {
         }
     }
     // Overloaded method for REST API
-    public Collection<Measurements> getMeasurements(double lat, double lng, int distance) throws IOException {
+    private Collection<Measurements> getMeasurements(double lat, double lng, int distance) throws IOException {
         json = "";
         Instant newInstant = Instant.now();
         String capturedBefore = newInstant.toString();
@@ -789,7 +931,7 @@ public class SearchController {
         }
     }
 
-    public AirQuality getAQI(double lat, double lng) throws IOException {
+   private AirQuality getAQI(double lat, double lng) throws IOException {
         aqiDecodedString = "";
         aqiJson = "";
 
@@ -820,7 +962,7 @@ public class SearchController {
         }
         return results;
     }
-    public Geo getGeo(String query) throws IOException {
+    private Geo getGeo(String query) throws IOException {
         geoJson = "";
         geoDecodedString = "";
 
@@ -848,7 +990,7 @@ public class SearchController {
         Geo results = gson.fromJson(geoJson, Geo.class);
         return results;
     }
-    public String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng) throws IOException {
+    private String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng) throws IOException {
         int distance = 1000;
         decodedString = "";
         String result = "";
@@ -873,7 +1015,7 @@ public class SearchController {
         return result;
     }
     //Overloaded method for REST API
-    public String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng, int distance) throws IOException {
+    private String callSafecast(String capturedBefore, String capturedAfter, double lat, double lng, int distance) throws IOException {
         decodedString = "";
         String result = "";
         HttpsURLConnection scCall = (HttpsURLConnection) (new URL(BaseURL + "?distance=" + distance
@@ -896,7 +1038,7 @@ public class SearchController {
         scCall.disconnect();
         return result;
     }
-    public LatLon makeQuery(Collection<Measurements> sc, AirQuality av, double lat, double lon) {
+    private LatLon makeQuery(Collection<Measurements> sc, AirQuality av, double lat, double lon) {
         LatLon newLatLon = new LatLon(lat, lon);
         double rad = 0.0;
         int measurementCount = 0;
@@ -945,7 +1087,7 @@ public class SearchController {
 
         return newLatLon;
     }
-    public LatLon refreshLocation(LatLon refresh) throws IOException {
+    private LatLon refreshLocation(LatLon refresh) throws IOException {
         Collection<Measurements> refreshedMeasurements = getMeasurements(refresh.getLat(), refresh.getLon());
         refresh = updateMeasurements(refresh, refreshedMeasurements);
         AirQuality refreshedAqi = getAQI(refresh.getLat(), refresh.getLon());
@@ -958,7 +1100,7 @@ public class SearchController {
 
         return refresh;
     }
-    public String getNewRating(double testRad, double testAqi) {
+    private String getNewRating(double testRad, double testAqi) {
         String rating;
         if (testRad > .7714 || testAqi > 300) {
             rating = "Hazardous";
@@ -976,7 +1118,7 @@ public class SearchController {
 
         return rating;
     }
-    public String getRatingClass(LatLon location) {
+    private String getRatingClass(LatLon location) {
         String ratingClass = "";
         switch (location.getRating()) {
             case "Safe": ratingClass = "card bg-success text-white";
@@ -994,7 +1136,7 @@ public class SearchController {
         }
         return ratingClass;
     }
-    public String getRatingInfo(LatLon location) {
+    private String getRatingInfo(LatLon location) {
         String ratingInfo = "";
         switch (location.getRating()) {
             case "Safe": ratingInfo = "The environment here poses little to no health risk. Enjoy your usual outdoor activities, and try opening windows to ventilate your home with oxygen-rich air.";
@@ -1012,7 +1154,7 @@ public class SearchController {
         }
         return ratingInfo;
     }
-    public LatLon updateMeasurements(LatLon updateLocation, Collection<Measurements> measurements) {
+    private LatLon updateMeasurements(LatLon updateLocation, Collection<Measurements> measurements) {
         double rad = 0.0;
         int measurementCount = 0;
         List<Timestamp> ts = new ArrayList<>();
@@ -1048,7 +1190,7 @@ public class SearchController {
 
         return updateLocation;
     }
-    public LatLon updateAqi(LatLon updateLocation, AirQuality aqi) {
+    private LatLon updateAqi(LatLon updateLocation, AirQuality aqi) {
         updateLocation.setAqiValue(aqi.getAqiData().getAqiCurrent().getAqiPollution().getAqiUsStd());
         Instant aqiInstant = Instant.parse(aqi.getAqiData().getAqiCurrent().getAqiPollution().getPollutionTimestamp());
         Timestamp aqiParse = Timestamp.from(aqiInstant);
@@ -1063,13 +1205,71 @@ public class SearchController {
 
         return updateLocation;
     }
+	
+	 private boolean checkConsent(int cookie) {
+        boolean needToAsk;
+        if (cookie == 0) {
+            needToAsk = true;
+        } else {
+            needToAsk = false;
+        }
+        return needToAsk;
+    }
 
-    public User getAccount() {
+    private Cookie bakeConsent() {
+        Cookie consent = new Cookie("consent", "1");
+        consent.setMaxAge(60 * 60 * 24 * 365 * 10);
+        consent.setHttpOnly(true);
+        consent.setPath("/");
+        return consent;
+    }
+
+    private boolean checkDonate(int cookie) {
+        boolean needToAsk;
+        if (cookie < 10) {
+            needToAsk = false;
+        } else if (cookie == 10) {
+            needToAsk = true;
+        } else {
+            needToAsk = false;
+        }
+        return needToAsk;
+    }
+
+    private Cookie updateDonation(int count, Cookie[] cookies) {
+        if (count == 0) {
+            Cookie donate = new Cookie("donate", Integer.toString(count + 1));
+            donate.setMaxAge(60 * 60 * 24 * 180);
+            donate.setHttpOnly(true);
+            donate.setPath("/");
+            return donate;
+        } else {
+            for (Cookie entry : cookies) {
+                if (entry.getName().equals("donate")) {
+                    if (Integer.parseInt(entry.getValue()) < 11) {
+                        entry.setValue(Integer.toString(count + 1));
+                        entry.setMaxAge(60 * 60 * 24 * 180);
+                        entry.setHttpOnly(true);
+                        entry.setPath("/");
+                        return entry;
+                    } else {
+                        entry.setMaxAge(60 * 60 * 24 * 180);
+                        entry.setHttpOnly(true);
+                        entry.setPath("/");
+                        return entry;
+                    }
+                }
+            }
+        }
+        return new Cookie("donate", "1");
+    }
+
+    private User getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         return user;
     }
-    public String getUser() {
+    private String getUser() {
         String account = "";
         User theUser = getAccount();
         if (theUser != null) {
@@ -1077,7 +1277,7 @@ public class SearchController {
         }
         return account;
     }
-    public boolean checkAccount(String account) {
+    private boolean checkAccount(String account) {
         boolean isLoggedIn = false;
         if (!account.equals("")) {
             isLoggedIn = true;

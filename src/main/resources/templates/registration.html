@@ -6,12 +6,21 @@
 <div class="wrapper">
 
 <nav th:replace="fragments :: navigation"></nav>
+    <div class="alert alert-info alert-dismissible fade show" role="alert" th:if="${consent} == true">
+        This application uses cookies. By continuing to use this application you are agreeing to
+        our use of cookies as described in our <a th:href="@{/privacy}" target="_blank"
+                                                  style="color: black;">Privacy Policy.</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">OK</span>
+        </button>
+    </div>
 
 <form th:action="@{/login}" method="get">
     <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
 </form>
 
 <div class="container p-3 push">
+    <div th:replace="fragments :: donation"></div>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <form autocomplete="off" th:action="@{/registration}"
@@ -59,10 +68,7 @@
                         <button type="submit" class="btn btn-primary btn-block btn-md">Register User</button>
                     </div>
                 </div>
-
-                <span th:utext="${successMessage}"></span>
-
-
+                <strong><span th:utext="${successMessage}"></span></strong>
             </form>
         </div>
     </div>
