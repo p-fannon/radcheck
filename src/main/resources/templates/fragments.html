@@ -35,7 +35,7 @@
     });
     </script>
     <script th:src="@{/js/site.js}"></script>
-    <script th:src="@{/js/a2hs_notify.js}"></script>
+
     <style>
         html, body {
             margin: 0;
@@ -116,7 +116,7 @@
     <link id="favicon" rel="icon" type="image/png" sizes="64x64" th:href="@{/images/favicon.png}" />
 </head>
 <body>
-
+<script th:fragment="notify" th:src="@{/js/a2hs_notify.js}"></script>
 <script th:fragment="prompt" th:src="@{/js/a2hs_prompt.js}"></script>
 
 <nav th:fragment="navigation" class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">

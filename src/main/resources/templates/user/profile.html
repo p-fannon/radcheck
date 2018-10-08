@@ -13,6 +13,7 @@ $(document).ready(function(){
     });
 });
 </script>
+    <script th:replace="fragments :: notify"></script>
     <script th:replace="fragments :: prompt"></script>
 
     <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.success}">
