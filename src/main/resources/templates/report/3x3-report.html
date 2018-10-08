@@ -11,7 +11,8 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
-<div class="container">
+    <script th:replace="fragments :: prompt"></script>
+    <div class="container">
     <div class="row">
         <div class="col"><h2 class="p-3 text-center" th:text="${message}"></h2></div>
         <div th:replace="fragments :: donation"></div>

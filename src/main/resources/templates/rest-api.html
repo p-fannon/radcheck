@@ -4,6 +4,7 @@
 </head>
 <body>
 <div class="wrapper">
+    <script th:replace="fragments :: prompt"></script>
 
     <nav th:replace="fragments :: navigation"></nav>
     <div class="alert alert-info alert-dismissible fade show" role="alert" th:if="${consent} == true">

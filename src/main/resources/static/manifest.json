@@ -1,0 +1,25 @@
+{
+  "short_name": "RadCheck",
+  "name": "RadCheck.app",
+  "icons": [
+    {
+      "src": "/images/favicon.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+	{
+      "src": "/images/radcheck_192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/radcheck_512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#8FBC8F",
+  "display": "standalone",
+  "theme_color": "#8FBC8F"
+}

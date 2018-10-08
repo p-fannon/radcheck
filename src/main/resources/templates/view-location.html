@@ -10,7 +10,8 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
-<div class="container">
+    <script th:replace="fragments :: prompt"></script>
+    <div class="container">
     <div class="row">
         <div class="col">
             <h3 class="p-3" th:text="'Here are the current measurements at ' + ${session.locale} + ':'"></h3>

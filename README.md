@@ -12,6 +12,7 @@ The back-end of this application is made with Java OOP language along with Sprin
 * Have queries persist in the database for 21 hours, after which they can be updated with a new call to the API
 * Prevents duplicate locations from existing in the database, and directs users to save those locations instead
 * Error handling for null or outdated returns from APIs along with user input validation
+* Implements an "Add to Home Screen" feature that allows for a more "native app" experience on mobile
 
 [View the project tracker on Trello](https://trello.com/b/fRCs1igg/radcheck)
 

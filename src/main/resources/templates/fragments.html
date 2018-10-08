@@ -3,6 +3,15 @@
 <head th:fragment="head">
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#8FBC8F">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <link rel="icon" sizes="192x192" th:href="@{/images/radcheck_192.png}">
+    <link rel="apple-touch-icon" th:href="@{/images/radcheck_192_ios.png}">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/images/radcheck_76.png}">
+    <link rel="apple-touch-icon" sizes="120x120" th:href="@{/images/radcheck_120.png}">
+    <meta name="msapplication-square310x310logo" th:attr="content=@{/images/radcheck_310.png}">
     <title th:text="${title}">Default Title</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -25,6 +34,8 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
     </script>
+    <script th:src="@{/js/site.js}"></script>
+    <script th:src="@{/js/a2hs_notify.js}"></script>
     <style>
         html, body {
             margin: 0;
@@ -105,6 +116,8 @@
     <link id="favicon" rel="icon" type="image/png" sizes="64x64" th:href="@{/images/favicon.png}" />
 </head>
 <body>
+
+<script th:fragment="prompt" th:src="@{/js/a2hs_prompt.js}"></script>
 
 <nav th:fragment="navigation" class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
     <ul class="navbar-nav">
@@ -190,27 +203,27 @@
                 </div>
                 <div id="btc" class="collapse m-1 ml-auto text-right"><br />
                     <h3>Bitcoin</h3>
-                    <img th:src="@{images/BTC.jpg}" />
+                    <img th:src="@{/images/BTC.jpg}" />
                     <br /><textarea style="font-family: 'Courier New', Courier, monospace;" rows="1" cols="32" readonly>35R4iLGqAH454pysdSh8pNZmqGKCw2SJTm</textarea>
                 </div>
                 <div id="bch" class="collapse m-1 ml-auto text-right"><br />
                     <h3>Bitcoin Cash</h3>
-                    <img th:src="@{images/BCH.jpg}" />
+                    <img th:src="@{/images/BCH.jpg}" />
                     <br /><textarea style="font-family: 'Courier New', Courier, monospace;" rows="1" cols="40" readonly>qrwllf2q0tdmrdyf88lt6794yz9ysz7gxvveywlr9t</textarea>
                 </div>
                 <div id="eth" class="collapse m-1 ml-auto text-right"><br />
                     <h3>Ethereum</h3>
-                    <img th:src="@{images/ETH.jpg}" />
+                    <img th:src="@{/images/ETH.jpg}" />
                     <br /><textarea style="font-family: 'Courier New', Courier, monospace;" rows="1" cols="40" readonly>0x6617E0A0A6D3F832c8B665458582482BF0277A08</textarea>
                 </div>
                 <div id="etc" class="collapse m-1 ml-auto text-right"><br />
                     <h3>Ethereum Classic</h3>
-                    <img th:src="@{images/ETC.jpg}" />
+                    <img th:src="@{/images/ETC.jpg}" />
                     <br /><textarea style="font-family: 'Courier New', Courier, monospace;" rows="1" cols="40" readonly>0xa78BAaEAE43A6C6380762b9DaF9fd968ac3De6c0</textarea>
                 </div>
                 <div id="ltc" class="collapse m-1 ml-auto text-right"><br />
                     <h3>Litecoin</h3>
-                    <img th:src="@{images/LTC.jpg}" />
+                    <img th:src="@{/images/LTC.jpg}" />
                     <br /><textarea style="font-family: 'Courier New', Courier, monospace;" rows="1" cols="32" readonly>MCJ4hACB6EFNzT1KEpMtKdra6ahCxzEGTE</textarea>
                 </div>
             </div>
