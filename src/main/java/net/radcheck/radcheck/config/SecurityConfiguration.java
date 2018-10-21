@@ -44,7 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.
-                authorizeRequests()
+                cors().and()
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/images").permitAll()

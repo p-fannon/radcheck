@@ -753,6 +753,7 @@ public class SearchController {
         return "rest-api";
     }
 
+    @CrossOrigin
     @ResponseBody
     @RequestMapping(value = "/api/query", method = RequestMethod.GET)
     public String apiQuery(@RequestParam(defaultValue = "0") int id,
