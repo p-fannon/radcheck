@@ -44,7 +44,24 @@
         </div>
         <div th:replace="fragments :: donation"></div>
     </div>
-<div class="container"><form th:action="@{/search}" method="POST" th:object="${gmap}">
+<div class="container push"><form th:action="@{/search}" method="POST" id="mapForm" th:object="${gmap}">
+    <div class="form-group py-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <button type="button" id="quickSearch" class="btn btn-primary btn-md btn-block pt-2" />Find measurements in my location</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="container my-3">
+            <div class="row">
+                <div class="col"><h5 class="text-center">&mdash;&nbsp;or&nbsp;&mdash;</h5></div>
+            </div>
+        </div>
+    </div>
+
     <div class="form-group py-2">
         <div class="mx-auto text-center">
             <label for="address">Search map:</label>
@@ -52,6 +69,7 @@
             <button id="locate" type="button" class="btn btn-light">🔍</button>
         </div>
     </div>
+    <script th:replace="fragments :: geolocate"></script>
     <script th:inline="javascript">
         initMap();
         function initMap() {
@@ -86,19 +104,31 @@
     <input type="hidden" id="latitude" value="" th:field="*{lat}">
     <input type="hidden" id="longitude" value="" th:field="*{lon}">
     <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-md btn-block pt-2">Find measurement here</button>
+        <div class="container">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <button type="submit" class="btn btn-info btn-md btn-block pt-2">Find measurement here</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="container my-3">
+            <div class="row">
+                <div class="col"><h5 class="text-center">&mdash;&nbsp;or&nbsp;&mdash;</h5></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <a th:href="@{/manual}"><button class="btn btn-info btn-md btn-block">Use manual coordinates</button></a>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
-</div>
-<div class="container my-3">
-    <div class="row">
-        <div class="col"><h5 class="text-center">&mdash;&nbsp;or&nbsp;&mdash;</h5></div>
-    </div>
-</div>
-<div class="container push">
-    <div class="row">
-        <div class="col mb-3"><a th:href="@{/manual}"><button class="btn btn-info btn-md btn-block">Use manual coordinates</button></a></div>
-    </div>
 </div>
 <footer th:replace="fragments :: foot"></footer>
 </div>
