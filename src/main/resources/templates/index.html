@@ -78,7 +78,7 @@
         <div class="mx-auto text-center">
             <label for="address">Search map:</label>
             <input id="address" type="search" th:value="*{address}" th:field="*{address}">
-            <button id="locate" type="button" class="btn btn-light" data-toggle="tooltip" data-placement="right" title="After you place your map marker where you want after clicking this button, click the 'Find measurement here' button to initiate a search" />🔍</button>
+            <button id="locate" type="button" class="btn btn-light" />🔍</button>
         </div>
     </div>
     <script th:inline="javascript">
@@ -119,7 +119,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-10 offset-1">
-                    <button type="submit" class="btn btn-info btn-md btn-block pt-2" data-toggle="tooltip" data-placement="bottom" title="Use the above search function to find a location. After the map marker moves where you want it, click this button to begin the search" />Find measurement here</button>
+                    <button type="submit" class="btn btn-info btn-md btn-block pt-2" data-toggle="tooltip" data-placement="bottom" title="Use the above search function by typing in an address & clicking the magnifying glass. After the map marker moves to your desired location, click here to find readings" />Find measurement here</button>
                 </div>
             </div>
         </div>
