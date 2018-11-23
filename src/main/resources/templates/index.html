@@ -77,8 +77,8 @@
     <div class="form-group py-2">
         <div class="mx-auto text-center">
             <label for="address">Search map:</label>
-            <input id="address" type="search" th:value="*{address}" th:field="*{address}">
-            <button id="locate" type="button" class="btn btn-light" />🔍</button>
+            <input id="address" type="search" th:value="*{address}" th:field="*{address}" onkeypress="return noenter()" data-toggle="tooltip" data-placement="bottom" title="Use this search function to find a measurement anywhere in the world. Type in an address, click 'Find Readings' and a search will begin" />
+            <button id="locate" type="submit" class="btn btn-light" />Find Readings 🔍</button>
         </div>
     </div>
     <script th:inline="javascript">
@@ -105,6 +105,10 @@
                     });
                     document.getElementById('latitude').value = marker.position.lat();
                     document.getElementById('longitude').value = marker.position.lng();
+                    document.getElementById('quickSearch').disabled = true;
+                    document.getElementById('locate').innerText = "Success! Please wait...";
+                    document.getElementById('locate').disabled = true;
+                    document.getElementById("mapForm").submit();
                 } else {
                     alert('Geocode was not successful for the following reason: ' + status);
                 }
@@ -115,15 +119,6 @@
     <input type="hidden" id="latitude" value="" th:field="*{lat}">
     <input type="hidden" id="longitude" value="" th:field="*{lon}">
     <script th:replace="fragments :: geolocate"></script>
-    <div class="form-group">
-        <div class="container">
-            <div class="row">
-                <div class="col-10 offset-1">
-                    <button type="submit" class="btn btn-info btn-md btn-block pt-2" data-toggle="tooltip" data-placement="bottom" title="Use the above search function by typing in an address & clicking the magnifying glass. After the map marker moves to your desired location, click here to find readings" />Find measurement here</button>
-                </div>
-            </div>
-        </div>
-    </div>
     </form>
 </div>
 <div class="container pt-3">

@@ -35,7 +35,10 @@
     });
     </script>
     <script th:src="@{/js/site.js}"></script>
-
+    <script type="text/javascript">
+        function noenter() {
+        return !(window.event && window.event.keyCode == 13); }
+    </script>
     <style>
         html, body {
             margin: 0;

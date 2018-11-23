@@ -80,10 +80,12 @@ $(document).ready(function(){
             <table class="table table-striped m-1">
                 <thead>
                 <tr class="p-1">
-                    <th>Location No.</th>
-                    <th>Location Name</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
+                    <th colspan="5">Your Locations</th>
+                </tr>
+                <tr class="p-1">
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Latitude /<br>Longitude</th>
                     <th>Refreshed?</th>
                     <th>Action</th>
                 </tr>
@@ -92,8 +94,7 @@ $(document).ready(function(){
                 <tr th:each="location : ${user.locations}" class="p-1">
                     <td th:text="${#numbers.formatInteger(user.getLocations().indexOf(location) + 1,1)}"></td>
                     <td th:text="${names.get(user.getLocations().indexOf(location))}"></td>
-                    <td th:text="${#numbers.formatDecimal(location.lat,1,6)}"></td>
-                    <td th:text="${#numbers.formatDecimal(location.lon,1,6)}"></td>
+                    <td th:utext="${#numbers.formatDecimal(location.lat,1,6)} + '<br>' + ${#numbers.formatDecimal(location.lon,1,6)}"></td>
                     <td><span th:if="${location.updateTimestamp.after(refresh)}" class="badge badge-pill badge-success">Yes</span>
                         <span th:if="${location.updateTimestamp.before(refresh)}" class="badge badge-pill badge-danger">No</span></td>
                     <td>

@@ -65,8 +65,8 @@
     <div class="form-group py-2">
         <div class="mx-auto text-center">
             <label for="address">Search map:</label>
-            <input id="address" type="search" th:value="*{address}" th:field="*{address}">
-            <button id="locate" type="button" class="btn btn-light">🔍</button>
+            <input id="address" type="search" th:value="*{address}" th:field="*{address}" onkeypress="return noenter()" />
+            <button id="locate" type="button" class="btn btn-light" />Find Readings 🔍</button>
         </div>
     </div>
     <script th:replace="fragments :: geolocate"></script>
@@ -94,6 +94,10 @@
                     });
                     document.getElementById('latitude').value = marker.position.lat();
                     document.getElementById('longitude').value = marker.position.lng();
+                    document.getElementById('quickSearch').disabled = true;
+                    document.getElementById('locate').innerText = "Success! Please wait...";
+                    document.getElementById('locate').disabled = true;
+                    document.getElementById('mapForm').submit();
                 } else {
                     alert('Geocode was not successful for the following reason: ' + status);
                 }
@@ -103,15 +107,6 @@
     <script th:attr="src=${key}" async defer></script>
     <input type="hidden" id="latitude" value="" th:field="*{lat}">
     <input type="hidden" id="longitude" value="" th:field="*{lon}">
-    <div class="form-group">
-        <div class="container">
-            <div class="row">
-                <div class="col-10 offset-1">
-                    <button type="submit" class="btn btn-info btn-md btn-block pt-2">Find measurement here</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="form-group">
         <div class="container my-3">
             <div class="row">
